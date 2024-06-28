@@ -1,6 +1,6 @@
 # Why do I recommend MSYS2?
 
-There is no single official "MinGW compiler" you can install. Several groups of people provide installers for "MinGW" (with GCC and/or Clang bundled), and you need to choose which one to install.
+There is no single official "MinGW compiler" you can install. Several groups of people provide installers for "MinGW" (with GCC and/or Clang bundled), and you need to choose which one to install. MSYS2 is one of them.
 
 ## The original MinGW vs MinGW-w64
 
@@ -18,7 +18,7 @@ Everywhere in this tutorial by "MinGW" I mean either the original MinGW or MinGW
 
 The most popular MinGW-w64 distribution seems to be [MSYS2](https://www.msys2.org/). They provide many different [kinds of compilers](https://www.msys2.org/docs/environments/) (GCC and Clang with different configurations), and [many prebuilt libraries](https://packages.msys2.org/package/). They also provide some command-line [utilities ported from Linux](#msys2-and-cygwin), such as `bash`, `make`, etc.
 
-In my opinion the collection of prebuilt libraries alone makes other distributions impractical, but for completeness here are some popular ones:
+In my opinion, the collection of prebuilt libraries and the ability to run Linux makefiles and shell scripts alone make other distributions impractical, but for completeness here are some popular ones:
 
 * [llvm-mingw](https://github.com/mstorsjo/llvm-mingw) - provides Clang-based toolchain (unclear what's the difference compared to MSYS2).
 
