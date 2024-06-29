@@ -24,5 +24,5 @@ We will make the first steps without an IDE, then install one later.
 
 The process depends on your operating system:
 
-* ### [I'm using Windows](/installing_toolchain_mingw.md)
+* ### [I'm using Windows](/installing_toolchain_msys2.md)
 * ### [I'm using Linux](TODO) (TODO: link why_not_wsl.md from the linux page)

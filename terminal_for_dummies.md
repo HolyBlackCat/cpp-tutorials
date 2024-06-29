@@ -96,6 +96,8 @@ As you can see, shells in general require `./` or `.\` to run executables from t
 
 On Windows program names end with `.exe` by convention. On Linux they usually don't end with anything.
 
+(TODO explain DLL issues)
+
 ## PATH
 
 When you run an executable without `.\` or `./`, instead of looking for it in the current directory, shells will look in a predefined list of directories. (CMD will look in both, see above.)
@@ -121,3 +123,5 @@ For other shells on Windows, you can change PATH in the settings. Open the setti
 You will see two lists of variables, with `Path` in both of them. The top list (`User variables`) applies only to your user, while the bottom (`System variables`) applies to every user on this computer. You can edit either, but prefer to add your directories **to the beginning of the system-wide PATH** (the second one), because that gives them priority (TODO link to DLL issues).
 
 You can add e.g. `C:\msys64\ucrt64\bin` in there to be able to run your compiler from any shell.
+
+**NOTE:** You must restart your terminal after changing PATH for it to take effect.

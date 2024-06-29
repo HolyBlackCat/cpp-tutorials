@@ -38,7 +38,7 @@ Copy the path to this directory by right-clicking the address bar and pressing `
 
 [![Windows file explorer](/images/file_explorer_address.png)]((/images/file_explorer_address.png))
 
-Open MSYS2 terminal as described [here](/installing_toolchain_mingw.md#installing-msys2) by clicking `MSYS2 UCRT64` in the Start menu. (Make sure it says `UCRT64` in purple text. If not, you clicked the wrong thing.)
+Open MSYS2 terminal as described [here](/installing_toolchain_msys2.md#installing-msys2) by clicking `MSYS2 UCRT64` in the Start menu. (Make sure it says `UCRT64` in purple text. If not, you clicked the wrong thing.)
 
 Make sure you know the basics of how to use a terminal. Consult [Terminal for Dummies](/terminal_for_dummies.md) if you don't.
 
@@ -46,9 +46,9 @@ Open your directory by typing `cd`, space, then pasting your path and pressing E
 
 ## Compiling
 
-Assuming you have Clang installed as explained [here](/installing_toolchain_mingw.md), running `clang++ test.cpp` should compile your code.
+Assuming you have Clang installed as explained [here](/installing_toolchain_msys2.md), running `clang++ test.cpp` should compile your code.
 
-A successful compilation will print nothing. If your code is wrong, errors will be printed.
+A successful compilation will print nothing. If your code is wrong, errors will be printed. (TODO link to explanation for undefined reference to WinMain, write a new page for it)
 
 A successful compilation will create a file called `a.exe`, this is a program you can run. (This is for C++, for C use `clang test.c`.)
 
