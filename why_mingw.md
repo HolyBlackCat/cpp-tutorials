@@ -82,7 +82,7 @@ On MinGW I prefer libstdc++ rather than libc++ to have iterator validation (TODO
 
 ## MinGW ABI vs MSVC ABI
 
-MinGW and MSVC are incompatible. They use different standard libraries. Libraries compiled with one can't be used with another (except perhaps for some C (not C++) libraries).
+MinGW ABI and MSVC ABI are incompatible. Libraries compiled with one can't be used with another (except perhaps for some C (not C++) libraries).
 
 If you're using GCC or MSVC, you have no choice.
 
@@ -92,7 +92,11 @@ Clang be switched between MSVC mode and MinGW mode:
 
 * If you have prebuilt libraries compiled for one of those two ABIs, and you can't compile them for another (e.g. because they are closed-source), that locks you into that ABI.
 
-* MSVC ABI has quirks, such as `[[no_unique_address]]` not working out of the box (must use `[[msvc::no_unique_address]]`).
+* MSVC ABI has quirks, such as:
+
+  * `[[no_unique_address]]` not working out of the box (must use `[[msvc::no_unique_address]]`).
+
+  * MSVC, in their C standard library headers, single-handedly "deprecating" some of the standard functions in favor of their non-cross-platform alternatives (e.g. `scanf` vs `scanf_s`; must define `_CRT_SECURE_NO_WARNINGS` to silence this)
 
 MinGW is less popular/has less inertia behind it, which means in very rare cases some libraries or applications may not support it. Sometimes you can patch the libraries, but sometimes not. Some libraries do the opposite and only support MinGW.
 

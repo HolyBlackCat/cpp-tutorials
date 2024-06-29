@@ -68,4 +68,4 @@ This is enough to start learning C++.
 
 Read a chapter or two in your C++ book and try a few simple programs.
 
-Then [install an IDE](/installing_ide.md) to be more productive and improve your quality of life.
+Then [install an IDE](/installing_ide.md) for a better programming experience.

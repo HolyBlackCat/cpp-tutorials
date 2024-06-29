@@ -7,11 +7,9 @@ There are two prominent toolchains on Windows:
 * The one bundled with Visual Studio (not Visual Studio Code), using **MSVC** compiler.
 * A loose group of toolchains called **MinGW**, which uses the same tools you'll commonly find on Linux.
 
-We'll be installing the later, with the Clang compiler.<br/>
-( [Why MinGW rather than MSVC? And why Clang rather than GCC?](/why_mingw.md) )
+We'll be installing the later, with the Clang compiler. ([Why MinGW rather than MSVC? And why Clang rather than GCC?](/why_mingw.md) and [Why not Visual Studio?](/why_not_visual_studio.md))
 
-More specifically, we'll be installing MinGW using MSYS2.<br/>
-( [What is MSYS2? Why MSYS2?](/why_msys2.md) )
+More specifically, we'll be installing MinGW using MSYS2. ([What is MSYS2? Why MSYS2?](/why_msys2.md) and [Why not WSL?](/why_not_wsl.md))
 
 ## Installing MSYS2
 

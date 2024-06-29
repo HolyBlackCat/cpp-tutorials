@@ -48,7 +48,7 @@ The popular ones are:
   ```
   This is how MSYS2 Bash presents itself, but this text you see (a "prompt") can be customized and can look different (e.g. by default on Linux).
 
-On Windows, you can run any of those shells from the Start menu (CMD is called `Command Prompt`).
+On Windows, you can start a terminal with Powershell or CMD from the Start menu (the latter is called `Command Prompt`).
 
 ## The current directory
 
@@ -80,15 +80,17 @@ When the initial `/` is not followed by a drive letter, it refers to the MSYS2 i
 
   CMD has a quirk where moving between drive letters requires `cd /d`. E.g. if you're in `C:\msys64`, moving to `Z:\Games` requires `cd /d Z:\Games`, whereas doing just `cd Z:\Games` will have no effect.
 
+  Bash doesn't like `\` at the end of paths, e.g. `cd C:\msys64\` will require pressing Enter twice.
+
 ## Running executables
 
 Now is a good time to read [How to compile and run programs in the terminal](/compiling_in_terminal_win.md) to know how to compile executables.
 
 To run an executable from the current directory, use: (where `program.exe` is the executable name)
 
-* Bash: `./program.exe` or just `./program` (`.exe` is implied)
-* PowerShell: `.\program.exe` or `./program.exe` (or without `.exe`)
-* CMD: `program.exe` or `.\program.exe` (or without `.exe`)
+* [Bash](#what-is-a-shell): `./program.exe` or just `./program` (`.exe` is implied)
+* [PowerShell](#what-is-a-shell): `.\program.exe` or `./program.exe` (or without `.exe`)
+* [CMD](#what-is-a-shell): `program.exe` or `.\program.exe` (or without `.exe`)
 
 As you can see, shells in general require `./` or `.\` to run executables from the current directory. In general, `.` refers to the current directory.
 
@@ -102,9 +104,9 @@ This list is called the `PATH`. It's one of the "environment variables", the sys
 
 You can view the current PATH (or any environment variable) using:
 
-* Bash: `echo $PATH`
-* Powershell: `echo $env:PATH`
-* CMD: `echo %PATH%`
+* [Bash](#what-is-a-shell): `echo $PATH`
+* [Powershell](#what-is-a-shell): `echo $env:PATH`
+* [CMD](#what-is-a-shell): `echo %PATH%`
 
 When you run `clang++`, the shell in fact runs `clang++.exe` located in `C:\msys64\ucrt64\bin`, because that directory is in PATH!
 
@@ -114,8 +116,8 @@ PATH can be changed, you can add your own directories in there.
 
 MSYS2 is a bit special in this regard, because it doesn't respect the system PATH setting, and uses its own. (TODO explain how to change this?)
 
-For other shells on Windows, you can change PATH in settings. Open the settings, type `env` in the search box, press `Edit the system environment variables` then `Environment Variables...`.
+For other shells on Windows, you can change PATH in the settings. Open the settings, type `env` in the search box, press `Edit the system environment variables` then `Environment Variables...`.
 
-You will see two lists of variables, with `Path` in both of them. The bottom lists applies to every user on your computer, while the top list applies only to you. You can edit either, but prefer to add your directories to the beginning of the system-wide PATH, because that gives them priority (TODO link to DLL issues).
+You will see two lists of variables, with `Path` in both of them. The top list (`User variables`) applies only to your user, while the bottom (`System variables`) applies to every user on this computer. You can edit either, but prefer to add your directories **to the beginning of the system-wide PATH** (the second one), because that gives them priority (TODO link to DLL issues).
 
-You can add e.g. `C:\msys64\ucrt64\bin` to be able to run your compiler from any shell.
+You can add e.g. `C:\msys64\ucrt64\bin` in there to be able to run your compiler from any shell.
