@@ -20,7 +20,7 @@ Press `File -> Save As` or <kbd>Ctrl</kbd><kbd>S</kbd> to save the file.
 
 ## Saving the file
 
-The file name should end with `.cpp`, For example `test.cpp`. (`.cpp` is called an "extension") (`.cpp` is for C++, use `.c` for C)
+The file name should end with `.cpp`, For example `prog.cpp`. (`.cpp` is called an "extension") (`.cpp` is for C++, use `.c` for C)
 
 Save it to any directory. Make sure both the directory name and the file name don't contain any special characters, and preferably no spaces too. Some tools will choke on those. (Use English letters, digits, `_`, `.`.)
 
@@ -46,11 +46,11 @@ Open your directory by typing `cd`, space, then pasting your path and pressing E
 
 ## Compiling
 
-Assuming you have Clang installed as explained [here](/installing_toolchain_msys2.md), running `clang++ test.cpp` should compile your code.
+Assuming you have Clang installed as explained [here](/installing_toolchain_msys2.md), running `clang++ prog.cpp` should compile your code.
 
 A successful compilation will print nothing. If your code is wrong, errors will be printed. (TODO link to explanation for undefined reference to WinMain, write a new page for it)
 
-A successful compilation will create a file called `a.exe`, this is a program you can run. (This is for C++, for C use `clang test.c`.)
+A successful compilation will create a file called `a.exe`, this is a program you can run. (This is for C++, for C use `clang prog.c`.)
 
 Run it in your terminal using `./a.exe` and you should see `Hello!` being printed.
 
@@ -66,8 +66,8 @@ Then [install an IDE](/installing_ide.md) for a better programming experience.
 
 You can also run your executable by double-clicking `a.exe`, but the application will quickly close before you can see the results. (This is the correct behavior for programs that are supposed to be run in the terminal, but if you don't like it, Google for workarounds.)
 
-You can tell the compiler to use a different executable name using `-o`, for example: `clang++ test.cpp -o test.exe` will name the program `test.exe`. (The order doesn't matter, `clang++ -o test.exe test.cpp` works as well. But the executable name must immediately follow `-o`, e.g. `clang++ test.cpp test.exe -o` doesn't work. `-o test` and `-o test.exe` are equivalent.)
+You can tell the compiler to use a different executable name using `-o`, for example: `clang++ prog.cpp -o prog.exe` will name the program `prog.exe`. (The order doesn't matter, `clang++ -o prog.exe prog.cpp` works as well. But the executable name must immediately follow `-o`, e.g. `clang++ prog.cpp prog.exe -o` doesn't work. `-o prog` and `-o prog.exe` are equivalent.)
 
 Remember that you can press "up" in the terminal to repeat the last command, instead of typing it every time.
 
-You can use `clang++ test.cpp -o test.exe && ./test.exe` to both compile and run the application as a single command.
+You can use `clang++ prog.cpp -o prog.exe && ./prog.exe` to both compile and run the application as a single command.

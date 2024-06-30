@@ -136,9 +136,9 @@ You often want to run several commands in a row. E.g. run the compiler first, an
 
 You can do it like this:
 ```sh
-clang test.cpp -o test.exe && ./test.exe
+clang prog.cpp -o prog.exe && ./prog.exe
 ```
 Old [PowerShell](#what-is-a-shell) doesn't understand `&&`. Either update it or do this:
 ```powershell
-clang test.cpp -o test.exe ; if ($?) { ./test.exe }
+clang prog.cpp -o prog.exe ; if ($?) { ./prog.exe }
 ```

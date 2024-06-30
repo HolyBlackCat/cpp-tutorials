@@ -49,7 +49,7 @@ If you change PATH, you'll need to start VSC for it to take effect. And when cha
 
 ## Verifying that Clangd works
 
-Create a new file and save it with the `.cpp` extension (e.g. name it `test.cpp`). You should see `clangd: idle` appear at the bottom-left corner.
+Create a new file and save it with the `.cpp` extension (e.g. name it `prog.cpp`). You should see `clangd: idle` appear at the bottom-left corner.
 
 When you start typing, you should see red squiggles for invalid code, and code completion suggestions.
 

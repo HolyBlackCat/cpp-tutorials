@@ -10,13 +10,14 @@ We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why not Vis
 
 ## Installing and configuring Visual Studio Code
 
-Follow those steps in order:
 
 * Download the installer from https://code.visualstudio.com/ and install.<br/>
   Don't install any extensions VSC suggests to you yet, we'll get to that later.
+
+Follow those steps in order:
 
 * [Learn how to work in the VSC terminal.](/working_in_vscode_terminal_win.md)
 
 * [Configure code completion.](/configuring_code_completion_win.md)
 
-* [Configuring hotkeys and buttons for compilation.](/confi)
+* [Configure hotkeys and buttons for compilation.](/configuring_vsc_tasks.md)

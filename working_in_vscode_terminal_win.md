@@ -6,13 +6,13 @@ VSCode has a built-in terminal that you can open via `View`->`Terminal`. Let's t
 
 Create a .cpp file in VSC and try to compile it in the VSC terminal, [like you did before in the MSYS2 terminal](/compiling_in_terminal_win.md).
 
-Running the compiler (`clang++ test.cpp -o test`) will likely result in an error:
+Running the compiler (`clang++ prog.cpp -o prog.exe`) will likely result in an error:
 ```powershell
-PS C:\code> clang++ test.cpp -o test.exe
+PS C:\code> clang++ prog.cpp -o prog.exe
 clang++ : The term 'clang++' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is
 correct and try again.
 At line:1 char:1
-+ clang++ test.cpp -o test.exe
++ clang++ prog.cpp -o prog.exe
 + ~~~~~~~
     + CategoryInfo          : ObjectNotFound: (clang++:String) [], CommandNotFoundException
     + FullyQualifiedErrorId : CommandNotFoundException
@@ -24,6 +24,6 @@ If you see error `undefined reference to WinMain`, you didn't save your file and
 
 ### Running your executables
 
-After compiling your executable, try running it (`.\test.exe` because we're in [powershell](/terminal_for_dummies.md#what-is-a-shell)). Make sure it actually runs and `cout` successfully prints things.
+After compiling your executable, try running it (`.\prog.exe` because we're in [powershell](/terminal_for_dummies.md#what-is-a-shell)). Make sure it actually runs and `cout` successfully prints things.
 
 If running an executable does nothing, read [Terminal for Dummies](/terminal_for_dummies.md) again. `C:\msys64\ucrt64\bin` should be first entry in the PATH, and it should be in the system-wide PATH setting rather than the user-specific one. Remember to restart VSC after changing the PATH. (TODO link to DLL issues)

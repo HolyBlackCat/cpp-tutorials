@@ -1,4 +1,4 @@
-# Why do I recommend MinGW over MSVC?
+# Choosing a compiler and more
 
 First of all, the choice of the compiler is a religious matter. :P
 
