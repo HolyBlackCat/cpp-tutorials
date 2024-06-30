@@ -100,3 +100,9 @@ Sometimes accepting a function name completion will insert placeholders for its 
 [![function argument placeholders demo](/images/clangd_arg_placeholders.png)](/images/clangd_arg_placeholders.png)
 
 If you don't like this and would prefer to get just `std::find_if()`, go to the settings, search `clangd arguments`, press `Add item`, type **`--function-arg-placeholders=false`** and press `OK`. Hit <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>->`clangd: Restart language server` to apply changes.
+
+### Hiding the `.cache` directory
+
+If you use `File`->`Open Folder...` and look at the `Explorer` tab, you'll see that Clangd has created a `.cache` directory to store its internal data next to your source code.
+
+You can hide this directory from Explorer by going to the settings, searching for `files exclude`, pressing `Add Pattern` and adding `.cache/` to the list.
