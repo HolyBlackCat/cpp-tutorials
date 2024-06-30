@@ -15,11 +15,8 @@ Follow those steps in order:
 * Download the installer from https://code.visualstudio.com/ and install.<br/>
   Don't install any extensions VSC suggests to you yet, we'll get to that later.
 
-* [Learn how to work in the VSC terminal](/working_in_vscode_terminal_win.md).
+* [Learn how to work in the VSC terminal.](/working_in_vscode_terminal_win.md)
 
-* Configure code completion.
+* [Configure code completion.](/configuring_code_completion_win.md)
 
-The process depends on your operating system:
-
-* ### [I'm using Windows](/installing_vscode_win.md)
-* ### [I'm using Linux](TODO) (TODO: link why_not_wsl.md from the linux page)
+* [Configuring hotkeys and buttons for compilation.](/confi)

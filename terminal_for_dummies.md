@@ -98,6 +98,10 @@ On Windows program names end with `.exe` by convention. On Linux they usually do
 
 (TODO explain DLL issues)
 
+## Repeating previous commands
+
+You can press Up arrow (and then Enter) to repeat the previous command. You can press Up or Down several times to switch between previous commands.
+
 ## PATH
 
 When you run an executable without `.\` or `./`, instead of looking for it in the current directory, shells will look in a predefined list of directories. (CMD will look in both, see above.)
@@ -125,3 +129,16 @@ You will see two lists of variables, with `Path` in both of them. The top list (
 You can add e.g. `C:\msys64\ucrt64\bin` in there to be able to run your compiler from any shell.
 
 **NOTE:** You must restart your terminal after changing PATH for it to take effect.
+
+## Running several commands in a row
+
+You often want to run several commands in a row. E.g. run the compiler first, and if it succeeds, run the executed command.
+
+You can do it like this:
+```sh
+clang test.cpp -o test.exe && ./test.exe
+```
+Old [PowerShell](#what-is-a-shell) doesn't understand `&&`. Either update it or do this:
+```powershell
+clang test.cpp -o test.exe ; if ($?) { ./test.exe }
+```
