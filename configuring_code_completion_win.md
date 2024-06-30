@@ -67,7 +67,9 @@ When you start typing, you should see red squiggles for invalid code, and code c
 
 ## Improving Clangd experience
 
-Here are some settings I change to make Clangd work better.
+Try to use Clangd for a bit! See what features you like or don't like.
+
+Then come back here and see if you want to change any of the settings below.
 
 ### Hiding inlay hints
 
@@ -77,7 +79,7 @@ If you type e.g. `std::cout << std::sin(42) << '\n';`, Clangd will show a little
 
 This is not a part of the actual source code, just something it displays to make your life easier.
 
-If you find this is annoying, go to `File`->`Preferences`->`Settings`, search for `inlay hints`, and set it to `offUnlessPressed`. You can then hold <kbd>Ctrl</kbd><kbd>Alt</kbd> to temporarily unhide them.
+If you find this is annoying, go to `File`->`Preferences`->`Settings`, **search for `inlay hints`, and set it to `offUnlessPressed`**. You can then hold <kbd>Ctrl</kbd><kbd>Alt</kbd> to temporarily unhide them.
 
 ### Disabling automatic header insertion
 
@@ -87,11 +89,14 @@ You will see a little dot before some of the Clangd code completions:
 
 Accepting such completion by pressing <kbd>Enter</kbd> will automatically add an include for this name, e.g. `#include <iostream>` in this case.
 
-If you don't like this behavior (and arguably it's not good for learning purposes), go to the settings, search `clangd arguments`, press `Add item`, type `--header-insertion=never` and press `OK`. Hit <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>->`clangd: Restart language server` to apply changes.
+If you don't like this behavior (and arguably it's not good for learning purposes), go to the settings, search `clangd arguments`, press `Add item`, type **`--header-insertion=never`** and press `OK`. Hit <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>->`clangd: Restart language server` to apply changes.
 
 Even after this, you can still use <kbd>Ctrl</kbd><kbd>.</kbd> (see above) to automatically insert missing headers.
 
+### Disabling function argument placeholders
 
+Sometimes accepting a function name completion will insert placeholders for its arguments. E.g. typing `std::find_` and acceping `std::find_if` will result in this:
 
+[![function argument placeholders demo](/images/clangd_arg_placeholders.png)](/images/clangd_arg_placeholders.png)
 
-TODO find examples of clang-tidy checks and suggest to enable `--clang-tidy` here, if it turns out it's not enabled automatically.
+If you don't like this and would prefer to get just `std::find_if()`, go to the settings, search `clangd arguments`, press `Add item`, type **`--function-arg-placeholders=false`** and press `OK`. Hit <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>->`clangd: Restart language server` to apply changes.
