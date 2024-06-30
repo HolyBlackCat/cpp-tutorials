@@ -22,4 +22,4 @@ There's nothing wrong with using it, but I don't consider it to be the best choi
 
   The default build system is MSBuild, and [the default compiler is MSVC](/choosing_compiler_and_more.md#choosing-a-compiler). It's possible to switch to e.g. Clang and CMake for a nicer experience. (But running completely custom build commands will be painful, or e.g. trying to update Clang to a newer version that didn't come preinstalled with VS.)
 
-  VSC on the other hand, [has no defaults](/images/bad_defaults_or_no_defaults.jpg) and tries to stay compatible with different plugins and compilers. But this does result in higher upfront complexity of knowing what tools to install and how to configure them.
+  VSC on the other hand, [has no defaults](/images/bad_defaults_or_no_defaults.jpg) and tries to stay compatible with different tools and compilers. But this does result in higher upfront complexity of knowing what tools to install and how to configure them.

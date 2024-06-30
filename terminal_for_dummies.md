@@ -84,7 +84,7 @@ When the initial `/` is not followed by a drive letter, it refers to the MSYS2 i
 
 ## Running executables
 
-Now is a good time to read [How to compile and run programs in the terminal](/compiling_in_terminal_win.md) to know how to compile executables.
+Now is a good time to read [How to compile and run programs in the terminal](/compiling_in_terminal.md) to know how to compile executables.
 
 To run an executable from the current directory, use: (where `program.exe` is the executable name)
 

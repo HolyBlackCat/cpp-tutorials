@@ -8,7 +8,7 @@ We will be using something called "tasks". We won't be using the infamous Code R
 
 A "task" in VSC is a prepared shell command, that you can run by pressing a hotkey or a button in the UI.
 
-If you don't understand what "shell command" is, go read [Terminal for Dummies](/terminal_for_dummies.md) and [Compiling in the terminal](/compiling_in_terminal_win.md).
+If you don't understand what "shell command" is, go read [Terminal for Dummies](/terminal_for_dummies.md) and [Compiling in the terminal](/compiling_in_terminal.md).
 
 ## How do I create a task?
 
@@ -30,7 +30,7 @@ I know, I know, this doesn't look very convenient. Bear with me.
 
 Now lets rewrite this task to perform compilation. Replace `echo Hello` with your compiler command (e.g. `clang++ prog.cpp -o prog.exe`), and `"label": "echo"` with e.g. `"label": "Compile"`. Run this task and observe that it prints errors if the compilation fails, or prints nothing on success.
 
-If it says `clang++ : The term 'clang++' is not recognized as the name of ...`, you need to read [Working in VSC terminal](/working_in_vscode_terminal_win.md) again and configure PATH as it tells you to.
+If it says `clang++ : The term 'clang++' is not recognized as the name of ...`, you need to read [Working in VSC terminal](/working_in_vscode_terminal.md) again and configure PATH as it tells you to.
 
 ## Dependent tasks
 
@@ -62,7 +62,7 @@ Run the `Compile` task, then the `Run` task, and observe that it runs your execu
 
 But running two tasks in a row isn't very convenient. We can automate this. Add `"dependsOn": "Compile"` to the second task:
 
-[![task dependencies](/images/vscode_task_dependencies.png)](/images/vscode_task_dependencies.png)
+[![task dependencies](/images/vsc_task_dependencies.png)](/images/vsc_task_dependencies.png)
 
 Now running the `Run` task will run `Compile` first, tand then `Run` itself.
 

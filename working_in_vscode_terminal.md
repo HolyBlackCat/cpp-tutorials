@@ -4,7 +4,7 @@ VSCode has a built-in terminal that you can open via `View`->`Terminal`. Let's t
 
 ### Running the compiler
 
-Create a .cpp file in VSC and try to compile it in the VSC terminal, [like you did before in the MSYS2 terminal](/compiling_in_terminal_win.md).
+Create a .cpp file in VSC and try to compile it in the VSC terminal, [like you did before in the MSYS2 terminal](/compiling_in_terminal.md).
 
 Running the compiler (`clang++ prog.cpp -o prog.exe`) will likely result in an error:
 ```powershell

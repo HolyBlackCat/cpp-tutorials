@@ -60,4 +60,4 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
 ## Compiling and running a simple program
 
-Now you can try compiling a simple program. See [How to compile and run programs in the terminal](/compiling_in_terminal_win.md).
+Now you can try compiling a simple program. See [How to compile and run programs in the terminal](/compiling_in_terminal.md).

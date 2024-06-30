@@ -1,0 +1,89 @@
+# How to use a debugger in VSC?
+
+[You should already know how to use a debugger in a terminal.](/debugging_in_terminal.md)
+
+This isn't very convenient, but there's a nicer way of using it from VSC.
+
+## Checking PATH settings
+
+Make sure you can run `lldb --version` in the VSC terminal. If you see `lldb : The term 'lldb' is not recognized...`, make sure you [have LLDB installed](/debugging_in_terminal.md), and [have PATH configured correctly](/working_in_vscode_terminal.md).
+
+## Installing LLDB-DAP
+
+There are several different extensions for debugging C/C++ in VSC:
+
+* [**Microsoft's C/C++ extension**](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+
+* [**LLDB-DAP**](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.lldb-dap)
+
+We'll be using LLDB-DAP because it works better with MinGW in my experience, and because you can use it in most IDEs, not only in VSC.
+
+Like [Clangd](/configuring_code_completion.md#installing-clangd), LLDB-DAP consists of two parts:
+
+* A plugin for your IDE (for VSC in this case).
+
+  Search for `lldb-dap` in the extension marketplace and install it:<br/>
+  [![lldb-dap extension icon](/images/lldb_dap_extension_icon.png)]((/images/lldb_dap_extension_icon.png))
+
+* A program called `lldb-dap` that the extension interacts with. You already have it installed because you [installed LLDB](/debugging_in_terminal.md). But you need to tell the extension where to find it.
+
+  **Open the settings (`File`->`Preferences`->`Settings`), search for `lldb dap executable` and type `lldb-dap` in there.** Or use the full path: `C:\msys64\ucrt64\bin\lldb-dap.exe`.
+
+## Making sure the compilaton settings are correct
+
+Make your compiler flags (in `tasks.json`) include `-g`, [as was explained before](/debugging_in_terminal.md). Make sure to recompile the executable after adding it.
+
+## Configuring the debugger
+
+Make sure you have a folder opened in VSC. Use `File`->`Open Folder...`.
+
+Open the `Run and Debug` tab by pressing the button on the left:<br/>
+![run and debug icon](/images/vsc_debugging_icon.png)
+
+Click `create a launch.json file`, and select `Native LLDB Debugger`. It will create a file called `launch.json` in the `.vscode` directory in the current directory. This file holds debugging configurations. You can create it manually once you get used to it.
+
+[![generated launch.json](/images/generated_launch_json.png)](/images/generated_launch_json.png)
+
+Replace `<your program>` with the name of your program, e.g. `"program": "${workspaceRoot}/prog.exe"`.
+
+Now pressing <kbd>F5</kbd> or the green 'play' button to start the debugger. [Like before](/debugging_in_terminal.md), you should see your application window flash for a moment, and close immediately.
+
+If nothing happens, you likely didn't configure LLDB-DAP [as was explained above](#installing-lldb-dap).
+
+The output of your program should be visible in the `Debug Console` at the bottom of the screen (enable it in `View`->`Debug Console` if it's hidden).
+
+## Using the debugger
+
+The experience is similar to [what you had in the terminal](/debugging_in_terminal.md).
+
+Place a breakpoint by clicking to the left of a line number:
+
+[![placing breakpoint](/images/vsc_breakpoint.png)](/images/vsc_breakpoint.png)
+
+When you start the application and it gets paused on a breakpoint, you'll see the current line in yellow:
+
+[![placing breakpoint](/images/vsc_paused_on_breakpoint.png)](/images/vsc_paused_on_breakpoint.png)
+
+Control the debugger using the panel on the top:
+
+[![debugger controls](/images/vsc_debugger_controls.png)](/images/vsc_debugger_controls.png)
+
+View the variable values on the left panel, or just by moving the mouse over them in the code.
+
+In the `Debug Console`, you can use [any commands you have learned before](/debugging_in_terminal.md), such as `p` to print the values of variables. Or type variable names directly to print them.
+
+## Extra LLDB configuration
+
+There are a few extra settings you can add to `launch.json`:
+
+* Opening `Debug Console` automatically when starting the debugger:
+  ```json
+  "internalConsoleOptions": "openOnSessionStart",
+  ```
+
+* Improve how variable values are printed:
+  ```json
+  "enableAutoVariableSummaries": true,
+  "enableSyntheticChildDebugging": true,
+  ```
+  To learn more about what those do, paste them to `launch.json` and move the mouse over them, and read the tooltips.

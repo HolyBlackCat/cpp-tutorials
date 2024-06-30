@@ -20,4 +20,4 @@ If you're planning to use Clang with MSVC, the official installer might be a bet
 
 If you're planning to use it with MSYS2 MinGW, using their version of Clang will make your life a bit easier.
 
-All of this applies to [Clangd](/configuring_code_completion_win.md) as well.
+All of this applies to [Clangd](/configuring_code_completion.md) as well.

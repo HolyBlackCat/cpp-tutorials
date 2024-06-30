@@ -24,8 +24,8 @@ We will be installing Clangd, since in my experience it works faster, [doesn't c
 
 Clangd needs two parts to work:
 
-* A plugin for your IDE (for VSC in this case).
-* A program called `clangd` that the plugin interacts with.
+* A extension for your IDE (for VSC in this case).
+* A program called `clangd` that the extension interacts with.
 
 Install the latter in MSYS2 using `pacman -S mingw-w64-ucrt-x86_64-clang-tools-extra`. *([Why not the official Clang installer?](/why_not_official_clang_installer.md))*
 
@@ -43,7 +43,7 @@ Search for `clangd` and install it:<br/>
 
 ![clangd suggests download](/images/clangd_suggests_download.png)
 
-If you see this message, you didn't configure PATH correctly as [was explained here](/working_in_vscode_terminal_win.md). (Alternatively, you can go to `File`->`Preferences`->`Settings`, search for `clangd path`, and put `C:\msys64\ucrt64\bin\clangd.exe` in there.)
+If you see this message, you didn't configure PATH correctly as [was explained here](/working_in_vscode_terminal.md). (Alternatively, you can go to `File`->`Preferences`->`Settings`, search for `clangd path`, and put `C:\msys64\ucrt64\bin\clangd.exe` in there.)
 
 If you change PATH, you'll need to start VSC for it to take effect. And when changing Clangd settings, you can either restart VSC or press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>->`clangd: Restart language server`.
 
