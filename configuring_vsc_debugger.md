@@ -84,6 +84,23 @@ There are a few extra settings you can add to `launch.json`:
 * Improve how variable values are printed:
   ```json
   "enableAutoVariableSummaries": true,
-  "enableSyntheticChildDebugging": true,
   ```
-  To learn more about what those do, paste them to `launch.json` and move the mouse over them, and read the tooltips.
+  Let's say you have a struct:
+  ```cpp
+  struct A
+  {
+      int x, y;
+  };
+
+  A a = {10, 20};
+  ```
+  By default it's displayed this way:
+
+  [![no auto variable summary in lldb](/images/lldb_no_auto_var_summaries.png)](/images/lldb_no_auto_var_summaries.png)
+
+  To view the values of `x` and `y`, you'd have to press `>` at the left.
+
+  But with this setting enabled, it'll be displayed like this:
+  [![auto variable summary in lldb](/images/lldb_auto_var_summaries.png)](/images/lldb_auto_var_summaries.png)
+
+<!-- TODO when updating to clang 19, check that "enableSyntheticChildDebugging": true, works alright in complex situations (test locally a bunch), then add here>
