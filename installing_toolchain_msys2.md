@@ -21,7 +21,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
 2. **Start MSYS2.**
 
-   The "Start" menu will have several different shortcuts, for now you want `MSYS2 UCRT64` (read about the difference here).
+   The "Start" menu will have several different shortcuts, for now you want `MSYS2 UCRT64` (read about the difference [here](TODO msys2 envs)).
 
    The window that opens is called a "terminal" or a "console". You can type commands in there. (I will explain more later.)
 

@@ -1,5 +1,7 @@
 # How to use a debugger in a terminal?
 
+I assume you have some minimal C++ knowledge: already tried compiling a few simple programs, and know what "variables" are. If not, come back later.
+
 ## What is a debugger?
 
 A debugger is a program that can run *your* program step by step, letting you observe the values of the variables and so on.
