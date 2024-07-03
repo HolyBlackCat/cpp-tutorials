@@ -72,6 +72,10 @@ View the variable values on the left panel, or just by moving the mouse over the
 
 In the `Debug Console`, you can use [any commands you have learned before](/debugging_in_terminal.md), such as `p` to print the values of variables. Or type variable names directly to print them.
 
+Most of the things you see in the UI correspond to the [debugger commands](/debugging_in_terminal.md) you've already learned:
+
+[![debugger layout](/images/vsc_debugger_layout.png)](/images/vsc_debugger_layout.png)
+
 ## Extra LLDB configuration
 
 There are a few extra settings you can add to `launch.json`:
@@ -85,7 +89,7 @@ There are a few extra settings you can add to `launch.json`:
   ```json
   "enableAutoVariableSummaries": true,
   ```
-  Let's say you have a struct:
+  Let's say you have a struct: (if you don't know what those are, read your C++ book more and come back later)
   ```cpp
   struct A
   {
@@ -98,9 +102,10 @@ There are a few extra settings you can add to `launch.json`:
 
   [![no auto variable summary in lldb](/images/lldb_no_auto_var_summaries.png)](/images/lldb_no_auto_var_summaries.png)
 
-  To view the values of `x` and `y`, you'd have to press `>` at the left.
+  To view the values of `x` and `y`, you'd have to press `>` on the left.
 
-  But with this setting enabled, it'll be displayed like this:
+  But with this setting enabled, it will be displayed like this:
+
   [![auto variable summary in lldb](/images/lldb_auto_var_summaries.png)](/images/lldb_auto_var_summaries.png)
 
 <!-- TODO when updating to clang 19, check that "enableSyntheticChildDebugging": true, works alright in complex situations (test locally a bunch), then add here>

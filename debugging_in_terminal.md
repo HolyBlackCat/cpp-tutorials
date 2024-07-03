@@ -8,15 +8,17 @@ A debugger is a program that can run *your* program step by step, letting you ob
 
 There are several popular debuggers: LLDB, GDB, and the Visual Studio debugger. They are commonly used with Clang, GCC, and MSVC [compilers](/installing_toolchain.md#what-is-a-compiler) respectively.
 
-We will be using LLDB because we're already using Clang *([Why Clang?](/choosing_compiler_and_more.md))*, and because Visual Studio Code ([which we'll be installing later](/installing_ide.md)) works great with it. But all of them should work fine.
+We will be using LLDB because we're already using Clang *([Why Clang?](/choosing_compiler_and_more.md))*, and because Visual Studio Code ([which we'll be installing later](/installing_ide.md)) works well with it (there's a good plugin for it). But all of them should work fine.
+
+LLDB and GDB are similar, this tutorial should work with GDB as well.
 
 ## Debugging in a terminal
 
-Go read [Terminal for Dummies](/terminal_for_dummies.md) if you haven't yet.
+Go read [Terminal for Dummies](/terminal_for_dummies.md) if you haven't already.
 
 Most debuggers (except the Visual Studio one, from what I know) can be used in a terminal. There are ways to use them with UI as well, but we'll be covering this later.
 
-**Usually you won't be debugging in a terminal. The goal of this tutorial is to give a minimal experience of doing so, before teaching more convenient methods.**
+Most of the time you won't be debugging in a terminal. The goal of this tutorial is to give a minimal experience of doing so, before teaching more convenient methods.
 
 ## Installing LLDB
 
@@ -28,7 +30,7 @@ Confirm that it works by running `lldb --version`.
 
 Let's start with the following test program.
 
-I assume you already know the basics of C++. If you don't understand this program read, go read your C++ book a bit more and come back.
+I assume you already know the basics of C++. If you don't understand this program, go read your C++ book a bit more and come back.
 
 ```cpp
 #include <iostream>
@@ -63,7 +65,7 @@ Process 9804 exited with status = 0 (0x00000000)
 
 ### Breakpoints
 
-Now, to execute it step by step, you need to create a "breakpoint", i.e. tell the debugger on what line of code to pause.
+Now, to execute it step by step, you need to create a "breakpoint", i.e. tell the debugger on what line of the code to pause.
 
 Type **`b 5`** to put a breakpoint on line 5 (which should be `int x = 10;`).
 
@@ -73,8 +75,100 @@ Now if you type **`r`** again, you should see following:
 
 The program is paused on line `5`. You can use **`n`** (short for `next`) to execute one line and go to the next one.
 
+(⚠ LLDB 18 has bug that causes it to show errors like: `error: prog.exe [0x0000000000002136]: DIE has DW_AT_ranges...`. You can safely ignore them.) <!-- TODO remove this comment when LLDB updates -->
+
 Print the values of variables using **`p`** (short for `print`). E.g. try `p x` and `p i`.
+
+Or use **`fr v`** (short for `frame variable`) to print all variables.
 
 Lastly, when you want to unpause your program, type **`c`** (short for `continue`).
 
 Type **`quit`** to exit LLDB.
+
+## Debugging functions
+
+For this, you must understand what "functions" are. If you don't, read your C++ book more and come back later.
+
+Consider this simple program with a function:
+```cpp
+#include <iostream>
+
+int foo()
+{
+    int r = 10;
+    r += 1;
+    r += 2;
+    r += 3;
+    return r;
+}
+
+int main()
+{
+    int x = foo();
+    std::cout << x << '\n';
+}
+```
+
+Run this in the debugger. Place a breakpoint on line `int x = foo();`. Press **`n`** to go to the next line and notice that it jumps immediately to `std::cout`, without showing how the function executes. How do we debug the function?
+
+Restart the program, but this time use **`s`** (short for `step`) instead of `n`. Notice that the debugger did *step* into the function:
+
+[![lldb steps into a function](/images/lldb_steps_into_function.png)](/images/lldb_steps_into_function.png)
+
+When there's no function to enter, `s` is equivalent to `n`.
+
+Now typing `s` or `n` will debug `foo()` line by line.
+
+If you forgot where `foo()` was called from, type **`bt`** (meaning "backtrace") to show the "call stack":
+
+[![lldb backtrace](/images/lldb_backtrace.png)](/images/lldb_backtrace.png)
+
+Here `frame #0` is the current line inside `foo()`, and `frame #1` is the line in `main()` that called `foo()`. Everything below that are the internals of the standard library that called your `main()`.
+
+Typing e.g. **`f 1`** (short for "frame") will show the code at that location, so you don't need to look it up by the line number. **`f 0`** (or just **`f`**) will print the current line.
+
+
+
+To return back to `main`, you either press `s` or `n` enough times, or type **`fin`** (or `finish`) to return to the calling function, back ot `int x = foo();`. But this time, typing `s` will jump to `std::cout << ...` (just like `n`) rather than entering `foo()`, because it already finished executing.
+
+
+
+## Debugging real life errors
+
+Consider this nonsensical program:
+```cpp
+#include <iostream>
+
+int main()
+{
+    int x = 42;
+    std::cout << x << '\n';
+    delete &x;
+    std::cout << x << '\n';
+}
+```
+It's recommended if you understand what `delete` is. (If not, perhaps read your C++ book more and come back later.) But it's not strictly necessary.
+
+The point is, this program compiles, but when you run it it fails with an error, because of the incorrect use of `delete`.
+
+Compile and run it, observe that the first number is printed but the second isn't. **Notably it doesn't tell you what line caused the error,** and in more complex cases it might not be immediately obvious from the output.
+
+Let's try to find the offending line with the debugger. Run this program in the debugger as explained above. Don't place any breakpoints yet, just type **`r`** to run. (Though pressing `n` a bunch of times is a valid debugging strategy.)
+
+[![lldb shows a cryptic error](/images/lldb_cryptic_error.png)](/images/lldb_cryptic_error.png)
+
+Since the error happens deep inside `delete`, it doesn't directly show you the offending line in your source file.
+
+Type **`bt`** (meaning "backtrace") to see where `delete` was called from:
+
+[![lldb cryptic backtrace](/images/lldb_backtrace_cryptic.png)](/images/lldb_backtrace_cryptic.png)
+
+(As said above, ignore the `error`s if you get them, they are harmless and are caused by a bug in LLDB 18. Only look at the `frame`s.) <!-- TODO when LLDB fixes this, update the screensot -->
+
+The ``frame #7 ... prog.exe`main at prog.cpp:7:5`` refers to the `delete &x` line in your program. Everything above it is the internals of `delete`. And as I already said above, everything below it is the internals of the standard library that called your `main()`.
+
+**You always look for the first `frame` that belongs to your code, and that is the offending line.**
+
+Lastly, type `f 7` (meaning "frame #7") to view that code:
+
+[![lldb shows the offending frame](/images/lldb_offending_frame.png)](/images/lldb_offending_frame.png)

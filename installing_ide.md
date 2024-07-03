@@ -16,10 +16,12 @@ We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why not Vis
 
 Follow those steps in order:
 
-* ### [Learn how to work in the VSC terminal.](/working_in_vscode_terminal.md)
+* ### [Learn how to work in the VSC terminal](/working_in_vscode_terminal.md)
 
-* ### [Configure code completion.](/configuring_code_completion.md)
+* ### [Configure code completion](/configuring_code_completion.md)
 
-* ### [Configure hotkeys and buttons for compilation.](/configuring_vsc_tasks.md)
+* ### [Configure hotkeys and buttons for compilation](/configuring_vsc_tasks.md)
 
-* ### [Configure the debugger.](/configuring_vsc_debugger.md)
+When you're done, go read your C++ book and practice for some time!
+
+This only covers the basic configuration, there's more [here](/index.md).
