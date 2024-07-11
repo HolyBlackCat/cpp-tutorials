@@ -49,7 +49,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
    (⚠ Note that we install `mingw-w64-ucrt-x86_64-clang` and not just `clang`! The difference is explained [here](TODO_MSYS2_ENVS).)
 
-   Now if you run `clang --version`, you should see something like this:
+   Now if you run `clang++ --version`, you should see something like this:
    ```
    clang version 18.1.6
    Target: x86_64-w64-windows-gnu

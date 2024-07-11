@@ -12,6 +12,8 @@ It lets you type in commands, and shows their results as text.
 
 Words "terminal" and "console" are synonyms. There are several different terminal programs that do the similar thing, but there's very little difference between them.
 
+If you already used Visual Studio Code, you might've noticed that it has an embedded terminal.
+
 ## What is a "shell"?
 
 A terminal is a simple program that merely draws letters to the screen.
@@ -58,11 +60,13 @@ It is the "current directory". Shell commands operate on files in the current di
 
 ### Paths in Bash on Windows
 
-The paths Bash prints require an explanation. `~` stands for the "home directory". On Windows, you can run `cygpath -aw ~` to see what path it stands for (`C:\msys64\home\Username` for me).
+The paths Bash prints require an explanation. It prints Windows Paths in Linux style:
 
-In general, Bash on Windows uses Linux-style paths. `C:\foo\bar` is spelled as `/c/foo/bar`.
+* `/c/foo/bar` means `C:\foo\bar`
+* `~` means `C:\msys64\home\Username` (so `~/foo/bar` is `C:\msys64\home\Username\foo\bar`, and so on). `~` is called the "home" directory.
+* `/` means `C:\msys64` (so e.g. `/ucrt64/bin` means `C:\msys64\ucrt64\bin`, and so on). `/` designates the MSYS2 installation directory.
 
-When the initial `/` is not followed by a drive letter, it refers to the MSYS2 installation directory. Run `cygpath -aw /` to confirm this (prints `C:\msys64` for me).
+You can use `cygpath -aw` to convert a Linux-style path to a Windows path, e.g. `cygpath -aw ~` should print `C:\msys64\home\Username`.
 
 ## Basic shell commands
 
