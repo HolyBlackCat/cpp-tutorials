@@ -26,4 +26,4 @@ If you see error `undefined reference to WinMain`, you didn't save your file and
 
 After compiling your executable, try running it (`.\prog.exe` because we're in [powershell](/terminal_for_dummies.md#what-is-a-shell)). Make sure it actually runs and `cout` successfully prints things.
 
-If running an executable does nothing, read [Terminal for Dummies](/terminal_for_dummies.md) again. `C:\msys64\ucrt64\bin` should be first entry in the PATH, and it should be in the system-wide PATH setting rather than the user-specific one. Remember to restart VSC after changing the PATH. (TODO link to DLL issues)
+If running an executable does nothing, read [Terminal for Dummies](/terminal_for_dummies.md) again. `C:\msys64\ucrt64\bin` should be first entry in the PATH, and it should be in the system-wide PATH setting rather than the user-specific one. Remember to restart VSC after changing the PATH. [Read this for more information.](/debugging_dll_issues.md)

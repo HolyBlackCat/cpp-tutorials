@@ -100,7 +100,7 @@ As you can see, shells in general require `./` or `.\` to run executables from t
 
 On Windows program names end with `.exe` by convention. On Linux they usually don't end with anything.
 
-(TODO explain DLL issues)
+If you're enable to run executables you created, refer to [this](/debugging_dll_issues.md).
 
 ## Repeating previous commands
 
@@ -128,7 +128,7 @@ E.g. it's often desirable to add `C:\msys64\ucrt64\bin` in there to be able to r
 
 For other shells on Windows, you can change PATH in the settings. Open the settings, type `env` in the search box, press `Edit the system environment variables` then `Environment Variables...`.
 
-You will see two lists of variables, with `Path` in both of them. The top list (`User variables`) applies only to your user, while the bottom (`System variables`) applies to every user on this computer. You can modify either, but if you're adding `C:\msys64\ucrt64\bin`, **it should be the beginning of the system-wide PATH** (the second one), because it gives it the most priority. (TODO link to DLL issues).
+You will see two lists of variables, with `Path` in both of them. The top list (`User variables`) applies only to your user, while the bottom (`System variables`) applies to every user on this computer. You can modify either, but if you're adding `C:\msys64\ucrt64\bin`, **it should be the beginning of the system-wide PATH** (the second one), because it gives it the most priority. [Otherwise you can run into issues.](/debugging_dll_issues.md)
 
 **NOTE:** You must restart your terminal after changing PATH for it to take effect. (If you're running things in VSCode or any other IDE, restart it as well.)
 
