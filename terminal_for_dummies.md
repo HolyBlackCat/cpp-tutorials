@@ -118,21 +118,29 @@ You can view the current PATH (or any environment variable) using:
 * [Powershell](#what-is-a-shell): `echo $env:PATH`
 * [CMD](#what-is-a-shell): `echo %PATH%`
 
-When you run `clang++`, the shell in fact runs `clang++.exe` located in `C:\msys64\ucrt64\bin`, because that directory is in PATH!
+When you run `clang++`, the shell in fact runs `clang++.exe` located in `C:\msys64\ucrt64\bin`, because that directory is in MSYS2's PATH!
 
 ### Changing PATH
 
 PATH can be changed, you can add your own directories in there.
 
-MSYS2 is a bit special in this regard, because it doesn't respect the system PATH setting, and uses its own. (TODO explain how to change this?)
+E.g. it's often desirable to add `C:\msys64\ucrt64\bin` in there to be able to run your compiler from any shell, not just from MSYS2 (which has it in PATH by default; MSYS2 is a bit special in this regard, because it doesn't respect the system PATH setting, and uses its own.) (TODO explain `-full-path`)
 
 For other shells on Windows, you can change PATH in the settings. Open the settings, type `env` in the search box, press `Edit the system environment variables` then `Environment Variables...`.
 
-You will see two lists of variables, with `Path` in both of them. The top list (`User variables`) applies only to your user, while the bottom (`System variables`) applies to every user on this computer. You can edit either, but prefer to add your directories **to the beginning of the system-wide PATH** (the second one), because that gives them priority (TODO link to DLL issues).
+You will see two lists of variables, with `Path` in both of them. The top list (`User variables`) applies only to your user, while the bottom (`System variables`) applies to every user on this computer. You can modify either, but if you're adding `C:\msys64\ucrt64\bin`, **it should be the beginning of the system-wide PATH** (the second one), because it gives it the most priority. (TODO link to DLL issues).
 
-You can add e.g. `C:\msys64\ucrt64\bin` in there to be able to run your compiler from any shell.
+**NOTE:** You must restart your terminal after changing PATH for it to take effect. (If you're running things in VSCode or any other IDE, restart it as well.)
 
-**NOTE:** You must restart your terminal after changing PATH for it to take effect.
+### Changing PATH temporarily
+
+You can make temporary changes to PATH that only affect the current shell and last until it's closed.
+
+* [Bash](#what-is-a-shell): `export PATH="/c/foo/bar:$PATH"`
+* [Powershell](#what-is-a-shell): `$env:PATH = "C:\foo\bar;$env:PATH"`
+* [CMD](#what-is-a-shell): `set "PATH=C:\foo\bar;%PATH%"`
+
+This prepends `C:\foo\bar` to PATH. [Print it](#path) before and after to confirm the change.
 
 ## Running several commands in a row
 

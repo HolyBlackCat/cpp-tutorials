@@ -1,4 +1,6 @@
-Follow those steps in order:
+This tutorial explains how to install the *tools* you need to code in C/C++, but not *how* to code. We are going to install MSYS2 Clang, Visual Studio Code, Clangd, LLDB-DAP. I also explain why I recommend those specific tools, and what are the alternatives.
+
+Follow the steps below **in order**.
 
 ### Basic setup:
 
