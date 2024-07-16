@@ -39,7 +39,7 @@ Search for `clangd` and install it:<br/>
 
 ![clangd disables intellisense](/images/clangd_disables_intellisense.png)
 
-**NOTE:** If Clangd suggests downloading a "language server", refuse. It's not useful since we already installed the same thing from MSYS2. *([Why not the official Clang installer?](/why_not_official_clang_installer.md) applies to this as well.)*
+**NOTE:** If Clangd suggests downloading a "language server", refuse. It's not useful since we already installed the same thing from MSYS2, and has [the same downsides as the official Clang installer](/why_not_official_clang_installer.md).
 
 ![clangd suggests download](/images/clangd_suggests_download.png)
 
