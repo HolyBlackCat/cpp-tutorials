@@ -43,6 +43,8 @@ Search for `clangd` and install it:<br/>
 
 ![clangd suggests download](/images/clangd_suggests_download.png)
 
+If you accidentally clicked `Install`, go to `File`->`Preferences`->`Settings`, search for `clangd path` (it will be set to `C:\Users\Username\AppData\...`), click the 'gear' icon to the left of it, then press `Reset`.
+
 If you see this message, you didn't configure PATH correctly as [was explained here](/working_in_vscode_terminal.md). (Alternatively, you can go to `File`->`Preferences`->`Settings`, search for `clangd path`, and put `C:\msys64\ucrt64\bin\clangd.exe` in there.)
 
 If you change PATH, you'll need to start VSC for it to take effect. And when changing Clangd settings, you can either restart VSC or press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>->`clangd: Restart language server`.
