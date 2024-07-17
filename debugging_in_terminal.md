@@ -10,7 +10,7 @@ There are several popular debuggers: LLDB, GDB, and the Visual Studio debugger. 
 
 We will be using LLDB because we're already using Clang *([Why Clang?](/choosing_compiler_and_more.md))*, and because Visual Studio Code ([which we'll be installing later](/installing_ide.md)) works well with it (there's a good plugin for it). But all of them should work fine.
 
-LLDB and GDB are similar, this tutorial should work with GDB as well.
+LLDB and GDB are similar on the surface level, everything explained on this page should work with GDB as well.
 
 ## Debugging in a terminal
 
