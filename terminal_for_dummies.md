@@ -8,21 +8,35 @@ A "terminal" or a "console" is a program that looks like this:
 
 It lets you type in commands, and shows their results as text.
 
-**Many programs (e.g. compilers) don't have their own graphical interface, and the terminal is the only way to interact with them.**
+**Many programs (including compilers) don't have their own graphical interface, and the terminal is the only way to interact with them.**
 
-Words "terminal" and "console" are synonyms. There are several different terminal programs that do the similar thing, but there's very little difference between them.
-
-If you already used Visual Studio Code, you might've noticed that it has an embedded terminal.
+Words "terminal" and "console" are synonymous. There are several different terminal programs, but there's very little difference between them (see below).
 
 ## What is a "shell"?
 
 A terminal is a simple program that merely draws letters to the screen.
 
-It's often used with a "shell", which is what actually understands the commands you type, and runs the applications you tell it to run.
+It's often used with a "shell", which is another program that actually understands the commands you type, and runs the applications you tell it to run.
 
-There are different shells, and while they are similar for basic usage, they have differences, so you must understand which one you're running.
+There are different shells. While they are similar on the surface, they have differences, so **you must understand which shell you're currently using**.
 
-The popular ones are:
+## Terminals and shells
+
+There are different terminals and different shells. The choice of shell can matter, but the choice of terminal usually doesn't.
+
+It could be overwhelming, so take a look at the following picture: (you don't need to memorize the specifics)
+
+[![terminals X shells](/images/terminals_x_shells.png)](/images/terminals_x_shells.png)
+
+<sup>(1) is the default for MSYS2 (Bash in mintty)<br/>
+(2) is the defualt on Windows (Powershell in Windows Terminal)<br/>
+(3) was the defualt on old Windows (CMD in Conhost)</sup>
+
+As you can see, there's very little difference between the rows (just the different font styles). In other words, the choice of terminal usually doesn't matter (usually). It just draws the text.
+
+Also notice the different text in different columns. Different shells print different text when started (and accept some different commands too).
+
+Those are the popular shells:
 
 * **CMD**, the legacy Windows shell
   ```
@@ -45,12 +59,16 @@ The popular ones are:
 
 * **Bash**, a shell commonly used on Linux (and by MSYS2)
   ```
-  Username@ComputerName UCRT64 ~
+  Username@ComputerName CLANG64 ~
   $
   ```
   This is how MSYS2 Bash presents itself, but this text you see (a "prompt") can be customized and can look different (e.g. by default on Linux).
 
 On Windows, you can start a terminal with Powershell or CMD from the Start menu (the latter is called `Command Prompt`).
+
+## Terminal VS shell
+
+
 
 ## The current directory
 
