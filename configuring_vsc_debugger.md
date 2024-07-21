@@ -2,7 +2,7 @@
 
 [You should already know how to use a debugger in a terminal.](/debugging_in_terminal.md)
 
-This isn't very convenient, but there's a nicer way of using it from VSC.
+This isn't very convenient, but there's a nicer way of using it in VSC.
 
 ## Checking PATH settings
 
@@ -27,7 +27,7 @@ Like [Clangd](/configuring_code_completion.md#installing-clangd), LLDB-DAP consi
 
 * A program called `lldb-dap` that the extension interacts with. You already have it installed because you [installed LLDB](/debugging_in_terminal.md). But you need to tell the extension where to find it.
 
-  **Open the settings (`File`->`Preferences`->`Settings`), search for `lldb dap executable` and type `lldb-dap` in there.** Or use the full path: `C:\msys64\ucrt64\bin\lldb-dap.exe`.
+  **Open the settings (`File`->`Preferences`->`Settings`), search for `lldb dap executable` and type `lldb-dap` in there.** Or use the full path: `C:\msys64\clang64\bin\lldb-dap.exe`.
 
 ## Making sure the compilaton settings are correct
 
@@ -84,7 +84,7 @@ This can be automated. After the `"cwd": ...` line in `tasks.json`, add `"preLau
 
 Now pressing <kbd>F5</kbd> or the green arrow will automatically recompile the program before starting the debugger.
 
-## Extra LLDB configuration
+## Improving LLDB experience
 
 There are a few extra settings you can add to `launch.json`:
 

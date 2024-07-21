@@ -27,7 +27,7 @@ Clangd needs two parts to work:
 * A extension for your IDE (for VSC in this case).
 * A program called `clangd` that the extension interacts with.
 
-Install the latter in MSYS2 using `pacman -S mingw-w64-ucrt-x86_64-clang-tools-extra`. *([Why not the official Clang installer?](/why_not_official_clang_installer.md))*
+Install the latter in MSYS2 using `pacman -S mingw-w64-clang-x86_64-clang-tools-extra`. *([Why not the official Clang installer?](/why_not_official_clang_installer.md))*
 
 In VSC, open the extension marketplace by pressing the 'boxes' button on the left:<br/>
 ![extensions marketplace icon](/images/vsc_extensions_icon.png)
@@ -45,7 +45,7 @@ Search for `clangd` and install it:<br/>
 
 If you accidentally clicked `Install`, go to `File`->`Preferences`->`Settings`, search for `clangd path` (it will be set to `C:\Users\Username\AppData\...`), click the 'gear' icon to the left of it, then press `Reset`.
 
-If you see this message, you didn't configure PATH correctly as [was explained here](/working_in_vscode_terminal.md). (Alternatively, you can go to `File`->`Preferences`->`Settings`, search for `clangd path`, and put `C:\msys64\ucrt64\bin\clangd.exe` in there.)
+If you see this message, you didn't configure PATH correctly as [was explained here](/working_in_vscode_terminal.md). (Alternatively, you can go to `File`->`Preferences`->`Settings`, search for `clangd path`, and put `C:\msys64\clang64\bin\clangd.exe` in there.)
 
 If you change PATH, you'll need to start VSC for it to take effect. And when changing Clangd settings, you can either restart VSC or press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>->`clangd: Restart language server`.
 
@@ -72,6 +72,8 @@ When you start typing, you should see red squiggles for invalid code, and code c
 Try to use Clangd for a bit! See what features you like or don't like.
 
 Then come back here and see if you want to change any of the settings below.
+
+For now, I suggest continuing to the next chapter: [configuring hotkeys for compilation](/configuring_vsc_tasks.md).
 
 ### Hiding inlay hints
 

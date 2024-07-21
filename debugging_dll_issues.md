@@ -12,7 +12,7 @@ This article explains how to fix following errors:
 
 ## A simple fix
 
-If you're a newbie and you get this on your first program, the fix is to do everything inside MSYS2 terminal. Alternatively, [add `C:\msys64\ucrt64\bin` to PATH](/terminal_for_dummies.md#changing-path). (Make sure you restarted your terminal and/or IDE after that, and that it's the first element of the system-wide PATH.)
+If you're a newbie and you get this on your first program, the fix is to do everything inside MSYS2 terminal. Alternatively, [add `C:\msys64\clang64\bin` to PATH](/terminal_for_dummies.md#modifying-path). (Make sure you restarted your terminal and/or IDE after that, and that it's the first element of the system-wide PATH.)
 
 But if you want to know more (or if you're using third-party libraries, or want to distribute your executables to other people), then continue reading.
 
@@ -20,7 +20,7 @@ But if you want to know more (or if you're using third-party libraries, or want 
 
 The executables you create are not standalone. When ran, they will immediately load a few so-called "DLL"s, and **fail to start if they can't**.
 
-DLLs are files with the `.dll` extension. Some of them were installed with your compiler (look in `C:\msys64\ucrt64\bin`), some are preinstalled with Windows (look in `C:\Windows`, `C:\Windows\System32`, etc).
+DLLs are files with the `.dll` extension. Some of them were installed with your compiler (look in `C:\msys64\clang64\bin`), some are preinstalled with Windows (look in `C:\Windows`, `C:\Windows\System32`, etc).
 
 DLLs contain functions (compiled functions, not the source code) for your application to execute, and other things. By default your application loads DLLs to get access to some standard library functions.
 
@@ -44,31 +44,30 @@ Why do some functions have to be in separate files, why can't everything be in a
 
 ## What DLLs my application uses?
 
-There are several programs that can tell you this, one of them is NTLDD. Install it using `pacman -S mingw-w64-ucrt-x86_64-ntldd`.
+There are several programs that can tell you this, one of them is NTLDD. Install it using `pacman -S mingw-w64-clang-x86_64-ntldd`.
 
 **NOTE:** To get meaningful results from it, you must be able to run your application (it must not have [DLL issues explained above](#how-does-a-dll-loading-failure-look-like)). If it doesn't, either try running it in MSYS2 terminal (or [set PATH as explained above](#a-simple-fix)).
 
 Run **`ntldd my_program.exe`** and you should see something like this:
 
 ```
-KERNEL32.dll => C:\Windows\SYSTEM32\KERNEL32.dll (0x000001ee32970000)
-libstdc++-6.dll => C:\msys64\ucrt64\bin\libstdc++-6.dll (0x000001ee32970000)
+libc++.dll => C:\msys64\clang64\bin\libc++.dll (0x00000258365c0000)
+KERNEL32.dll => C:\Windows\SYSTEM32\KERNEL32.dll (0x0000025836730000)
 ```
 
-You don't care about the libraries that come with the system (i.e. the first one in `C:\Windows`), only about those that come with the compiler (in `C:\msys64\ucrt64\bin`) or that you installed yourself.
+You don't care about the libraries that come with the system (i.e. the first one in `C:\Windows`), only about those that come with the compiler (the second in `C:\msys64\clang64\bin`) or that you installed yourself.
 
 **This isn't the full list though,** because those DLLs can load more DLLs themselves. To see all of them, run **`ntldd -R my_program.exe`** and you should see several dozens of them.
 
-Most of those are irrelevant, because most of them are in `C:\Windows` (see above). You can use e.g. `grep` (a text filtering program) to filter the output. Run **`ntldd -R a.exe | grep ucrt64`** to only print the lines that mention `ucrt64`, and you should see something like this:
+Most of those are irrelevant, because most of them are in `C:\Windows` (see above). You can use e.g. `grep` (a text filtering program) to filter the output. Run **`ntldd -R a.exe | grep clang64`** to only print the lines that mention `clang64`, and you should see something just this:
 ```
-libstdc++-6.dll => C:\msys64\ucrt64\bin\libstdc++-6.dll (0x0000020a191c0000)
- libgcc_s_seh-1.dll => C:\msys64\ucrt64\bin\libgcc_s_seh-1.dll (0x0000020a19410000)
- libwinpthread-1.dll => C:\msys64\ucrt64\bin\libwinpthread-1.dll (0x0000020a19440000)
+libc++.dll => C:\msys64\clang64\bin\libc++.dll (0x000002b7136c0000)
 ```
+Even though in this case `-R` didn't add any relevant libraries, in general it might. Use it.
 
 ## Where does my application look for DLLs?
 
-As you might've noticed from the NTLDD output ([see above](#what-dlls-my-application-uses)), your application loads DLLs from several different directories: `C:\msys64\ucrt64\bin`, `C:\Windows\System32`, etc.
+As you might've noticed from the NTLDD output ([see above](#what-dlls-my-application-uses)), your application loads DLLs from several different directories: `C:\msys64\clang64\bin`, `C:\Windows\System32`, etc.
 
 Your application only knows the DLL file names it wants, not in which directories they are located.
 
@@ -78,7 +77,7 @@ It searches through several predefined directories. This is explained in the [Mi
 
 * `C:\Windows` and some of its subdirectories, like `C:\Windows\System32`.
 
-* All directories in [PATH](/terminal_for_dummies.md#path), in the exact order they're listed (as explained in the link, there are two PATH settings, and it first searches system-wide PATH, then the user-specific one).
+* All directories in [PATH](/terminal_for_dummies.md#what-is-path), in the exact order they're listed (as explained in the link, there are two PATH settings, and it first searches system-wide PATH, then the user-specific one).
 
   (This is why when you add your compiler to PATH, I suggest adding it to the beginning of the system-wide PATH, to make sure all applications you compile load the DLLs from the compiler installation, and not from other applications you have added to PATH.)
 
@@ -92,7 +91,7 @@ While modifying PATH is ok for development purposes, you still must copy the DLL
 
 ## Static linking
 
-So-called "static linking" is an alternative solution. It refers to embedding some libraries into an .exe, meaning it no longer needs the respective DLLs. It can be enabled with the `-static` compiler flag. Confirm the result by running `ntldd -R my_program.exe` and observing that it loads absolutely nothing from `C:\msys64\ucrt64\bin`.
+So-called "static linking" is an alternative solution. It refers to embedding some libraries into an .exe, meaning it no longer needs the respective DLLs. It can be enabled with the `-static` compiler flag. Confirm the result by running `ntldd -R my_program.exe` and observing that it loads absolutely nothing from `C:\msys64\clang64\bin`.
 
 <!-- If you're using third-party libraries, refer to this (TODO third-party) -->
 

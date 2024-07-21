@@ -20,7 +20,7 @@ Follow those steps in order:
 
 * ### [Configure code completion](/configuring_code_completion.md)
 
-* ### [Configure hotkeys and buttons for compilation](/configuring_vsc_tasks.md)
+* ### [Configure hotkeys for compilation](/configuring_vsc_tasks.md)
 
 When you're done, go read your C++ book and practice for some time!
 

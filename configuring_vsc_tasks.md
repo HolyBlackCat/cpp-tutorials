@@ -114,3 +114,7 @@ This file holds all your custom keyboard shortcuts. Paste following into it:
 ```
 
 Now you can run the respective tasks by pressing those shortcuts.
+
+---
+
+Next step: [learn about debugging](/debugging_in_terminal.md).

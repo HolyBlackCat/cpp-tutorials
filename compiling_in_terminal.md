@@ -38,19 +38,19 @@ Copy the path to this directory by right-clicking the address bar and pressing `
 
 [![Windows file explorer](/images/file_explorer_address.png)]((/images/file_explorer_address.png))
 
-(TODO rename to prog.cpp here)
+Open MSYS2 terminal as described [here](/installing_toolchain_msys2.md#installing-msys2) by clicking `MSYS2 CLANG64` in the Start menu. (Make sure it says `CLANG64` in purple text. If not, you clicked the wrong thing.)
 
-Open MSYS2 terminal as described [here](/installing_toolchain_msys2.md#installing-msys2) by clicking `MSYS2 UCRT64` in the Start menu. (Make sure it says `UCRT64` in purple text. If not, you clicked the wrong thing.)
+The terminal has a concept of "current directory", which you can change using the `cd` command. Type `cd "`, paste the path using <kbd>Shift</kbd><kbd>Insert</kbd> (because <kbd>Ctrl</kbd><kbd>V</kbd> doesn't work in MSYS2 terminal), type the closing `"`, then <kbd>Enter</kbd>.
 
-Make sure you know the basics of how to use a terminal. Consult [Terminal for Dummies](/terminal_for_dummies.md) if you don't.
+[![terminal after cd](/images/terminal_after_cd.png)](/images/terminal_after_cd.png)
 
-Open your directory by typing `cd`, space, then pasting your path and pressing Enter. E.g. `cd C:\code`. (Consult [this](/terminal_for_dummies.md) if you have issues!)
+Notice the current directory being displayed in yellow text.
 
 ## Compiling
 
 Assuming you have Clang installed as explained [here](/installing_toolchain_msys2.md), running `clang++ prog.cpp` should compile your code. (This is for C++, for C use `clang prog.c`.)
 
-A successful compilation will print nothing. If your code is wrong, errors will be printed. (TODO link to explanation for undefined reference to WinMain, write a new page for it)
+A successful compilation will print nothing. If your code is wrong, errors will be printed. (One particular error you can get is `undefined reference to WinMain`, which means there's no `int main()` in your code. Often because you forgot to save the file and are compiling an empty file (hit <kbd>Ctrl</kbd><kbd>S</kbd>)).
 
 A successful compilation will create a file called `a.exe`, this is a program you can run.
 

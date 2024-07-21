@@ -18,12 +18,20 @@ At line:1 char:1
     + FullyQualifiedErrorId : CommandNotFoundException
 ```
 
-This is to be expected. Read [Terminal for Dummies](/terminal_for_dummies.md), specficially the section about [PATH](/terminal_for_dummies.md#path). Add your compiler to PATH as explained, restart VSC, and try running `clang++` again. It should work now. If it doesn't read the link above again.
+This is to be expected. Read [Terminal for Dummies](/terminal_for_dummies.md) and do what it says.
+
+After following all the steps, `clang++` should work.
 
 If you see error `undefined reference to WinMain`, you didn't save your file and are compiling an empty file. Hit <kbd>Ctrl</kbd><kbd>S</kbd>.
 
 ### Running your executables
 
-After compiling your executable, try running it (`.\prog.exe` because we're in [powershell](/terminal_for_dummies.md#what-is-a-shell)). Make sure it actually runs and `cout` successfully prints things.
+After compiling your executable, try running it using `.\prog.exe` (`\` instead of `/` before we're in Powershell rather than Bash).
 
-If running an executable does nothing, read [Terminal for Dummies](/terminal_for_dummies.md) again. `C:\msys64\ucrt64\bin` should be first entry in the PATH, and it should be in the system-wide PATH setting rather than the user-specific one. Remember to restart VSC after changing the PATH. [Read this for more information.](/debugging_dll_issues.md)
+Make sure it actually runs and `cout` successfully prints things.
+
+If running an executable does nothing, read [Terminal for Dummies](/terminal_for_dummies.md) again. `C:\msys64\clang64\bin` should be first entry in the PATH, and it should be in the system-wide PATH setting rather than the user-specific one. Remember to restart VSC after changing the PATH. [Read this for more information.](/debugging_dll_issues.md)
+
+---
+
+As the next step, you might want to [configure the code completion](/configuring_code_completion.md).

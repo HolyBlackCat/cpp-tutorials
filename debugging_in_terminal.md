@@ -8,7 +8,7 @@ A debugger is a program that can run *your* program step by step, letting you ob
 
 There are several popular debuggers: LLDB, GDB, and the Visual Studio debugger. They are commonly used with Clang, GCC, and MSVC [compilers](/installing_toolchain.md#what-is-a-compiler) respectively.
 
-We will be using LLDB because we're already using Clang *([Why Clang?](/choosing_compiler_and_more.md))*, and because Visual Studio Code ([which we'll be installing later](/installing_ide.md)) works well with it (there's a good plugin for it). But all of them should work fine.
+We will be using LLDB because we're already using Clang *([Why Clang?](/choosing_compiler_and_more.md))*, and because Visual Studio Code works well with it (there's a good plugin for it). But all of them should work fine.
 
 LLDB and GDB are similar on the surface level, everything explained on this page should work with GDB as well.
 
@@ -22,7 +22,7 @@ Most of the time you won't be debugging in a terminal. The goal of this tutorial
 
 ## Installing LLDB
 
-Install LLDB in MSYS2: `pacman -S mingw-w64-ucrt-x86_64-lldb`. *([Why not the official Clang installer?](/why_not_official_clang_installer.md))*
+Install LLDB in MSYS2: `pacman -S mingw-w64-clang-x86_64-lldb`. *([Why not the official Clang installer?](/why_not_official_clang_installer.md))*
 
 Confirm that it works by running `lldb --version`.
 
@@ -75,15 +75,13 @@ Now if you type **`r`** again, you should see following:
 
 The program is paused on line `5`. You can use **`n`** (short for `next`) to execute one line and go to the next one.
 
-(⚠ LLDB 18 has bug that causes it to show errors like: `error: prog.exe [0x0000000000002136]: DIE has DW_AT_ranges...`. You can safely ignore them.) <!-- TODO remove this comment when LLDB updates -->
-
 Print the values of variables using **`p`** (short for `print`). E.g. try `p x` and `p i`.
 
 Or use **`fr v`** (short for `frame variable`) to print all variables.
 
 Lastly, when you want to unpause your program, type **`c`** (short for `continue`).
 
-Type **`quit`** to exit LLDB.
+Type **`quit`** to exit LLDB and return to the shell.
 
 ## Debugging functions
 
@@ -151,7 +149,7 @@ It's recommended if you understand what `delete` is. (If not, perhaps read your 
 
 The point is, this program compiles, but when you run it it fails with an error, because of the incorrect use of `delete`.
 
-Compile and run it, observe that the first number is printed but the second isn't. **Notably it doesn't tell you what line caused the error,** and in more complex cases it might not be immediately obvious from the output.
+Compile and run it (without the debugger yet), observe that the first number is printed but the second isn't. **Notably it doesn't tell you what line caused the error,** and in more complex cases it might not be immediately obvious from the output.
 
 Let's try to find the offending line with the debugger. Run this program in the debugger as explained above. Don't place any breakpoints yet, just type **`r`** to run. (Though pressing `n` a bunch of times is a valid debugging strategy.)
 
@@ -163,8 +161,6 @@ Type **`bt`** (meaning "backtrace") to see where `delete` was called from:
 
 [![lldb cryptic backtrace](/images/lldb_backtrace_cryptic.png)](/images/lldb_backtrace_cryptic.png)
 
-(As said above, ignore the `error`s if you get them, they are harmless and are caused by a bug in LLDB 18. Only look at the `frame`s.) <!-- TODO when LLDB fixes this, update the screensot -->
-
 The ``frame #7 ... prog.exe`main at prog.cpp:7:5`` refers to the `delete &x` line in your program. Everything above it is the internals of `delete`. And as I already said above, everything below it is the internals of the standard library that called your `main()`.
 
 **You always look for the first `frame` that belongs to your code, and that is the offending line.**
@@ -172,3 +168,7 @@ The ``frame #7 ... prog.exe`main at prog.cpp:7:5`` refers to the `delete &x` lin
 Lastly, type `f 7` (meaning "frame #7") to view that code:
 
 [![lldb shows the offending frame](/images/lldb_offending_frame.png)](/images/lldb_offending_frame.png)
+
+---
+
+Next step: learn [how to debug in VSCode](/configuring_vsc_debugger.md).

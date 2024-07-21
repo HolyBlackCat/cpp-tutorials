@@ -17,44 +17,48 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
    (⚠ If you choose to install into a non-default location, make sure the path **doesn't contain any spaces or non-latin characters**. This tutorial assumes you installed to the default location `C:\msys64`.)
 
+   Uncheck `Run MSYS2 now.` at the end of installation, or close the window that it opens.
+
    If you run into any strange issues during installation (or later), try disabling your antivirus software or adding `C:\msys64` to its exceptions.
 
 2. **Start MSYS2.**
 
-   The "Start" menu will have several different shortcuts, for now you want `MSYS2 UCRT64` (read about the difference [here](TODO msys2 envs)).
+   The "Start" menu will have several different shortcuts, for now you want **`MSYS2 CLANG64`** (read about the difference [here](TODO msys2 envs)).
 
    The window that opens is called a "terminal" or a "console". You can type commands in there. (I will explain more later.)
 
-   **Make sure it says `UCRT64` in the purple text.** If it says something else, you used the wrong shortcut (see above). Close it and restart using the correct one.
+   **Make sure it says `CLANG64` in the purple text.** If it says something else, you used the wrong shortcut (see above). Close it and restart using the correct one.
 
    All commands below should be typed into the MSYS2 terminal.
 
 3. **Update MSYS2.**
 
-   Run `pacman -Syu` to install updates. (It's a good idea to do this from time to time.)
+   Run **`pacman -Syu`** to install updates. (It's a good idea to do this from time to time.)
 
-   It will eventually ask for confirmation: `:: Proceed with installation? [Y/n]`. Press <kbd>Enter</kbd> to continue.
+   (⚠ If you want to paste commands from this tutorial, note that <kbd>Ctrl</kbd><kbd>V</kbd> doesn't work in MSYS2 terminal. Use <kbd>Shift</kbd><kbd>Insert</kbd> or right click -> "Paste".)
+
+   When you run the command above, it will eventually ask for confirmation: `:: Proceed with installation? [Y/n]`. Press <kbd>Enter</kbd> to continue.
 
    Sometimes you will get this: `:: To complete this update all MSYS2 processes including this terminal will be closed. Confirm to proceed [Y/n]`. Press <kbd>Enter</kbd> and the terminal will close. **If this happened, restart the MSYS2 terminal and run `pacman -Syu` again to finish the update.**
 
    When it's done updating, you'll see this again:
    ```sh
-   username@computername UCRT64 ~
+   username@computername CLANG64 ~
    $
    ```
 
 * **Install toolchain.**
 
-   Run `pacman -S mingw-w64-ucrt-x86_64-clang` to install Clang (which automatically brings in the rest of the toolchain).
+   Run **`pacman -S mingw-w64-clang-x86_64-clang`** to install Clang (which automatically brings in the rest of the toolchain).
 
-   (⚠ Note that we install `mingw-w64-ucrt-x86_64-clang` and not just `clang`! The difference is explained [here](TODO_MSYS2_ENVS).)
+   (⚠ Note that we install `mingw-w64-clang-x86_64-clang` and not just `clang`! The difference is explained [here](TODO_MSYS2_ENVS).)
 
    Now if you run `clang++ --version`, you should see something like this:
    ```
-   clang version 18.1.6
+   clang version 18.1.8
    Target: x86_64-w64-windows-gnu
    Thread model: posix
-   InstalledDir: C:/msys64_b/ucrt64/bin
+   InstalledDir: C:/msys64/clang64/bin
    ```
    Which means Clang was installed correctly.
 
