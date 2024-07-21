@@ -15,3 +15,7 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 * ### [Debugging in a terminal](/debugging_in_terminal.md)
 
 * ### [Debugging in VSC](/configuring_vsc_debugger.md)
+
+### Additional information:
+
+* ### [Recommended compiler settings](/recommended_compiler_flags.md)

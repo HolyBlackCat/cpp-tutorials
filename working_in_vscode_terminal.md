@@ -26,7 +26,7 @@ If you see error `undefined reference to WinMain`, you didn't save your file and
 
 ### Running your executables
 
-After compiling your executable, try running it using `.\prog.exe` (`\` instead of `/` before we're in Powershell rather than Bash).
+After compiling your executable, try running it using `./prog.exe`.
 
 Make sure it actually runs and `cout` successfully prints things.
 
