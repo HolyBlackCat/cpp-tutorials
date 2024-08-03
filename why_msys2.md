@@ -49,4 +49,10 @@ MSYS2 uses its own fork of Cygwin for some of the applications they provide (suc
 
 They also distribute a version of GCC that you can use to compile your own applications using their Cygwin fork. I don't recommend this for new projects though, for [the same reason I don't recommend Cygwin itself](#mingw-vs-cygwin). (To be clear, not all of the GCC variants they provide use Cygwin. Only one of them does.)
 
-If you don't like Cygwin for some reason, the only Cygwin-based application in MSYS2 you have to use is the package manager (`pacman`). After you install the compiler (and anything else you need), you can use it independently of anything Cygwin-related.
+### Is MSYS2 bad because it's based on Cygwin?
+
+I've heard some people say they "don't want to use MSYS2, because it emulates POSIX, therefore it's not native on Windows".
+
+The answer to that is: **You don't have to use any Cygwin-based parts of it, other than the package manager.** The toolchain/compilers/libraries you install through it have nothing to do with Cygwin (unless you intentionally install [the ones that do](TODO_MSYS2_envs)), and can be used without it.
+
+And *having* Cygwin-based tools available can be helpful if you come across a library that only supports autotools or makefiles as the build method.

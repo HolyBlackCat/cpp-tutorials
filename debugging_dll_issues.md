@@ -8,6 +8,8 @@ This article explains how to fix following errors:
 
 * Application simply doesn't start. (This will happen when launching it in a terminal or in an IDE. Double-click it in the file explorer* and you *should* see one of the above error messages.)
 
+* Some other mysterious errors.
+
 <sup>* Of course I mean the Windows "Files" application, not a tab in Visual Studio Code with the same name.</sup>
 
 ## A simple fix
@@ -41,6 +43,8 @@ Why do some functions have to be in separate files, why can't everything be in a
 * **`procedure entry point __ could not be located in the dynamic link library __`** - a DLL with the correct name was found, but the contents are incompatible. Note that the DLL mentioned in the message isn't necessary the offending one, it can be a red herring.
 
 * **Application simply doesn't start** - this will happen when launching it in a terminal or in an IDE. Double-click it in the explorer and you *should* see one of the above error messages.
+
+* Some other mysterious errors.
 
 ## What DLLs my application uses?
 
@@ -102,3 +106,11 @@ While static linking is good for tiny portable applications (don't need to unzip
 * If a library is updated (e.g. bugs are fixed), your users can't apply the update themselves. (Can't download and replace a DLL, if the library is embedded into the executable.)
 
 * Some libraries have licenses that penalize static linking. E.g any library licensed under [LGPL](https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License) (e.g. [OpenAL-soft](https://openal-soft.org/)), roughly speaking, forces you to either link dynamically or open-source your application.
+
+### Static linking libraries
+
+If you're [using third-party libraries](/using_libraries.md), statically linking them will often require an extra step.
+
+Let's say you're using library A (via `-lA` flag), and A internally uses another library B. When linking dynamically, `-lA` is enough, but when linking A statically, you need **both** `-lA` and `-lB`. This is because static libraries normally don't embed other libraries they depend on.
+
+If you're using `pkgconf`, it automates this. Pass `--libs --static` instead of `--libs`, and it will print all the required `-l...` flags. (If it doesn't print anything extra, this library doesn't use any other libraries.)

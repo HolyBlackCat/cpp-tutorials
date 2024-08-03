@@ -6,7 +6,7 @@ E.g. if you've read [the page about debugging](/debugging_in_terminal.md), you a
 
 There are many other useful settings. Those settings are also called "flags" or "command-line flags".
 
-Clang and GCC compilers share a lot of the flags, so this page applies to both. It doesn't apply to the MSVC compiler.
+This page targets Clang, but most flags here work with GCC too, unless documented otherwise.
 
 Most compiler flags can be used in any order (this is true for all flags on this page).
 

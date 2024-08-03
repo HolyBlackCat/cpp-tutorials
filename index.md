@@ -18,4 +18,8 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 
 ### Additional information:
 
+(You can read those in any order.)
+
 * ### [Recommended compiler settings](/recommended_compiler_flags.md)
+
+* ### [Using third-party libraries](/using_libraries.md)

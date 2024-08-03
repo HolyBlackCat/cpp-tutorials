@@ -117,7 +117,7 @@ Elaborating on the [claims](#choosing-a-compiler) I made above:
 
   Historically, they were slow to adopt C++11, then slowly started to overtake GCC and Clang up to C++20, and now they are behind again.
 
-* Has some weird bugs/quirks, the kind that you don't see with other compilers: [[1]](https://stackoverflow.com/q/78157781/2752075), [[2]](https://stackoverflow.com/q/69431575/2752075).
+* Has some weird bugs/quirks, the kind that you don't see with other compilers: [[1]](https://stackoverflow.com/q/78799496/2752075), [[2]](https://stackoverflow.com/q/69431575/2752075), [[3]](https://stackoverflow.com/q/78157781/2752075),
   <details>
   <summary>Or e.g. this one.</summary>
 
