@@ -53,6 +53,6 @@ They also distribute a version of GCC that you can use to compile your own appli
 
 I've heard some people say they "don't want to use MSYS2, because it emulates POSIX, therefore it's not native on Windows".
 
-The answer to that is: **You don't have to use any Cygwin-based parts of it, other than the package manager.** The toolchain/compilers/libraries you install through it have nothing to do with Cygwin (unless you intentionally install [the ones that do](TODO_MSYS2_envs)), and can be used without it.
+The answer to that is: **You don't have to use any Cygwin-based parts of it, other than the package manager.** The toolchain/compilers/libraries you install through it have nothing to do with Cygwin (unless you intentionally install [the ones that do](/msys2_environments.md#the-msys-environment)), and can be used without it.
 
 And *having* Cygwin-based tools available can be helpful if you come across a library that only supports autotools or makefiles as the build method.

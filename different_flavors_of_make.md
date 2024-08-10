@@ -3,9 +3,9 @@
 In MSYS2 you can find two different "make" programs:
 
 * `make`, installed by `pacman -S make`.
-* `mingw32-make`, installed by `pacman -S mingw-w64-clang-x86_64-make` ([or any other `mingw-...-make`](TODO_msys2_envs)).
+* `mingw32-make`, installed by `pacman -S mingw-w64-clang-x86_64-make` ([or any other `mingw-...-make`](/msys2_environments.md)).
 
-Normally the rule of thumb is to not install anything with the name not prefixed with `mingw-w64-clang-x86_64-` ([or the prefix of your choice](TODO_msys2_envs)) when the prefixed alternative is available. But in the case of Make, both options are viable.
+Normally the rule of thumb is to not install anything with the name not prefixed with `mingw-w64-clang-x86_64-` ([or the prefix of your choice](/msys2_environments.md)) when the prefixed alternative is available. But in the case of Make, both options are viable.
 
 ## Difference between the two
 

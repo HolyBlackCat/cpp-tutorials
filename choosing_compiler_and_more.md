@@ -24,9 +24,9 @@ But wait, there's more. Clang can operate in different configurations:
 1|MSVC|MSVC|MSVC STL|ASAN|With [Visual Studio](https://visualstudio.microsoft.com), or standalone ["build tools"](https://visualstudio.microsoft.com/downloads).
 2|Clang|MSVC|MSVC STL|ASAN**|[Official Clang installer](https://github.com/llvm/llvm-project/releases/tag/llvmorg-18.1.6) (look for `LLVM-...-win64.exe`), also must install MSVC.
 3|Clang|MSVC|Clang's libc++|ASAN, UBSAN|[Must compile libc++ manually.](https://libcxx.llvm.org/BuildingLibcxx.html)
-4|Clang|MinGW|Clang's libc++|ASAN, UBSAN|With [MSYS2 CLANG64](TODO_MSYS2_ENVS) (other [MSYS2 environments](TODO_MSYS2_ENVS) have libc++ too but without sanitizers).
-5|Clang|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](TODO_MSYS2_ENVS). Could also use official Clang installer with any MinGW, but that requires some custom command-line flags.
-6|GCC|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](TODO_MSYS2_ENVS). There are some other distributions too.
+4|Clang|MinGW|Clang's libc++|ASAN, UBSAN|With [MSYS2 CLANG64](/msys2_environments.md) (other [MSYS2 environments](/msys2_environments.md) have libc++ too but without sanitizers).
+5|Clang|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](/msys2_environments.md). Could also use official Clang installer with any MinGW, but that requires some custom command-line flags.
+6|GCC|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](/msys2_environments.md). There are some other distributions too.
 
 As you can see, Clang on Windows can use either MinGW **OR** tools and libraries shipped with MSVC.
 
@@ -80,7 +80,7 @@ There's no single "C++ standard library". Rather, there are several implementati
 
 If you're using GCC or MSVC, you're locked into their respective C++ standard libraries, but Clang can use any of the three.
 
-libstdc++ has [iterator validation](TODO link to flags), but on MinGW it [doesn't work with the sanitizers](TODO msys2 envs -> sanitizers).
+libstdc++ has iterator validation ([`-D_GLIBCXX_DEBUG`](/recommended_compiler_flags.md#flags-to-catch-errors)), but on MinGW it doesn't work with the sanitizers (sanitizers only work in [CLANG64 environment](/msys2_environments.md), which only has libc++ and not libstdc++).
 
 ## MinGW ABI vs MSVC ABI
 

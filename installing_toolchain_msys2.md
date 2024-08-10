@@ -23,7 +23,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
 2. **Start MSYS2.**
 
-   The "Start" menu will have several different shortcuts, for now you want **`MSYS2 CLANG64`** (read about the difference [here](TODO msys2 envs)).
+   The "Start" menu will have several different shortcuts, for now you want **`MSYS2 CLANG64`** (read about the difference [here](/msys2_environments.md)).
 
    The window that opens is called a "terminal" or a "console". You can type commands in there. (I will explain more later.)
 
@@ -51,7 +51,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
    Run **`pacman -S mingw-w64-clang-x86_64-clang`** to install Clang (which automatically brings in the rest of the toolchain).
 
-   (⚠ Note that we install `mingw-w64-clang-x86_64-clang` and not just `clang`! The difference is explained [here](TODO_MSYS2_ENVS).)
+   (⚠ Note that we install `mingw-w64-clang-x86_64-clang` and not just `clang`! The difference is explained [here](/msys2_environments.md).)
 
    Now if you run `clang++ --version`, you should see something like this:
    ```

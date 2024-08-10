@@ -4,7 +4,7 @@
 
 Use `pacman -Ss ...` to search through MSYS2 "packages" (things you can install). Try **`pacman -Ss openal`** to search for OpenAL. It'll print the list of matching packages.
 
-**⚠ NOTE:** As before, we're looking only for things named `mingw-w64-clang-x86_64-...` ([explanation](/TODO_MSYS2_envs)). If you scroll through the list, you'll quickly find this:
+**⚠ NOTE:** As before, we're looking only for things named `mingw-w64-clang-x86_64-...` ([explanation](/msys2_environments.md)). If you scroll through the list, you'll quickly find this:
 ```
 clang64/mingw-w64-clang-x86_64-openal 1.23.1-2
     OpenAL audio library for use with opengl (mingw-w64)
@@ -19,7 +19,7 @@ Install the library using the name you found above. In our case:
 pacman -S mingw-w64-clang-x86_64-openal
 ```
 
-Again, make sure the libraries you install [are prefixed with `mingw-w64-clang-x86_64-...`](/TODO_MSYS2_envs).
+Again, make sure the libraries you install [are prefixed with `mingw-w64-clang-x86_64-...`](/msys2_environments.md).
 
 ## Look at what you have installed
 
@@ -80,7 +80,7 @@ If everything is done correctly, this it compile without any errors.
 
 **⚠ NOTE:** You might see red squiggles in VSCode, this isn't a problem. Configuring VSC to understand the library [is a separate issue](TODO_vsc_libs). For now just compile in the terminal, I'll explain this later.
 
-**NOTE:** While most compiler-flags are order-independent, in some cases it might be important to have `-l...` to the right of any `.c`/`.cpp` files. ([See this for details](TODO_msys2_envs_lld).)
+**NOTE:** While most compiler-flags are order-independent, in some cases it might be important to have `-l...` to the right of any `.c`/`.cpp` files. (If you're using [LD linker](/msys2_environments.md#linker).)
 
 If you're curious, here's a full program that plays a short beep using OpenAL. Try running it. For now, you don't have to understand it
 

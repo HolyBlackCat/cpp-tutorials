@@ -97,8 +97,6 @@ While modifying PATH is ok for development purposes, you still must copy the DLL
 
 So-called "static linking" is an alternative solution. It refers to embedding some libraries into an .exe, meaning it no longer needs the respective DLLs. It can be enabled with the `-static` compiler flag. Confirm the result by running `ntldd -R my_program.exe` and observing that it loads absolutely nothing from `C:\msys64\clang64\bin`.
 
-<!-- If you're using third-party libraries, refer to this (TODO third-party) -->
-
 ### Problems with static linking
 
 While static linking is good for tiny portable applications (don't need to unzip a directory with a bunch of DLLs, or make an installer), it's usually not a good idea for serious applications, because:

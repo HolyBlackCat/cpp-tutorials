@@ -33,3 +33,9 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 * ### [Recommended compiler settings](/recommended_compiler_flags.md)
 
 * ### [Using third-party libraries](/using_libraries.md)
+
+### Variations:
+
+Read those if you want to use different tools
+
+* Different OS

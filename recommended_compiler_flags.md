@@ -236,7 +236,7 @@ There are also weaker versions of this flag with less overhead, consult [the man
 
 Note that this flag only works when using libc++ (Clang's own implementation of the C++ standard library.)
 
-When using libstdc++ (GCC's implementation of the C++ standard library) ([which can be used with Clang too](TODO_msys2_envs)), use `-D_GLIBCXX_DEBUG`. ([See manual](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_macros.html). There are some other variations of this flag too.)
+When using libstdc++ (GCC's implementation of the C++ standard library) ([which can be used with Clang too](/msys2_environments.md#c-standard-library-implementation)), use **`-D_GLIBCXX_DEBUG`. ([See manual](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_macros.html). There are some other variations of this flag too.)
 
 
 </details>
