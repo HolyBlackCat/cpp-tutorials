@@ -1,4 +1,14 @@
-This tutorial explains how to install the *tools* you need to code in C/C++, but not *how* to code. We are going to install Clang (in MSYS2 CLANG64), Visual Studio Code, Clangd, LLDB-DAP. I also explain why I recommend those specific tools, and what are the alternatives.
+## Installing tools for C/C++ development - the tutorial
+
+### What is this tutorial for?
+
+* This tutorial explains how to install the *tools* needed to code in C/C++, but not *how* to code. You'll still need a generic book/tutorial on C/C++.
+
+* This tutorial is primarly for Windows. Most parts can be used for other OSes too.
+
+* We are going to install Clang (in MSYS2 CLANG64), Visual Studio Code, Clangd, LLDB-DAP, which I consider to be the best choice. I also explain [why I picked those specific tools](/why_philosophy.md), and what are the alternatives.
+
+### How to read this tutorial?
 
 Follow the steps below **in order**.
 

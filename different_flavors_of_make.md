@@ -23,8 +23,12 @@ If the performance becomes a problem, then you can tweak your makefiles (if need
 
 ## The default shell
 
-Make runs the commands using [a shell](/terminal_for_dummies.md). It used to be that `mingw32-make` used `cmd` shell while `make` used `sh` shell, which used to be an additional source of incompatibility.
+Make runs the commands using [a shell](/terminal_for_dummies.md).
 
-It's no longer the case in MSYS2, both now use `sh`.
+Both use `sh` shell by default (same as on Linux), but you can override it manually.
 
-If you download `mingw32-make` from a source other than MSYS2, you can end up with a version that still defaults to `cmd`. (If that's actually what you want, you can switch MSYS2's version to a different shell by setting the `SHELL` variable in the makefile.)
+`mingw32-make` falls back on Windows `cmd` if it can't find `sh` in PATH (which should only be possible when running it outside of MSYS2 terminal). And `make` should never be unable to find `sh` because they're installed to the same directory.
+
+I recommend always using `sh` for portability, but forcing `mingw32-make` to use `cmd` could make it a tiny bit faster.
+
+It's possible to detect the current shell (the `SHELL` Make variable is unreliable) using `ifeq ($(shell echo 'foo'),'foo')`, which is true on `cmd`, false on `sh`. So it's possible to support both shells, but I wouldn't bother until performance becomes a problem.

@@ -18,7 +18,7 @@ The two most popular extensions for C/C++ code completion are:
 
 * [**Clangd.**](https://clangd.llvm.org/) Not to be confused with Clang. Clangd is a code completion engine based on Clang the compiler, hence its name.
 
-We will be installing Clangd, since in my experience it works faster, [doesn't choke on advanced C++ features](TODO show example), and can be used in most popular IDEs (not only in VSC).
+We will be installing Clangd. *([Why Clangd?](why_clangd.md))*
 
 ## Installing Clangd
 
