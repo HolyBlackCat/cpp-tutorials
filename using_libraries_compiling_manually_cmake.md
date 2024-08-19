@@ -42,7 +42,9 @@ Additional information:
 
 <details><summary><b>What's with all the CMake flags?</b></summary>
 
-The *minimal* usage of CMake is just `cmake -S ... -B ...` (and even `-S ...` can be omitted if it's the current directory), but I've thrown in a few more useful flags:
+The *minimal* usage of CMake is just `cmake -S ... -B ...` (and even `-S ...` can be omitted if it's the current directory). You'll also see people `cd`ing to the build directory and doing `cmake ..`, which is equivalent.
+
+I've also thrown in a few more useful flags:
 
 * `-DCMAKE_INSTALL_PREFIX=...` will install the resulting library to the specified directory. Not specifying this will make it default to `C:\msys64\clang64`, which isn't great, because libraries installed to that location can conflict with libraries installed via `pacman`. (This is a problem unique to MSYS2, because on Linux the default installation directory `/usr/local` is separate from everything else and is empty by default.)
 
