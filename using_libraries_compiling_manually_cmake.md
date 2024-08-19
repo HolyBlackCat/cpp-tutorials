@@ -1,6 +1,6 @@
 # How to compile libraries manually using CMake?
 
-If you have [determined the build system](/using_libraries_compiling_manually.md#determine-the-build-system) to be CMake, follow this procedure.
+If you have [determined the build system](/using_libraries_compiling_manually.md#determine-and-use-the-build-system) to be CMake, follow this procedure.
 
 ## Ensure you have CMake installed
 
