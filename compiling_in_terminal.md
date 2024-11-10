@@ -62,7 +62,7 @@ This is enough to start learning C++.
 
 Read a chapter or two in your C++ book and try a few simple programs.
 
-Then [install an IDE](/installing_ide.md) for a better programming experience.
+Then [install an IDE](/installing_vsc.md) for a better programming experience.
 
 ## More information
 

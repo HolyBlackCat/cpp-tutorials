@@ -18,7 +18,7 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 
 * ### [Installing a toolchain](/installing_toolchain.md)
 
-* ### [Installing and configuring an IDE](/installing_ide.md)
+* ### [Installing and configuring VSC](/installing_vsc.md)
 
 ### Debugging:
 
