@@ -24,4 +24,4 @@ Follow those steps in order:
 
 When you're done, go read your C++ book and practice for some time!
 
-This only covers the basic configuration, there's more [here](/index.md).
+This only covers the basic configuration, there's more [here](/README.md).

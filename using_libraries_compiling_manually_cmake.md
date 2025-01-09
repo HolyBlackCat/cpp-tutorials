@@ -4,7 +4,7 @@ If you have [determined the build system](/using_libraries_compiling_manually.md
 
 ## Ensure you have CMake installed
 
-Install CMake in MSYS2 using **`pacman -S mingw-w64-clang-x86_64-clang`**.
+Install CMake in MSYS2 using **`pacman -S mingw-w64-clang-x86_64-cmake`**.
 
 Even if you have already installed CMake outside of MSYS2, it's better to install and use MSYS2's version, because it will use the MSYS2's compiler by default, whereas the official CMake for Windows will try to use MSVC (the Visual Studio compiler) by default.
 
