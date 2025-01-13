@@ -55,7 +55,7 @@ Compilers add custom features to C++ that are not described in the standard ("C+
 
 Those extra non-standard features are called "language extensions" or just "extensions".
 
-For example, this is not legal in standard C++ (unlike C), because array size must be a fixed number:
+For example, the following is not legal in standard C++ (unlike C), because array size must be a fixed number:
 
 ```cp
 #include <iostream>
@@ -86,7 +86,7 @@ prog.cpp:5:9: note: declared here
 
 Some extensions have standard alternatives (e.g. `std::vector<int> array(n);` can replace `int array[n];` above).
 
-There are always loopholes to enable extensions in certain *parts* of the code, if you know what you're doing.
+Even if you intentionally do want to use an extension, this isn't a good reason to remove this flag. Instead, there are ways to disable those checks for certain *parts* of your code.
 
 #### Alternative flags: `-pedantic` and `-Wpedantic`
 
@@ -109,7 +109,7 @@ This does two things:
 
     Default language version varies between compilers and compiler versions, at the time of writing Clang and GCC default to C++17.
 
-    You'll see people mention versions with a letter, such as C++2c. It refers to the next version of the standard that's currently in development, and the letter will be replaced with a digit when it's released. C++2c is expected to be released in 2026 and become C++26 (C++2a became C++20, `2b` became `23`, and before that `0x`→`1x`→`11` (they didn't guess the decade right), `1y`→`14`, `1z`→`17`).
+    You'll see people mention versions with a letter, such as C++2c. It refers to the next version of the standard that's currently in development, and the letter will be replaced with a digit when it's released. C++2c is expected to be released in 2026 and become C++26 (C++2a became C++20, C++2b became C++23; and before that C++0x first became C++1x (they didn't guess the decade right) and then C++11; C++1y became 14 and C++1z became C++17).
 
 2. It **disables some problematic language extensions**.
 
@@ -117,7 +117,7 @@ This does two things:
 
     For example, `int typeof = 42;` is valid in standard C/C++ (`typeof` is a variable name with no special meaning), but it doesn't compile by default in Clang and GCC, because they assign a [non-standard meaning](https://gcc.gnu.org/onlinedocs/gcc/Typeof.html) to `typeof`.
 
-    The default `-std=...` value in Clang and GCC is `-std=gnu++17` and `-std=gnu17` (in C++ and C respectively) (at the time of writing), where "gnu++" stands for "C++ with GNU extensions" (aka GCC extensions, as GCC stands for "GNU Compiler Collection" or "GNU C Compiler").
+    The default `-std=...` value in Clang and GCC is `-std=gnu++17` and `-std=gnu17` (in C++ and C respectively) (at the time of writing), where "gnu++" stands for "C++ with GNU extensions" (aka GCC extensions, as GCC stands for the "GNU Compiler Collection" or the "GNU C Compiler").
 
     Replacing `gnu++` with `c++` is what disables those extensions. The code above compiles with any `-std=c++…` flag.
 
