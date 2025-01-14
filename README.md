@@ -18,6 +18,8 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 
 * ### [Installing a toolchain](/installing_toolchain.md)
 
+* ### [How to compile and run programs in the terminal](/installing_toolchain.md)
+
 * ### [Installing and configuring VSC](/installing_vsc.md)
 
 ### Debugging:

@@ -8,7 +8,7 @@ Find and download the source code for your library, normally for its latest rele
 
 I'll be using OpenAL-soft as an example again. On https://github.com/kcat/openal-soft, go to `Releases` and grab the `Source code (zip)` for the lastest releases.
 
-Some libraries don't do releases, then just grab the latest version of the code (on Github, the green `<> Code` button -> `Download ZIP`).
+Some libraries don't do releases, then just grab the latest version of the code (on Github, the green `<> Code` button → `Download ZIP`).
 
 ## Unzip the source code
 

@@ -2,23 +2,27 @@
 
 I assume you have some minimal C++ knowledge: already tried compiling a few simple programs, and know what "variables" are. If not, come back later.
 
+## What is debugging?
+
+"Debugging" refers to fixing a program when it doesn't work correctly, i.e. finding the issue in the code and fixing it. This is often done with the help of a *debugger*.
+
 ## What is a debugger?
 
-A debugger is a program that can run *your* program step by step, letting you observe the values of the variables and so on.
+A debugger is a program that assists you in debugging. It can run *your* program step by step, letting you observe the values of all variables and so on.
 
 There are several popular debuggers: LLDB, GDB, and the Visual Studio debugger. They are commonly used with Clang, GCC, and MSVC [compilers](/installing_toolchain.md#what-is-a-compiler) respectively.
 
-We will be using LLDB because we're already using Clang *([Why Clang?](/choosing_compiler_and_more.md))*, and because Visual Studio Code works well with it (there's a good plugin for it). But all of them should work fine.
+We will be using LLDB *([Why LLDB?](/why_lldb.md))*, but the other debuggers should work fine too.
 
-LLDB and GDB are similar on the surface level, everything explained on this page should work with GDB as well.
+LLDB and GDB are similar on the surface level, most things explained on this page should work with GDB as well.
 
 ## Debugging in a terminal
 
 Go read [Terminal for Dummies](/terminal_for_dummies.md) if you haven't already.
 
-Most debuggers (except the Visual Studio one, from what I know) can be used in a terminal. There are ways to use them with UI as well, but we'll be covering this later.
+Most debuggers (except for the Visual Studio one, from what I know) can be used in a terminal. There are ways to use them with UI as well, but we'll be covering that later.
 
-Most of the time you won't be debugging in a terminal. The goal of this tutorial is to give a minimal experience of doing so, before teaching more convenient methods.
+Most of the time you won't be debugging in a terminal. The goal of this chapter is to give a minimal experience of doing so, before teaching more convenient methods.
 
 ## Installing LLDB
 
@@ -73,7 +77,7 @@ Now if you type **`r`** again, you should see following:
 
 [![lldb in action](/images/lldb_in_action.png)](/images/lldb_in_action.png)
 
-The program is paused on line `5`. You can use **`n`** (short for `next`) to execute one line and go to the next one.
+The program is paused on line `5`. You can use **`n`** (short for `next`) to execute one line and go to the next line.
 
 Print the values of variables using **`p`** (short for `print`). E.g. try `p x` and `p i`.
 
@@ -107,9 +111,9 @@ int main()
 }
 ```
 
-Run this in the debugger. Place a breakpoint on line `int x = foo();`. Press **`n`** to go to the next line and notice that it jumps immediately to `std::cout`, without showing how the function executes. How do we debug the function?
+Run this in the debugger. Place a breakpoint on line `int x = foo();`. Press **`n`** to go to the next line and notice that it jumps immediately to `std::cout`, without showing you how the function executes. How do we debug the function?
 
-Restart the program, but this time use **`s`** (short for `step`) instead of `n`. Notice that the debugger did *step* into the function:
+Restart the program, but this time use **`s`** (short for `step`) instead of `n`. Notice that the debugger did *step into* the function:
 
 [![lldb steps into a function](/images/lldb_steps_into_function.png)](/images/lldb_steps_into_function.png)
 
@@ -123,11 +127,9 @@ If you forgot where `foo()` was called from, type **`bt`** (meaning "backtrace")
 
 Here `frame #0` is the current line inside `foo()`, and `frame #1` is the line in `main()` that called `foo()`. Everything below that are the internals of the standard library that called your `main()`.
 
-Typing e.g. **`f 1`** (short for "frame") will show the code at that location, so you don't need to look it up by the line number. **`f 0`** (or just **`f`**) will print the current line.
+Typing e.g. **`f 1`** (short for "frame") will show the code at that location, so you don't need to look it up by the line number. **`f 0`** will print the current line. Just **`f`** alone will use the most recent number by default. You can also use **`up`** and **`down`** to switch between the frames.
 
-
-
-To return back to `main`, you either press `s` or `n` enough times, or type **`fin`** (or `finish`) to return to the calling function, back ot `int x = foo();`. But this time, typing `s` will jump to `std::cout << ...` (just like `n`) rather than entering `foo()`, because it already finished executing.
+To return back to `main`, you either press `s` or `n` enough times, or type **`fin`** (or `finish`) to return to the calling function, back at `int x = foo();`. But this time, typing `s` will jump to `std::cout << ...` (just like `n`) rather than entering `foo()`, because it has already finished executing.
 
 
 
@@ -171,4 +173,4 @@ Lastly, type `f 7` (meaning "frame #7") to view that code:
 
 ---
 
-Next step: learn [how to debug in VSCode](/configuring_vsc_debugger.md).
+Next step: learn [**How to debug in VSCode**](/configuring_vsc_debugger.md).

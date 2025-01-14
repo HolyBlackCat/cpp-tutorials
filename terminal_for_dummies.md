@@ -42,13 +42,13 @@ That's because **by default it uses a different shell** ("powershell" instead of
 
 ## What is a "shell"?
 
-A shell is a program that lets you type commands and executes them.
+A shell is a program that accepts commands from you (such as the `clang++ prog.cpp` command you've used before) and executes them (often by running other programs, in this case by running the Clang compiler).
 
 A terminal is a dumb program that displays text. A shell is what actually understands the commands you type.
 
-**A shell and a terminal are usually used together**: the terminal draws text, while the shell interprets the user commands.
+**A shell and a terminal are usually used together**: the terminal provides the UI and draws text, while the shell interprets the user commands.
 
-You can usually recognize a shell by its "prompt" (the text it prints when asking you for a command). **You have to know what shell you're using,** because as you noticed the difference can matter (`clang++` works in MSYS2 bash but not in Powershell *by default*).
+You can usually recognize a shell by its "prompt" (the text it prints when asking you for a command). **You have to know what shell you're using,** because as you noticed the difference can matter (`clang++` works in MSYS2 Bash but not in Powershell *by default*).
 
 ## Ok, so how do I use Clang in Powershell?
 

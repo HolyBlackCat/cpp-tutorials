@@ -4,8 +4,8 @@
 
 There are two prominent toolchains on Windows:
 
-* The one bundled with Visual Studio (not Visual Studio Code), using **MSVC** compiler.
-* A loose group of toolchains called **MinGW**, which uses the same tools you'll commonly find on Linux.
+* The one bundled with Visual Studio (not Visual Studio Code), using the **MSVC** compiler.
+* A loose group of toolchains called **MinGW**, which uses the same tools you'd commonly find on Linux.
 
 We'll be installing the later, with the Clang compiler. *([Why MinGW rather than MSVC? And why Clang rather than GCC?](/choosing_compiler_and_more.md) and [Why not Visual Studio?](/why_not_visual_studio.md))*
 
@@ -15,7 +15,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
 1. **Download the installer** from https://www.msys2.org/ and run it.
 
-   (⚠ If you choose to install into a non-default location, make sure the path **doesn't contain any spaces or non-latin characters**. This tutorial assumes you installed to the default location `C:\msys64`.)
+   (⚠ If you choose to install into a non-default location, make sure the path **doesn't contain any spaces or non-latin characters**. This tutorial assumes you installed to the default location `C:\msys64`. I recommend not changing the location for simplicity.)
 
    Uncheck `Run MSYS2 now.` at the end of installation, or close the window that it opens.
 
@@ -25,9 +25,11 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
    The "Start" menu will have several different shortcuts, for now you want **`MSYS2 CLANG64`** (read about the difference [here](/msys2_environments.md)).
 
+   ![msys2 clang64 shortcut](/images/msys2_env_shortcuts.png)
+
    The window that opens is called a "terminal" or a "console". You can type commands in there. (I will explain more later.)
 
-   **Make sure it says `CLANG64` in the purple text.** If it says something else, you used the wrong shortcut (see above). Close it and restart using the correct one.
+   **Make sure it says `CLANG64` in purple text.** If it says something else, you used the wrong shortcut (see above). Close it and restart using the correct one. (There are no lasting effects of typing commands in the wrong window. )
 
    All commands below should be typed into the MSYS2 terminal.
 
@@ -35,7 +37,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
    Run **`pacman -Syu`** to install updates. (It's a good idea to do this from time to time.)
 
-   (⚠ If you want to paste commands from this tutorial, note that <kbd>Ctrl</kbd><kbd>V</kbd> doesn't work in MSYS2 terminal. Use <kbd>Shift</kbd><kbd>Insert</kbd> or right click -> "Paste".)
+   (⚠ If you want to paste commands from this tutorial, note that <kbd>Ctrl</kbd><kbd>V</kbd> doesn't work in MSYS2 terminal. Use <kbd>Shift</kbd><kbd>Insert</kbd> or right click → "Paste".)
 
    When you run the command above, it will eventually ask for confirmation: `:: Proceed with installation? [Y/n]`. Press <kbd>Enter</kbd> to continue.
 
@@ -53,7 +55,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
    (⚠ Note that we install `mingw-w64-clang-x86_64-clang` and not just `clang`! The difference is explained [here](/msys2_environments.md).)
 
-   Now if you run `clang++ --version`, you should see something like this:
+   Now if you type `clang++ --version`, you should see something like this:
    ```
    clang version 18.1.8
    Target: x86_64-w64-windows-gnu

@@ -1,6 +1,8 @@
 # Working in the VSCode terminal
 
-VSCode has a built-in terminal that you can open via `View`->`Terminal`. Let's try doing a few simple things in it to make sure everything is configured correctly.
+VSCode has a built-in terminal that you can open via `View`→`Terminal`. Let's try doing a few simple things in it to make sure everything is configured correctly.
+
+Don't install any extensions VSC suggests you yet, we'll get to that later.
 
 ### Running the compiler
 
@@ -22,7 +24,7 @@ This is to be expected. Read [Terminal for Dummies](/terminal_for_dummies.md) an
 
 After following all the steps, `clang++` should work.
 
-If you see error `undefined reference to WinMain`, you didn't save your file and are compiling an empty file. Hit <kbd>Ctrl</kbd><kbd>S</kbd>.
+If you see error `undefined reference to WinMain`, you didn't save your file and are compiling an empty file. Hit <kbd>Ctrl</kbd><kbd>S</kbd> and try again.
 
 ### Running your executables
 
@@ -34,4 +36,4 @@ If running an executable does nothing, read [Terminal for Dummies](/terminal_for
 
 ---
 
-As the next step, you might want to [configure the code completion](/configuring_code_completion.md).
+As the next step, you might want to [**configure the code completion**](/configuring_code_completion.md).

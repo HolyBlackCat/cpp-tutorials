@@ -12,9 +12,9 @@ We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why not Vis
 
 
 * Download the installer from https://code.visualstudio.com/ and install.<br/>
-  Don't install any extensions VSC suggests to you yet, we'll get to that later.
+  Don't install any extensions VSC suggests you yet, we'll get to that later.
 
-Follow those steps in order:
+Then follow those steps in order:
 
 * ### [Learn how to work in the VSC terminal](/working_in_vscode_terminal.md)
 

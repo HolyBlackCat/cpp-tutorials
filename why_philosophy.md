@@ -10,7 +10,7 @@ All tools I recommend here are free and open-source.
 
 This means they will continue to exist as long as there's a big enough community interest in them.
 
-If any questionable decisions are made by the developers, a community (or even you) can make patches or forks.
+If any questionable decisions are made by the developers, the community (or even you) can make patches or forks.
 
 Them being free makes them accessible to young children and students, so you don't have to use inferior tools for teaching.
 

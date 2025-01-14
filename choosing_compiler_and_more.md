@@ -8,7 +8,7 @@ This is a topic prone to holy wars. I tried to explain my reasoning below, but y
 
 The three most popular compilers are:
 
-* **MSVC** (stands for "**M**icro**S**oft **V**isual **C**++"), the compiler bundled with Visual Studio.
+* **MSVC** (stands for "**M**icro**s**oft **V**isual **C**++"), the compiler bundled with Visual Studio.
 * **GCC**, the compiler commonly used on Linux.
 
   On Windows it's usually bundled with something called [**MinGW**](https://www.mingw-w64.org/) (a collection of tools and libraries used to compile Windows applications without Visual Studio).
@@ -94,15 +94,17 @@ Clang be switched between MSVC mode and MinGW mode:
 
 * If you have prebuilt libraries compiled for one of those two ABIs, and you can't compile them for another (e.g. because they are closed-source), that locks you into that ABI.
 
-* MSVC ABI has quirks, such as:
+* MSVC ABI has bugs/quirks, such as:
 
   * `[[no_unique_address]]` not working out of the box (must use `[[msvc::no_unique_address]]`).
 
-  * MSVC, in their C standard library headers, single-handedly "deprecating" some of the standard functions in favor of their non-cross-platform alternatives (e.g. `scanf` vs `scanf_s`; must define `_CRT_SECURE_NO_WARNINGS` to silence this)
+  * Empty base class optimization [not working in some cases](https://stackoverflow.com/q/12701469/2752075).
+
+  * MSVC, in their C standard library headers, single-handedly "deprecating" some of the standard functions in favor of their non-cross-platform alternatives (e.g. `scanf` vs `scanf_s`; must define `_CRT_SECURE_NO_WARNINGS` to silence this). Strictly saying this isn't an "ABI" issue, but this is something you'll face when using MSVC or Clang in MSVC mode.
 
 MinGW is less popular/has less inertia behind it, which means in rare cases some libraries or applications may not support it. Sometimes you can patch the libraries, but sometimes not. Some libraries do the opposite and only support MinGW.
 
-I have a weak preference towards MinGW ABI, but both are ok.
+I have a weak preference towards MinGW ABI (because of the quirks mentioned above), but both are ok.
 
 ## MSVC issues
 
@@ -120,6 +122,8 @@ Elaborating on the [claims](#choosing-a-compiler) I made above:
   Historically, they were slow to adopt C++11, then slowly started to overtake GCC and Clang up to C++20, and now they are behind again.
 
 * Tends to have particularly quirky bugs: [[1]](https://stackoverflow.com/q/78799496/2752075), [[2]](https://stackoverflow.com/q/69431575/2752075), [[3]](https://stackoverflow.com/q/78157781/2752075), [[4]](https://gcc.godbolt.org/#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:2,endLineNumber:11,positionColumn:2,positionLineNumber:11,selectionStartColumn:2,selectionStartLineNumber:11,startColumn:2,startLineNumber:11),source:'int+main()%0A%7B%0A++++constexpr+bool+a+%3D+false%3B%0A%0A++++auto+lambda+%3D+%5B%5D%0A++++%7B%0A++++label:%0A++++++++%5B%5Bmaybe_unused%5D%5D+constexpr+bool+a+%3D+true%3B%0A++++++++static_assert(a)%3B+//+Fails+with+%60/std:c%2B%2Blatest%60.+Stops+failing+if+you+remove+either+the+label+or+remove+the+attribute.%0A++++%7D%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((g:!((h:compiler,i:(compiler:vcpp_v19_40_VS17_10_x64,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'0',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!(),options:'/std:c%2B%2Blatest',overrides:!(),selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x64+msvc+v19.40+VS17.10+(Editor+%231)',t:'0')),header:(),k:50,l:'4',m:50,n:'0',o:'',s:0,t:'0'),(g:!((h:output,i:(compilerName:'x86-64+clang+19.1.0',editorid:1,fontScale:14,fontUsePx:'0',j:1,wrap:'1'),l:'5',n:'0',o:'Output+of+x64+msvc+v19.40+VS17.10+(Compiler+%231)',t:'0')),header:(),l:'4',m:50,n:'0',o:'',s:0,t:'0')),k:50,l:'3',n:'0',o:'',t:'0')),l:'2',n:'0',o:'',t:'0')),version:4).
+
+  Also the buggy empty base optimization, [as mentioned before](https://stackoverflow.com/q/12701469/2752075).
 
 * "Issues with optimization quality" - This is from personal experience, but I keep hearing the same sentiments on the internet: [[1]](https://www.reddit.com/r/cpp/comments/100vctp/msvc_vs_clang_performance_has_anyone_tested/), [[2]](https://www.agner.org/optimize/optimizing_cpp.pdf#page=10), [[3]](https://lemire.me/blog/2023/02/27/visual-studio-versus-clangcl/), etc.
 

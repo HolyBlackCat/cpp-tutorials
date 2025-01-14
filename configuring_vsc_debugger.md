@@ -27,7 +27,7 @@ Like [Clangd](/configuring_code_completion.md#installing-clangd), LLDB-DAP consi
 
 * A program called `lldb-dap` that the extension interacts with. You already have it installed because you [installed LLDB](/debugging_in_terminal.md). But you need to tell the extension where to find it.
 
-  **Open the settings (`File`->`Preferences`->`Settings`), search for `lldb dap executable` and type `lldb-dap` in there.** Or use the full path: `C:\msys64\clang64\bin\lldb-dap.exe`.
+  **Open the settings (`File`→`Preferences`→`Settings`), search for `lldb dap executable` and type `lldb-dap` in there.** Or use the full path: `C:\msys64\clang64\bin\lldb-dap.exe`.
 
 ## Making sure the compilaton settings are correct
 
@@ -35,7 +35,7 @@ Make your compiler flags (in `tasks.json`) include `-g`, [as was explained befor
 
 ## Configuring the debugger
 
-Make sure you have a folder opened in VSC. Use `File`->`Open Folder...`.
+Make sure you have a folder opened in VSC. Use `File`→`Open Folder...`.
 
 Open the `Run and Debug` tab by pressing the button on the left:<br/>
 ![run and debug icon](/images/vsc_debugging_icon.png)
@@ -50,7 +50,7 @@ Now pressing <kbd>F5</kbd> or the green 'play' button to start the debugger. [Li
 
 If nothing happens, you likely didn't configure LLDB-DAP [as was explained above](#installing-lldb-dap).
 
-The output of your program should be visible in the `Debug Console` at the bottom of the screen (enable it in `View`->`Debug Console` if it's hidden).
+The output of your program should be visible in the `Debug Console` at the bottom of the screen (enable it in `View`→`Debug Console` if it's hidden).
 
 ## Using the debugger
 
@@ -116,4 +116,4 @@ There are a few extra settings you can add to `launch.json`:
 
   [![auto variable summary in lldb](/images/lldb_auto_var_summaries.png)](/images/lldb_auto_var_summaries.png)
 
-<!-- TODO when updating to clang 19, check that "enableSyntheticChildDebugging": true, works alright in complex situations (test locally a bunch), then add here>
+<!-- TODO when updating to clang 19, check that "enableSyntheticChildDebugging": true, works alright in complex situations (test locally a bunch), then add here -->
