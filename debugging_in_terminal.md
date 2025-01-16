@@ -22,7 +22,7 @@ Go read [Terminal for Dummies](/terminal_for_dummies.md) if you haven't already.
 
 Most debuggers (except for the Visual Studio one, from what I know) can be used in a terminal. There are ways to use them with UI as well, but we'll be covering that later.
 
-Most of the time you won't be debugging in a terminal. The goal of this chapter is to give a minimal experience of doing so, before teaching more convenient methods.
+Most of the time you won't be debugging in a terminal (though sometimes this is the only option). The goal of this chapter is to give a minimal first-hand experience of doing so, before teaching more convenient methods.
 
 ## Installing LLDB
 
@@ -50,11 +50,11 @@ int main()
 
 ### Compiling a program with debugging information
 
-First, you need to compile it with the **`-g`** flag, e.g. `clang++ prog.cpp -o prog.exe -g`. This adds debugging information to it, allowing the debugger to interact with it in a meaningful way.
+First, you need to compile it with the **`-g`** flag, e.g. `clang++ prog.cpp -o prog -g`. This adds debugging information to it, allowing the debugger to interact with it in a meaningful way.
 
 ### Running a program in LLDB
 
-Start LLDB on your program using **`lldb prog.exe`**. You should see something like this:
+Start LLDB on your program using **`lldb prog`**. You should see something like this:
 ```
 (lldb) target create "prog.exe"
 (rrent executable set to 'C:\code\a\prog.exe' (x86_64).
@@ -71,7 +71,7 @@ Process 9804 exited with status = 0 (0x00000000)
 
 Now, to execute it step by step, you need to create a "breakpoint", i.e. tell the debugger on what line of the code to pause.
 
-Type **`b 5`** to put a breakpoint on line 5 (which should be `int x = 10;`).
+Type **`b 5`** to put a breakpoint on line 5 (which should be `int x = 10;`). When more than one file is involved, you will need to a file name, e.g. `b main.cpp:5`.
 
 Now if you type **`r`** again, you should see following:
 
@@ -83,9 +83,11 @@ Print the values of variables using **`p`** (short for `print`). E.g. try `p x` 
 
 Or use **`fr v`** (short for `frame variable`) to print all variables.
 
+Another useful command is "continue executing until a specific line", **`th u 10`** (shoft for `thread until 10`), which can be used to quickly break out of loops.
+
 Lastly, when you want to unpause your program, type **`c`** (short for `continue`).
 
-Type **`quit`** to exit LLDB and return to the shell.
+Type **`quit`** or **`exit`** to exit LLDB and return to the shell.
 
 ## Debugging functions
 
@@ -170,6 +172,34 @@ The ``frame #7 ... prog.exe`main at prog.cpp:7:5`` refers to the `delete &x` lin
 Lastly, type `f 7` (meaning "frame #7") to view that code:
 
 [![lldb shows the offending frame](/images/lldb_offending_frame.png)](/images/lldb_offending_frame.png)
+
+## Debugging stuck programs
+
+Another bit of knowledge is how to deal with "stuck" programs. Consider this code:
+
+```cpp
+#include <chrono>
+#include <iostream>
+#include <thread>
+
+int main()
+{
+    int i = 0;
+    while (true)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::cout << i++ << '\n';
+    }
+}
+```
+
+This endlessly prints numbers.
+
+If you know what loop is being executed, you can place a breakpoint there. But if you don't, you might want to just pause the program, doesn't matter where.
+
+This is achieved by pressing <kbd>**Ctrl**</kbd><kbd>**C**</kbd>, or alternatively by typing **`pro i`** (short for `process interrupt`). Then you can use `bt` as was explained above, to figure out where you are. To get meaningful results, you might need to first run **`t 1`** first to switch to the *main thread*. (Threads are parts of a program that run in parallel, at the same time as one another. In addition to your `main()` function which is run by the main thread, there might be other code executing in parallel, in other threads, either started by the standard library or by you.)
+
+Try it.
 
 ---
 

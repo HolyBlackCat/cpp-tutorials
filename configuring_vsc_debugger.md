@@ -27,7 +27,7 @@ Like [Clangd](/configuring_code_completion.md#installing-clangd), LLDB-DAP consi
 
 * A program called `lldb-dap` that the extension interacts with. You already have it installed because you [installed LLDB](/debugging_in_terminal.md). But you need to tell the extension where to find it.
 
-  **Open the settings (`File`→`Preferences`→`Settings`), search for `lldb dap executable` and type `lldb-dap` in there.** Or use the full path: `C:\msys64\clang64\bin\lldb-dap.exe`.
+  **Open the settings (`File`→`Preferences`→`Settings`), search for `lldb dap executable` and type `C:\msys64\clang64\bin\lldb-dap.exe` in there.**
 
 ## Making sure the compilaton settings are correct
 
@@ -40,11 +40,11 @@ Make sure you have a folder opened in VSC. Use `File`→`Open Folder...`.
 Open the `Run and Debug` tab by pressing the button on the left:<br/>
 ![run and debug icon](/images/vsc_debugging_icon.png)
 
-Click `create a launch.json file`, and select `Native LLDB Debugger`. It will create a file called `launch.json` in the `.vscode` directory in the current directory. This file holds debugging configurations. You can create it manually once you get used to it.
+Click `create a launch.json file`, and select `LLDB DAP Adapter`. It will create a file called `launch.json` in the `.vscode` directory in the current directory. This file holds debugging configurations. You can create it manually once you get used to it.
 
 [![generated launch.json](/images/generated_launch_json.png)](/images/generated_launch_json.png)
 
-Replace `<your program>` with the name of your program, e.g. `"program": "${workspaceRoot}/prog.exe"`.
+Replace `<your program>` with the name of your program, e.g. `"program": "${workspaceRoot}/prog.exe"`. (Here `${workspaceRoot}` means the currently opened directory.)
 
 Now pressing <kbd>F5</kbd> or the green 'play' button to start the debugger. [Like before](/debugging_in_terminal.md), you should see your application window flash for a moment, and close immediately.
 
@@ -88,12 +88,12 @@ Now pressing <kbd>F5</kbd> or the green arrow will automatically recompile the p
 
 There are a few extra settings you can add to `launch.json`:
 
-* Opening `Debug Console` automatically when starting the debugger:
+* **Open `Debug Console` automatically when starting the debugger:**
   ```json
   "internalConsoleOptions": "openOnSessionStart",
   ```
 
-* Improve how variable values are printed:
+* **Improve how complex values are displayed:**
   ```json
   "enableAutoVariableSummaries": true,
   ```
@@ -116,4 +116,26 @@ There are a few extra settings you can add to `launch.json`:
 
   [![auto variable summary in lldb](/images/lldb_auto_var_summaries.png)](/images/lldb_auto_var_summaries.png)
 
-<!-- TODO when updating to clang 19, check that "enableSyntheticChildDebugging": true, works alright in complex situations (test locally a bunch), then add here -->
+* **Allow inspecting true members of standard classes:**
+  ```json
+  "enableSyntheticChildDebugging": true
+  ```
+  Let's say you have a vector: (if you don't know what those are, read your C++ book more and come back later)
+  ```cpp
+  std::vector<int> v = {1, 2, 3};
+  ```
+  By default it's displayed like this:
+
+  [![no synthetic child](/images/lldb_no_synth_child.png)](/images/lldb_no_synth_child.png)
+
+  The elements are shown, but the internal implementation details of `std::vector` aren't shown. Sometimes they can be useful.
+
+  With this setting enabled, you'll see this instead:
+
+  [![no synthetic child](/images/lldb_synth_child.png)](/images/lldb_synth_child.png)
+
+  In addition to the elements, this now shows the internals of `std::vector` too.
+
+  By default the `[raw]` section is collapsed, so this isn't too obtrusive.
+
+<!-- TODO when updating to clang 19, check that , works alright in complex situations (test locally a bunch), then add here -->

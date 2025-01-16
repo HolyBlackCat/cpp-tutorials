@@ -8,13 +8,13 @@ Don't install any extensions VSC suggests you yet, we'll get to that later.
 
 Create a .cpp file in VSC and try to compile it in the VSC terminal, [like you did before in the MSYS2 terminal](/compiling_in_terminal.md).
 
-Running the compiler (`clang++ prog.cpp -o prog.exe`) will likely result in an error:
+Running the compiler (`clang++ prog.cpp -o prog`) will likely result in an error:
 ```powershell
-PS C:\code> clang++ prog.cpp -o prog.exe
+PS C:\code> clang++ prog.cpp -o prog
 clang++ : The term 'clang++' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is
 correct and try again.
 At line:1 char:1
-+ clang++ prog.cpp -o prog.exe
++ clang++ prog.cpp -o prog
 + ~~~~~~~
     + CategoryInfo          : ObjectNotFound: (clang++:String) [], CommandNotFoundException
     + FullyQualifiedErrorId : CommandNotFoundException
@@ -28,7 +28,7 @@ If you see error `undefined reference to WinMain`, you didn't save your file and
 
 ### Running your executables
 
-After compiling your executable, try running it using `./prog.exe`.
+After compiling your executable, try running it using `./prog`.
 
 Make sure it actually runs and `cout` successfully prints things.
 

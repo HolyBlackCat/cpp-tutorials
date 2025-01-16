@@ -32,7 +32,7 @@ Now if you press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`Tasks: Run Task`
 
 I know, I know, this doesn't look very convenient. Bear with me.
 
-Now lets rewrite this task to perform compilation. Replace `echo Hello` with your compiler command (e.g. `clang++ prog.cpp -o prog.exe`), and `"label": "echo"` with e.g. `"label": "Compile"`. Run this task and observe that it prints errors if the compilation fails, or prints nothing on success.
+Now lets rewrite this task to perform compilation. Replace `echo Hello` with your compiler command (e.g. `clang++ prog.cpp -o prog`), and `"label": "echo"` with e.g. `"label": "Compile"`. Run this task and observe that it prints errors if the compilation fails, or prints nothing on success.
 
 If it says `clang++ : The term 'clang++' is not recognized as the name of ...`, you need to read [Working in VSC terminal](/working_in_vscode_terminal.md) again and configure PATH as it tells you to.
 
@@ -49,13 +49,13 @@ Now create a second task to run the compiled executable. It could look like this
         {
             "label": "Compile",
             "type": "shell",
-            "command": "clang++ prog.cpp -o prog.exe",
+            "command": "clang++ prog.cpp -o prog",
             "problemMatcher": []
         },
         {
             "label": "Run",
             "type": "shell",
-            "command": "./prog.exe",
+            "command": "./prog",
             "problemMatcher": []
         }
     ]

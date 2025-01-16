@@ -54,7 +54,7 @@ A successful compilation will print nothing. If your code is wrong, errors will 
 
 A successful compilation will create a file called `a.exe`, this is a program you can run.
 
-Run it in your terminal using `./a.exe` and you should see `Hello!` being printed.
+Run it in your terminal using `./a` (or `./a.exe`) and you should see `Hello!` being printed.
 
 ## You did it! ❤️
 
@@ -68,8 +68,8 @@ Then [**install an IDE**](/installing_vsc.md) for a better programming experienc
 
 You can also run your executable by double-clicking `a.exe`. If you see any errors (you probably will at this point), consult [Debugging DLL issues](/debugging_dll_issues.md). Even if you fix this, our test application will quickly close after you run it, before you can see the results. This is the correct behavior for programs that are supposed to be run in the terminal (but if you don't like it, Google for workarounds.)
 
-You can tell the compiler to use a different executable name using `-o`, for example: `clang++ prog.cpp -o prog.exe` will name the program `prog.exe`. (The order doesn't matter, `clang++ -o prog.exe prog.cpp` works as well. But the executable name must immediately follow `-o`, e.g. `clang++ prog.cpp prog.exe -o` doesn't work. `-o prog` and `-o prog.exe` are equivalent.)
+You can tell the compiler to use a different executable name using `-o`, for example: `clang++ prog.cpp -o prog` will name the program `prog.exe`. (The order doesn't matter, `clang++ -o prog prog.cpp` works as well. But the executable name must immediately follow `-o`, e.g. `clang++ prog.cpp prog -o` doesn't work. `-o prog` and `-o prog.exe` are equivalent.)
 
 Remember that you can press "up" in the terminal to repeat the last command, instead of typing it every time.
 
-You can use `clang++ prog.cpp -o prog.exe && ./prog.exe` to both compile and run the application as a single command.
+You can use `clang++ prog.cpp -o prog && ./prog` to both compile and run the application as a single command.
