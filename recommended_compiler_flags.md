@@ -94,18 +94,18 @@ Some people use `-pedantic` or `-Wpedantic` instead of `-pedantic-errors`. The f
 
 </details>
 
-<!-- TODO: replace C++23, C23, when newer standards are released -->
-<details><summary><b><code>-std=c++23</code></b> — set language version and disable more extensions</h3></summary>
+<!-- TODO: replace C++26, C23, when newer standards are released -->
+<details><summary><b><code>-std=c++26</code></b> — set language version and disable more extensions</h3></summary>
 
 This is for C++, for C use `-std=c23`.
 
 This does two things:
 
-1. It **sets the language version to C++23** (the latest at the time of writing). The **language version** is not the same thing as the **compiler version**. The language version is the version of the C++ standard (the document that all compilers try to adhere to, that explains how C++ is supposed to work).
+1. It **sets the language version to C++26** (newest supported by Clang at the time of writing). The **language version** is not the same thing as the **compiler version**. The language version is the version of the C++ standard (the document that all compilers try to adhere to, that explains how C++ is supposed to work).
 
     If you tell a compiler to use an old C++ version, it will disable some new features.
 
-    The number `23` is the release year. At the time of writing, the latest C++ standard is C++23, and the past ones were C++20, C++17, C++14, C++11, C++98 (later amended as [C++03](https://stackoverflow.com/q/8285777/2752075)). And the C standards are C23, C17, C11, C98.
+    The number `26` is the release year. At the time of writing, C++26 isn't released yet (but the compilers already support some of the planned features). The latest released C++ standard is C++23, and the past ones were C++20, C++17, C++14, C++11, C++98 (later amended as [C++03](https://stackoverflow.com/q/8285777/2752075)). And the C standards are C23, C17, C11, C98.
 
     Default language version varies between compilers and compiler versions, at the time of writing Clang and GCC default to C++17.
 

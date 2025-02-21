@@ -12,7 +12,7 @@ Some libraries don't do releases, then just grab the latest version of the code 
 
 ## Unzip the source code
 
-Unzip the source code somewhere. The path to it shouldn't contain spaces or any special or non-latin characters, it shouldn't be on a network drive or on a USB stick.
+Unzip the source code somewhere. The path to it shouldn't contain spaces or any special or non-latin characters, it shouldn't be on a network drive nor on a USB stick.
 
 ## Install dependencies
 
@@ -33,16 +33,17 @@ A "build system" is a tool that automatically invokes the compiler for multiple 
 To determine it, look at the source code:
 
 * If a file named **`CMakeLists.txt`** exists, the build system is **CMake**.
-* If a file named **`configure`** exists, the build system is likely **Autotools** (or follows the same build procedure).
+* If a file named **`meson.build`** exists, the build system is **Meson**.
+* If a file named **`configure`** exists, the build system is likely **Autotools** (or follows the same build procedure as it).
 
-If both exist, prefer CMake (if it works).
+Some projects support multiple build systems, you can pick either one.
 
 As you can see, OpenAL uses CMake:
 
 ![OpenAL CMakeLists.txt](/images/openal_cmakelists_txt.png)
 
 * ### [Build using CMake](/using_libraries_compiling_manually_cmake.md)
-* ### [Build using CMake](/using_libraries_compiling_manually_cmake.md)
+* ### [Build using Autotools](/using_libraries_compiling_manually_autotools.md)
 
 ## Determine the compiler flags
 

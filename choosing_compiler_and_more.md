@@ -46,7 +46,7 @@ All three are viable, but here's my personal order or preference:
    Most code analysis tools (including those in most IDEs, excluding VS) are based on Clang today, so you'll likely have to keep your code compatible with it regardless.
 
 2. GCC - Ok, but slower compilation speed compared to Clang on Windows, and worse memory usage (about 2x more in my tests). Cross-compilation* requires slightly more effort**. No sanitizers on Windows.
-3. MSVC - [Has some issues with optimization quality and standard conformance.](#msvc-issues) Slow at adding support for C++23 and C++26. Not open-source. Cross-compilation is impractical***. But compilation speed is good (same as Clang or a bit faster).
+3. MSVC - [Has some issues with optimization quality and standard conformance.](#msvc-issues) Slow at adding support for C++23 and C++26. Not open-source. Cross-compilation is impractical***. But compilation speed is good (same as Clang or a bit faster). Not open-source.
 
    Has Address Sanitizer on Windows, which is better than GCC (which has no sanitizers on Windows) but worse than Clang (which also has UB Sanitizer on Windows).
 
@@ -68,7 +68,7 @@ There's no single "C++ standard library". Rather, there are several implementati
 
 * **MSVC STL**
 
-  Has some minor warts that they don't fix to preserve ABI compatibility, such as: [`std::deque` being a joke](https://github.com/microsoft/STL/issues/147), or `std::async` non-conformingly using a thread pool, which messes with `thread_local` variables.
+  Has some warts that they don't fix to preserve ABI compatibility, such as: [`std::deque` being a joke](https://github.com/microsoft/STL/issues/147), or [a const-correctness bugs in the iterators](https://quuxplusone.github.io/blog/2021/07/14/an-iterator-is-not-a-const-iterator/), or `std::async` non-conformingly using a thread pool, which messes with `thread_local` variables.
 
   Otherwise seems to be quite decent.
 
@@ -132,8 +132,10 @@ Elaborating on the [claims](#choosing-a-compiler) I made above:
   * Can only compile for Windows.
   * Can only be used on Windows (not counting weird setups using Wine), while GCC and Clang can cross-compile from other operating systems.
 
-* Not open-source:
+* Not free and open-source:
 
   Most of time it's just a matter of ideology, but it means you can't fix bugs in it yourself.
+
+  Also there are some weird license requirements, such as apparently not being allowed to [redistribute compiled debug binaries](https://learn.microsoft.com/en-us/cpp/windows/determining-which-dlls-to-redistribute?view=msvc-170) (*"You also can't redistribute debug versions of your applications ..."*).
 
   Note that MSVC STL (their C++ standard library) is open-source.

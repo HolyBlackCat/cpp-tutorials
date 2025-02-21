@@ -137,5 +137,3 @@ There are a few extra settings you can add to `launch.json`:
   In addition to the elements, this now shows the internals of `std::vector` too.
 
   By default the `[raw]` section is collapsed, so this isn't too obtrusive.
-
-<!-- TODO when updating to clang 19, check that , works alright in complex situations (test locally a bunch), then add here -->

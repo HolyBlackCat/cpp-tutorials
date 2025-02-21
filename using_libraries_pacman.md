@@ -213,7 +213,7 @@ Use one of the two options:
 
    Given `lib__.dll.a`, pass the `__` part of its name to the `-l...` flag. (E.g. given `libopenal.dll.a`, use **`-lopenal`**.)
 
-   `.dll.a` is a "import library". It's a tiny file that doesn't contain the function definitions, but will silence the `undefined symbol` errors and cause your application to load `.dll` when started, which *does* contain the definitions.
+   `.dll.a` is an "import library". It's a tiny file that doesn't contain the function definitions, but will silence the `undefined symbol` errors and cause your application to load `.dll` when started, which *does* contain the definitions.
 
    Since all `.dll.a`/`.a` files are installed to the same directory (`C:\msys64\clang64\lib`), you normally don't need to manually specify their location. But `-L...` lets you do that if needed (like `-I...` for headers).
 
