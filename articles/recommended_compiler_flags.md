@@ -1,16 +1,16 @@
 # Recommended compiler settings
 
-A compiler (such as Clang) has many different settings you can change.
+A compiler (such as Clang or GCC) has many different settings you can change.
 
 E.g. if you've read [the page about debugging](/articles/debugging_in_terminal.md), you already know about `-g` that adds debugging information to the executable.
 
 There are many other useful settings. Those settings are also called "flags" or "command-line flags".
 
-This page targets Clang, but most flags here work with GCC too, unless documented otherwise.
+This page targets Clang and GCC. They have very similar flags.
 
 Most compiler flags can be used in any order (this is true for all flags on this page).
 
-You can read the [summary](#summary) at the bottom.
+**You can read the [summary](#summary) at the end.**
 
 ## Basic flags you should use by default
 
@@ -18,7 +18,7 @@ Those are the flags I recommend to always use.
 
 Click on each for an explanation.<details><summary><b><code>-Wall -Wextra</code></b> — enable basic compiler warnings</summary>
 
-A "warning" is when a compiler tells you that it thinks your code is bugged, despite being valid C++. It won't tell by default though, you have to ask it.
+A "warning" is when a compiler tells you it thinks your code is bugged, despite being valid C++. It won't say it by default though, you have to ask it.
 
 For example, this program:
 ```cpp
@@ -70,7 +70,7 @@ int main()
 
 But Clang and GCC accept this by default.
 
-Why is this bad? Because different compilers have different extensions, and if you use them, your program will not compile on some compilers (e.g. MSVC compiler can't compile the program above).
+Why is this bad? Because different compilers have different extensions, and if you use them, your program will not compile on some compilers (e.g. the MSVC compiler can't compile the program above).
 
 If you try to compile this with `-pedantic-errors` (`clang++ prog.cpp -pedantic-errors`), you should see an error:
 ```
@@ -86,11 +86,11 @@ prog.cpp:5:9: note: declared here
 
 Some extensions have standard alternatives (e.g. `std::vector<int> array(n);` can replace `int array[n];` above).
 
-Even if you intentionally do want to use an extension, this isn't a good reason to remove this flag. Instead, there are ways to disable those checks for certain *parts* of your code.
+Even if you intentionally do want to use an extension, this isn't a good reason to remove this flag. Instead there are ways to disable those checks for certain *parts* of your code.
 
 #### Alternative flags: `-pedantic` and `-Wpedantic`
 
-Some people use `-pedantic` or `-Wpedantic` instead of `-pedantic-errors`. The first two have the same effect, and unlike `-pedantic-errors` they produce warnings rather than errors.
+Some people use `-pedantic` or `-Wpedantic` instead of `-pedantic-errors`. Those two have the same effect, and unlike `-pedantic-errors` they produce warnings rather than errors.
 
 </details>
 
@@ -107,7 +107,7 @@ This does two things:
 
     The number `26` is the release year. At the time of writing, C++26 isn't released yet (but the compilers already support some of the planned features). The latest released C++ standard is C++23, and the past ones were C++20, C++17, C++14, C++11, C++98 (later amended as [C++03](https://stackoverflow.com/q/8285777/2752075)). And the C standards are C23, C17, C11, C98.
 
-    Default language version varies between compilers and compiler versions, at the time of writing Clang and GCC default to C++17.
+    The default language version varies between compilers and compiler versions, and at the time of writing Clang and GCC default to C++17.
 
     You'll see people mention versions with a letter, such as C++2c. It refers to the next version of the standard that's currently in development, and the letter will be replaced with a digit when it's released. C++2c is expected to be released in 2026 and become C++26 (C++2a became C++20, C++2b became C++23; and before that C++0x first became C++1x (they didn't guess the decade right) and then C++11; C++1y became 14 and C++1z became C++17).
 
@@ -129,9 +129,9 @@ This does two things:
 
 ## Flags to catch errors
 
-Those will catch many programming errors for you. But they decrease performance, and should be disabled in "release builds" (when producing executables to be shipped to end users).
+Those will catch many programming errors for you. They will also slow down your program, [see the discussion below](#debug-vs-release-builds) on when they should be removed.
 
-<details><summary><b><code>-fsanitize=address</code></b> — enable address sanitizer</h3></summary>
+<details><summary><b><code>-fsanitize=address</code></b> — enable the address sanitizer</h3></summary>
 
 "Address sanitizer" (or "ASAN" for short) is a tool that catches pointer errors. It's embedded into your executable, and performs additional checks when you run the executable.
 
@@ -168,7 +168,7 @@ ASAN would catch this.
 
 Compile this program with `clang++ prog.cpp -fsanitize=address`, and after `8` you'll get an error message (a fairly cryptic one, but it will say `stack-buffer-overflow`, and that it happened in function `main`).
 
-**If you also add `-g`, it will tell you the exact line number.**.
+**If you also add `-g`, it will tell you the exact line number.**
 
 ASAN also catches memory leaks.
 
@@ -176,9 +176,9 @@ Note that ASAN has a significant performance and memory overhead.
 
 </details>
 
-<details><summary><b><code>-fsanitize=undefined</code></b> — enable undefined behavior sanitizer</h3></summary>
+<details><summary><b><code>-fsanitize=undefined</code></b> — enable the undefined behavior sanitizer</h3></summary>
 
-"Undefined behavior sanitizer" (aka UBSAN) catches some forms of undefined behavior.
+The "undefined behavior sanitizer" (aka UBSAN) catches some forms of undefined behavior.
 
 For example:
 ```cpp
@@ -190,7 +190,7 @@ int main()
         std::cout << i * 400000000 << '\n';
 }
 ```
-If you run, you might get something like this:
+If you run this, you might see something like this:
 ```
 0
 400000000
@@ -205,7 +205,7 @@ If you run, you might get something like this:
 ```
 When `i >= 6`, `int` overflows. (In this case it manifests as negative numbers, but in general can cause other issues.)
 
-If we compilie it as `clang++ prog.cpp -fsanitize=undefined` and run, UBSAN will complain:
+If we compilie this as `clang++ prog.cpp -fsanitize=undefined` and run, UBSAN will complain:
 ```
 prog.cpp:6:24: runtime error: signed integer overflow: 6 * 400000000 cannot be represented in type 'int'
 SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior prog.cpp:6:24
@@ -213,7 +213,9 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior prog.cpp:6:24
 
 </details>
 
-<details><summary><b><code>-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG</code></b> — enable additional checks in the C++ standard library</summary>
+**NOTE:** On Windows, `-fsanitize=...` don't work with GCC. They also doesn't work if you installed Clang in any [environment](/articles/msys2_environments.md) other than MSYS2 CLANG64 (such as in [MSYS2 UCRT64](/articles/msys2_environments.md)). If you followed this tutorial, then they should work for you.
+
+<details><summary><b><code>-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG</code> <code>-D_GLIBCXX_DEBUG</code></b> — enable additional checks in the C++ standard library</summary>
 
 For example, this will detect accessing `std::vector` out of bounds.
 
@@ -227,12 +229,16 @@ int main()
     std::cout << v[10] << '\n';
 }
 ```
-Without this flag, this might print a junk number. With the flag, you'll get:
+Without those flags, this might print a junk number. With the flag, you'll get:
 ```
 C:/msys64/clang64/include/c++/v1/vector:1393: assertion __n < size() failed: vector[] index out of bounds
 ```
 
-There are also weaker versions of this flag with less overhead, consult [the manual](https://libcxx.llvm.org/Hardening.html).
+There are also weaker versions of those flags with less overhead, consult the manual for the [first](https://libcxx.llvm.org/Hardening.html) and the [second](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_macros.html) flags respectively.
+
+Strictly speaking you never need both of those flags at the same time, you need one. But it's often easier to not determine which one you need, and use both.
+
+The first flag is for libc++, and the second is for libstdc++. Those are two different implementations of the C++ standard library, Clang's one and GCC's one respectively. If you've been following this tutorial as is, you're using libc++ and only need the first flag. If you're using GCC, use the second flag. In some situations Clang can use libstdc++ instead of libc++ and so you will need the second flag, e.g. if you installed Clang from [MSYS2 UCRT64](/articles/msys2_environments.md).
 
 Note that this flag only works when using libc++ (Clang's own implementation of the C++ standard library.)
 
@@ -262,6 +268,8 @@ The value of `z` is `0` rather than `0.6`, because its type is not `float`. `-Wc
 "Implicit conversion" means "without a cast". Adding a cast (`int z = int(x / y);`) disables the warning, because this is now an "explicit conversion", and it expresses that the programmer intended this to happen.
 
 </details>
+
+I also recommend adding **`-Wno-implicit-int-float-conversion`** to silence this warning for some of the "tame" conversions (namely integer to floating-point). This extra flag is only supported by Clang.
 
 
 <details><summary><b><code>-Wimplicit-fallthrough</code></b> — detect forgotten <code>break</code> in <code>switch</code>es</h3></summary>
@@ -355,24 +363,43 @@ Not compatible with `-g`, as it would remove debugging information.
 
 </details>
 
-<details><summary><b><code>-DNDEBUG</code></b> — disable <code>assert()</code> macro</h3></summary>
+<details><summary><b><code>-DNDEBUG</code></b> — disable the <code>assert()</code> macro</h3></summary>
 
 If you're using [`assert()`](https://en.cppreference.com/w/cpp/error/assert) in your code, this disables it. It's intended to only be enabled during development.
 
 </details>
 
+
+## Debug vs Release builds
+
+This is little detour on choosing the right flags for the situation.
+
+A "build" refers to a specific compiled version of a program that you produce. Depending on the situation, you might want diffent builds with different flags.
+
+A "debug build" is a one you would use during development, often with flags to catch more errors at the cost of slower runtime performance, and without flags that slow down the compilation (to allow faster experimentation).
+
+A "release build" is a one you would send to your users/customers. You typically disable most of the checks that make your program slower, and enable the [optimizations](#optimization-options) that make it faster.
+
+This doesn't have to be black-and-white, but that's how people usually do things.
+
+Some of the flags you want to use in all builds. Some only in debug or release builds.
+
 ## Summary
 
-Summarizing the above, I recommend following compilation flags:
+Summarizing the above, I recommend the following compilation flags:
 
-**`-std=c++23 -pedantic-errors -Wall -Wextra -Wconversion -Wimplicit-fallthrough -Wdeprecated -Wextra-semi`**
+**`-std=c++23 -pedantic-errors -Wall -Wextra -Wconversion -Wno-implicit-int-float-conversion -Wimplicit-fallthrough -Wdeprecated -Wextra-semi`**
 
 And additionally:
 
-* In debug builds (i.e. during development):<br/>
-  **`-g -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG -fsanitize=address -fsanitize=undefined`**
+* In [debug builds](#debug-vs-release-builds):<br/>
+  **`-g -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG -D_GLIBCXX_DEBUG -fsanitize=address -fsanitize=undefined`**
 
   If you don't get enough performance, add `-Og` and/or disable `-fsanitize=...`.
 
-* In release builds (i.e. final executables for end users):<br/>
+  If you're using GCC on Windows, remove `-fsanitize=...` as they will not work there. This will also not work if you installed Clang in some other [environment](/articles/msys2_environments.md) than MSYS2 CLANG64.
+
+  If you're using GCC, remove `-Wno-implicit-int-float-conversion` as it doesn't understand it.
+
+* In [release builds](#debug-vs-release-builds):<br/>
   **`-O3 -s -flto=thin`**
