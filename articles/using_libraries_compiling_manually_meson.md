@@ -1,6 +1,6 @@
 # How to compile libraries manually using Meson?
 
-If you have [determined the build system](/using_libraries_compiling_manually.md#determine-and-use-the-build-system) to be Meson, follow this procedure.
+If you have [determined the build system](/articles/using_libraries_compiling_manually.md#determine-and-use-the-build-system) to be Meson, follow this procedure.
 
 ## Download a test library
 
@@ -18,7 +18,7 @@ Even if you have already installed Meson outside of MSYS2, it's better to instal
 
 ## Run the "configuration" step
 
-[If you're familiar with CMake](/using_libraries_compiling_manually_cmake.md), you might notice that the procedure is very similar.
+[If you're familiar with CMake](/articles/using_libraries_compiling_manually_cmake.md), you might notice that the procedure is very similar.
 
 First you might want to `cd` to the directory where you have the source code, purely for convenience. Or perhaps to its parent directory.
 
@@ -31,7 +31,7 @@ Here `MySourceDir` is the library source directory containing `meson.build`, `My
 
 I also recommend adding `--buildtype=release`, and `--prefix=...` isn't strictly necessary, more on that below.
 
-**NOTE:** If your library [depends on other libraries you've installed manually](/using_libraries_compiling_manually.md#install-dependencies), you can specify the same installation directory for all of them, which should make Meson find them automatically. There are other solutions to this (to keep them separate), but this one is the easiest.
+**NOTE:** If your library [depends on other libraries you've installed manually](/articles/using_libraries_compiling_manually.md#install-dependencies), you can specify the same installation directory for all of them, which should make Meson find them automatically. There are other solutions to this (to keep them separate), but this one is the easiest.
 
 For example, I have extracted the FreeType source to `C:\code` (so I have their `meson.build` at `C:\code\freetype-2.13.3\meson.build`), so I run following:
 ```sh
@@ -48,7 +48,7 @@ On success, you should see the following after a while:
 
 This creates build directory you specified in `meson setup ...`. Not the installation directory yet, though.
 
-You can look through the logs to see if you get any warnings, such as ones about [missing dependencies](/using_libraries_compiling_manually.md#install-dependencies). Though you don't *have* to fix them immediately if the command above succeeds. Try to continue with this procedure and see if everything works fine or not
+You can look through the logs to see if you get any warnings, such as ones about [missing dependencies](/articles/using_libraries_compiling_manually.md#install-dependencies). Though you don't *have* to fix them immediately if the command above succeeds. Try to continue with this procedure and see if everything works fine or not
 
 <details><summary><b>More about Meson flags</b></summary>
 
@@ -60,11 +60,11 @@ I've also thrown in a few more useful flags:
 
    Another option is to not install anywhere, and manually copy the files (then you don't care about this flag), but this is stone age technology.
 
-   If you're [familiar with CMake](/using_libraries_compiling_manually_cmake.md), this option is equivalent to CMake's `-DCMAKE_INSTALL_PREFIX=...`.
+   If you're [familiar with CMake](/articles/using_libraries_compiling_manually_cmake.md), this option is equivalent to CMake's `-DCMAKE_INSTALL_PREFIX=...`.
 
 * `--buildtype=release` will perform a release build (with optimization enabled, and with no debugging information). Change this if you want to.
 
-   If you're [familiar with CMake](/using_libraries_compiling_manually_cmake.md), this option is equivalent to CMake's `-DCMAKE_BUILD_TYPE=Release`.
+   If you're [familiar with CMake](/articles/using_libraries_compiling_manually_cmake.md), this option is equivalent to CMake's `-DCMAKE_BUILD_TYPE=Release`.
 
 </details>
 
@@ -77,7 +77,7 @@ Use `meson compile -C MyBuildDir`, where `MyBuildDir` is the build directory tha
 
 The `-C ...` part isn't necessary if you `cd` to this directory first.
 
-[Like CMake](/using_libraries_compiling_manually_cmake.md#build-the-library), this supports the `-j...` flag, but unlike CMake it has a reasonable default value, so I don't recommend setting this flag.
+[Like CMake](/articles/using_libraries_compiling_manually_cmake.md#build-the-library), this supports the `-j...` flag, but unlike CMake it has a reasonable default value, so I don't recommend setting this flag.
 
 Wait a few minutes for the compilation to finish.
 
@@ -86,7 +86,7 @@ If you edit the library's source code, you normally only need to rerun this comm
 
 ## Install the library
 
-After finishing the previous step, the library is already compiled and can in theory be used as is (you'll find all the [`.dll`, `.a`, `.dll.a` files](/using_libraries_pacman.md#look-at-what-you-have-installed) in the build directory you have specified).
+After finishing the previous step, the library is already compiled and can in theory be used as is (you'll find all the [`.dll`, `.a`, `.dll.a` files](/articles/using_libraries_pacman.md#look-at-what-you-have-installed) in the build directory you have specified).
 
 But it's convenient to perform the "installation" step after that, which copies all userful files into one place, so you don't need to look for them and can delete the build directory which is no longer needed.
 
@@ -96,13 +96,13 @@ meson install -C MyBuildDir
 ```
 (Note, we're specifying the build directory, not the installation directory.)
 
-This should populate <code>My<b>Install</b>Dir</code> (which you [specified all the way back](#run-the-configuration-step)) will all the required files ([similar to those](/using_libraries_pacman.md#look-at-what-you-have-installed)).
+This should populate <code>My<b>Install</b>Dir</code> (which you [specified all the way back](#run-the-configuration-step)) will all the required files ([similar to those](/articles/using_libraries_pacman.md#look-at-what-you-have-installed)).
 
 You can now delete `MyBuildDir`, as it's no longer needed. And the source directory too, if you don't need it.
 
 ---
 
-For using the resulting library, proceed back to [this](/using_libraries_compiling_manually.md#determine-the-compiler-flags).
+For using the resulting library, proceed back to [this](/articles/using_libraries_compiling_manually.md#determine-the-compiler-flags).
 
 ---
 
@@ -114,7 +114,7 @@ Try pressing `File`→`Open Folder`, and open the source directory (`C:\code\ope
 
 Now if you open some source file (e.g. `src/autofit/autofit.c`), you should immediately see some red squiggles, headers not being found, etc. You can read more about why this happens [here](TODO_link).
 
-Note that I'm assuming you [have Clangd installed in VSC](/configuring_code_completion.md), which you should have if you've been following this tutorial.
+Note that I'm assuming you [have Clangd installed in VSC](/articles/configuring_code_completion.md), which you should have if you've been following this tutorial.
 
 In this case, for Clangd to understand where the missing headers are (and more), it needs to see the `compile_commands.json` file, which contains compiler flags used for every source file in the library (which among other things contain the include directories that need to be searched).
 

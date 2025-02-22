@@ -38,7 +38,7 @@ Copy the path to this directory by right-clicking the address bar and pressing `
 
 [![Windows file explorer](/images/file_explorer_address.png)]((/images/file_explorer_address.png))
 
-Open MSYS2 terminal as described [here](/installing_toolchain_msys2.md#installing-msys2) by clicking `MSYS2 CLANG64` in the Start menu. (Make sure it says `CLANG64` in purple text. If not, you clicked the wrong thing.)
+Open MSYS2 terminal as described [here](/articles/installing_toolchain_msys2.md#installing-msys2) by clicking `MSYS2 CLANG64` in the Start menu. (Make sure it says `CLANG64` in purple text. If not, you clicked the wrong thing.)
 
 The terminal has a concept of a "current directory", which you can change using the `cd` command. Type `cd "`, paste the path using <kbd>Shift</kbd><kbd>Insert</kbd> (because <kbd>Ctrl</kbd><kbd>V</kbd> doesn't work in MSYS2 terminal), type the closing `"`, then <kbd>Enter</kbd>.
 
@@ -46,12 +46,12 @@ The terminal has a concept of a "current directory", which you can change using 
 
 Notice the current directory being displayed in yellow text.
 
-Notice that the MSYS2 [shell](/terminal_for_dummies.md#what-is-a-shell) displays the paths in the Linux style, `/c/code/a` instead of `C:\code\a`.<br/>
+Notice that the MSYS2 [shell](/articles/terminal_for_dummies.md#what-is-a-shell) displays the paths in the Linux style, `/c/code/a` instead of `C:\code\a`.<br/>
 `cd` works with both path styles, so you could do `cd /c/code/a`.
 
 ## Compiling
 
-Assuming you have Clang installed as explained [here](/installing_toolchain_msys2.md), running `clang++ prog.cpp` should compile your code. (This is for C++, for C use `clang prog.c`.)
+Assuming you have Clang installed as explained [here](/articles/installing_toolchain_msys2.md), running `clang++ prog.cpp` should compile your code. (This is for C++, for C use `clang prog.c`.)
 
 A successful compilation will print nothing. If your code is wrong, errors will be printed. (One particular error you can get is `undefined reference to WinMain`, which means there's no `int main()` in your code. Often because you forgot to save the file and are compiling an empty file (hit <kbd>Ctrl</kbd><kbd>S</kbd>)).
 
@@ -65,11 +65,11 @@ This is enough to start learning C++.
 
 Read a chapter or two in your C++ book and try a few simple programs.
 
-Then [**install an IDE**](/installing_vsc.md) for a better programming experience.
+Then [**install an IDE**](/articles/installing_vsc.md) for a better programming experience.
 
 ## More information
 
-You can also run your executable by double-clicking `a.exe`. If you see any errors (you probably will at this point), consult [Debugging DLL issues](/debugging_dll_issues.md). Even if you fix this, our test application will quickly close after you run it, before you can see the results. This is the correct behavior for programs that are supposed to be run in the terminal (but if you don't like it, Google for workarounds.)
+You can also run your executable by double-clicking `a.exe`. If you see any errors (you probably will at this point), consult [Debugging DLL issues](/articles/debugging_dll_issues.md). Even if you fix this, our test application will quickly close after you run it, before you can see the results. This is the correct behavior for programs that are supposed to be run in the terminal (but if you don't like it, Google for workarounds.)
 
 You can tell the compiler to use a different executable name using `-o`, for example: `clang++ prog.cpp -o prog` will name the program `prog.exe`. (The order doesn't matter, `clang++ -o prog prog.cpp` works as well. But the executable name must immediately follow `-o`, e.g. `clang++ prog.cpp prog -o` doesn't work. `-o prog` and `-o prog.exe` are equivalent.)
 

@@ -7,9 +7,9 @@ There are two prominent toolchains on Windows:
 * The one bundled with Visual Studio (not Visual Studio Code), using the **MSVC** compiler.
 * A loose group of toolchains called **MinGW**, which uses the same tools you'd commonly find on Linux.
 
-We'll be installing the later, with the Clang compiler. *([Why MinGW rather than MSVC? And why Clang rather than GCC?](/choosing_compiler_and_more.md) and [Why not Visual Studio?](/why_not_visual_studio.md))*
+We'll be installing the later, with the Clang compiler. *([Why MinGW rather than MSVC? And why Clang rather than GCC?](/articles/choosing_compiler_and_more.md) and [Why not Visual Studio?](/articles/why_not_visual_studio.md))*
 
-More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSYS2?](/why_msys2.md) and [Why not the official Clang installer?](/why_not_official_clang_installer.md) and [Why not WSL?](/why_not_wsl.md))*
+More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSYS2?](/articles/why_msys2.md) and [Why not the official Clang installer?](/articles/why_not_official_clang_installer.md) and [Why not WSL?](/articles/why_not_wsl.md))*
 
 ## Installing MSYS2
 
@@ -23,7 +23,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
 2. **Start MSYS2.**
 
-   The "Start" menu will have several different shortcuts, for now you want **`MSYS2 CLANG64`** (read about the difference [here](/msys2_environments.md)).
+   The "Start" menu will have several different shortcuts, for now you want **`MSYS2 CLANG64`** (read about the difference [here](/articles/msys2_environments.md)).
 
    ![msys2 clang64 shortcut](/images/msys2_env_shortcuts.png)
 
@@ -53,7 +53,7 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
    Run **`pacman -S mingw-w64-clang-x86_64-clang`** to install Clang (which automatically brings in the rest of the toolchain).
 
-   (⚠ Note that we install `mingw-w64-clang-x86_64-clang` and not just `clang`! The difference is explained [here](/msys2_environments.md).)
+   (⚠ Note that we install `mingw-w64-clang-x86_64-clang` and not just `clang`! The difference is explained [here](/articles/msys2_environments.md).)
 
    Now if you type `clang++ --version`, you should see something like this:
    ```
@@ -66,4 +66,4 @@ More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSY
 
 ## Compiling and running a simple program
 
-Now you can try compiling a simple program. See [How to compile and run programs in the terminal](/compiling_in_terminal.md).
+Now you can try compiling a simple program. See [How to compile and run programs in the terminal](/articles/compiling_in_terminal.md).

@@ -1,6 +1,6 @@
 # How to compile libraries manually?
 
-You must already be familiar with [installing libraries via `pacman` and using them](/using_libraries_pacman.md) (if not, read that page). This page builds upon that one.
+You must already be familiar with [installing libraries via `pacman` and using them](/articles/using_libraries_pacman.md) (if not, read that page). This page builds upon that one.
 
 ## Download the source code
 
@@ -42,13 +42,13 @@ As you can see, OpenAL uses CMake:
 
 ![OpenAL CMakeLists.txt](/images/openal_cmakelists_txt.png)
 
-* ### [Build using CMake](/using_libraries_compiling_manually_cmake.md)
-* ### [Build using Meson](/using_libraries_compiling_manually_meson.md)
-* ### [Build using Autotools](/using_libraries_compiling_manually_autotools.md)
+* ### [Build using CMake](/articles/using_libraries_compiling_manually_cmake.md)
+* ### [Build using Meson](/articles/using_libraries_compiling_manually_meson.md)
+* ### [Build using Autotools](/articles/using_libraries_compiling_manually_autotools.md)
 
 ## Determine the compiler flags
 
-To use the resulting library, you can [follow the same procedure with `pkgconf` as before](/using_libraries_pacman.md#determining-compiler-flags-using-pkgconf).
+To use the resulting library, you can [follow the same procedure with `pkgconf` as before](/articles/using_libraries_pacman.md#determining-compiler-flags-using-pkgconf).
 
 But since the library is installed to a custom location, you need to point `pkgconf` to it. Run following in your MSYS2 terminal:
 
@@ -67,6 +67,6 @@ For example, I used `C:\code\openal_install` as the installation directory,
 
 ### Guessing the flags
 
-[Like before](/using_libraries_pacman.md#guessing-the-compiler-flags), you can guess the correct compiler flags if your library doesn't come with a `.pc` file.
+[Like before](/articles/using_libraries_pacman.md#guessing-the-compiler-flags), you can guess the correct compiler flags if your library doesn't come with a `.pc` file.
 
-Follow the same procedure as linked, but remember that you will also [`-L...`](/using_libraries_pacman.md#step-2-make-sure-calling-functions-works) (since the `.a` files are installed to a non-default location). And of course [`-I...`](/using_libraries_pacman.md#step-1-make-sure-include-works) for the headers.
+Follow the same procedure as linked, but remember that you will also [`-L...`](/articles/using_libraries_pacman.md#step-2-make-sure-calling-functions-works) (since the `.a` files are installed to a non-default location). And of course [`-I...`](/articles/using_libraries_pacman.md#step-1-make-sure-include-works) for the headers.

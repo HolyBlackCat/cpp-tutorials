@@ -16,4 +16,4 @@ It is possible to "cross-compile" (compile executables for one OS while using an
 
 ## MSYS2
 
-If your reason for using WSL is to have access to command-line tools from Linux (`bash`, `grep`, `sed`...), consider that [MSYS2](/why_msys2.md) has most of them available.
+If your reason for using WSL is to have access to command-line tools from Linux (`bash`, `grep`, `sed`...), consider that [MSYS2](/articles/why_msys2.md) has most of them available.

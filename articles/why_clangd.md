@@ -24,7 +24,7 @@ Both have their own additional configuration files in their own formats, but I d
 
 Clangd provides just the code completion, while the C/C++ plugin provides some extra features (such as debugging support).
 
-You can either install additional extensions for those (like [LLDB-DAP](/configuring_vsc_debugger.md) for debugging), or keep the C/C++ plugin installed at the same time to provide them. (I'm not aware of any important missing features other than debugging.)
+You can either install additional extensions for those (like [LLDB-DAP](/articles/configuring_vsc_debugger.md) for debugging), or keep the C/C++ plugin installed at the same time to provide them. (I'm not aware of any important missing features other than debugging.)
 
 ## Accuracy
 

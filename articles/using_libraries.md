@@ -28,8 +28,8 @@ It's a library that can play sounds, and is often used for games.
 
 Even if you don't need this specific library, I suggest installing it for practice, before moving to the libraries you actually need.
 
-## 1. [Try installing the library in MSYS2's `pacman`](/using_libraries_pacman.md)
+## 1. [Try installing the library in MSYS2's `pacman`](/articles/using_libraries_pacman.md)
 
 If the library is not in `pacman`, or if you want to practice compiling it manually, see below. You can also try other package managers (Conan or Vcpkg).
 
-## 2. [Or compile the library manually](/using_libraries_compiling_manually.md)
+## 2. [Or compile the library manually](/articles/using_libraries_compiling_manually.md)

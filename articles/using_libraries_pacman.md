@@ -4,12 +4,12 @@
 
 Use `pacman -Ss ...` to search through MSYS2 "packages" (things you can install). Try **`pacman -Ss openal`** to search for OpenAL. It'll print the list of matching packages.
 
-**⚠ NOTE:** As before, we're looking only for things named `mingw-w64-clang-x86_64-...` ([explanation](/msys2_environments.md)). If you scroll through the list, you'll quickly find this:
+**⚠ NOTE:** As before, we're looking only for things named `mingw-w64-clang-x86_64-...` ([explanation](/articles/msys2_environments.md)). If you scroll through the list, you'll quickly find this:
 ```
 clang64/mingw-w64-clang-x86_64-openal 1.23.1-2
     OpenAL audio library for use with opengl (mingw-w64)
 ```
-If you can't find your library, it means MSYS2 maintainers didn't add it, and you have to [compile it yourself](/using_libraries_compiling_manually.md).
+If you can't find your library, it means MSYS2 maintainers didn't add it, and you have to [compile it yourself](/articles/using_libraries_compiling_manually.md).
 
 ## Install the library in MSYS2
 
@@ -19,7 +19,7 @@ Install the library using the name you found above. In our case:
 pacman -S mingw-w64-clang-x86_64-openal
 ```
 
-Again, make sure the libraries you install [are prefixed with `mingw-w64-clang-x86_64-...`](/msys2_environments.md).
+Again, make sure the libraries you install [are prefixed with `mingw-w64-clang-x86_64-...`](/articles/msys2_environments.md).
 
 ## Look at what you have installed
 
@@ -80,7 +80,7 @@ If everything is done correctly, this it compile without any errors.
 
 **⚠ NOTE:** You might see red squiggles in VSCode, this isn't a problem. Configuring VSC to understand the library [is a separate issue](TODO_vsc_libs). For now just compile in the terminal, I'll explain this later.
 
-**NOTE:** While most compiler-flags are order-independent, in some cases it might be important to have `-l...` to the right of any `.c`/`.cpp` files. (If you're using [LD linker](/msys2_environments.md#linker).)
+**NOTE:** While most compiler-flags are order-independent, in some cases it might be important to have `-l...` to the right of any `.c`/`.cpp` files. (If you're using [LD linker](/articles/msys2_environments.md#linker).)
 
 If you're curious, here's a full program that plays a short beep using OpenAL. Try running it. For now, you don't have to understand it
 
@@ -199,11 +199,11 @@ ld.lld: error: undefined symbol: __declspec(dllimport) alcOpenDevice
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
 ```
 
-If you don't get any errors, the library is likely [header-only](/using_libraries.md#what-is-a-library), and you can skip this step.
+If you don't get any errors, the library is likely [header-only](/articles/using_libraries.md#what-is-a-library), and you can skip this step.
 
 This error happens because the function definitions are in `.a`/`.dll` files ([see above](#look-at-what-you-have-installed)), and you need to point your compiler to them (or [your linker](TODO_multifile_prorams), rather).
 
-You need to use either the `.dll` (dynamic linking) **OR** `.a` (static linking). If you link dynamically, your executable will need a copy of the `.dll` to run (for more information, read [What is a DLL?](/debugging_dll_issues.md#what-is-a-dll), [Why do DLLs exist?](/debugging_dll_issues.md#why-do-dlls-exist), and [Static linking](/debugging_dll_issues.md#static-linking)).
+You need to use either the `.dll` (dynamic linking) **OR** `.a` (static linking). If you link dynamically, your executable will need a copy of the `.dll` to run (for more information, read [What is a DLL?](/articles/debugging_dll_issues.md#what-is-a-dll), [Why do DLLs exist?](/articles/debugging_dll_issues.md#why-do-dlls-exist), and [Static linking](/articles/debugging_dll_issues.md#static-linking)).
 
 Use one of the two options:
 
@@ -219,12 +219,12 @@ Use one of the two options:
 
 2. **Link statically**
 
-   This will use the `lib__.a` file. Use this option if this library has no `.dll.a`, or if you [intentionally want to link statically](/debugging_dll_issues.md#static-linking).
+   This will use the `lib__.a` file. Use this option if this library has no `.dll.a`, or if you [intentionally want to link statically](/articles/debugging_dll_issues.md#static-linking).
 
    Given `lib__.a`, pass the `__` part of its name to the `-l...` flag. (E.g. given `libopenal.a`, use **`-lopenal`**.)
 
    This embeds the library into the executable (so it can run without the `.dll`, but your users also can't update the library themselves).
 
-   In most libraries you'll notice that `.dll.a` and `.a` have the same name, so how does `-l` select which one to use? (How does `-lopenal` pick between `libopenal.dll.a` vs `libopenal.a`?) It prefers `.dll.a` by default if it exists. Passing [`-static`](/debugging_dll_issues.md#static-linking) makes it prefer `.a` for all libraries. (It's possible to configure per library, but I'm not going to explain it here.)
+   In most libraries you'll notice that `.dll.a` and `.a` have the same name, so how does `-l` select which one to use? (How does `-lopenal` pick between `libopenal.dll.a` vs `libopenal.a`?) It prefers `.dll.a` by default if it exists. Passing [`-static`](/articles/debugging_dll_issues.md#static-linking) makes it prefer `.a` for all libraries. (It's possible to configure per library, but I'm not going to explain it here.)
 
 Adding the `-l...` flag should fix the error. Run the resulting application to confirm everything works.

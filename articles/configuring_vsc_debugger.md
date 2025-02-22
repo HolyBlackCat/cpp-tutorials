@@ -1,12 +1,12 @@
 # How to use a debugger in VSC?
 
-[You should already know how to use a debugger in a terminal.](/debugging_in_terminal.md)
+[You should already know how to use a debugger in a terminal.](/articles/debugging_in_terminal.md)
 
 This isn't very convenient, but there's a nicer way of using it in VSC.
 
 ## Checking PATH settings
 
-Make sure you can run `lldb --version` in the VSC terminal. If you see `lldb : The term 'lldb' is not recognized...`, make sure you [have LLDB installed](/debugging_in_terminal.md), and [have PATH configured correctly](/working_in_vscode_terminal.md).
+Make sure you can run `lldb --version` in the VSC terminal. If you see `lldb : The term 'lldb' is not recognized...`, make sure you [have LLDB installed](/articles/debugging_in_terminal.md), and [have PATH configured correctly](/articles/working_in_vscode_terminal.md).
 
 ## Installing LLDB-DAP
 
@@ -18,20 +18,20 @@ There are several different extensions for debugging C/C++ in VSC:
 
 We'll be using LLDB-DAP because it works better with MinGW in my experience, and because you can use it in most IDEs, not only in VSC.
 
-Like [Clangd](/configuring_code_completion.md#installing-clangd), LLDB-DAP consists of two parts:
+Like [Clangd](/articles/configuring_code_completion.md#installing-clangd), LLDB-DAP consists of two parts:
 
 * A plugin for your IDE (for VSC in this case).
 
   Search for `lldb-dap` in the extension marketplace and install it:<br/>
   [![lldb-dap extension icon](/images/lldb_dap_extension_icon.png)]((/images/lldb_dap_extension_icon.png))
 
-* A program called `lldb-dap` that the extension interacts with. You already have it installed because you [installed LLDB](/debugging_in_terminal.md). But you need to tell the extension where to find it.
+* A program called `lldb-dap` that the extension interacts with. You already have it installed because you [installed LLDB](/articles/debugging_in_terminal.md). But you need to tell the extension where to find it.
 
   **Open the settings (`File`→`Preferences`→`Settings`), search for `lldb dap executable` and type `C:\msys64\clang64\bin\lldb-dap.exe` in there.**
 
 ## Making sure the compilaton settings are correct
 
-Make your compiler flags (in `tasks.json`) include `-g`, [as was explained before](/debugging_in_terminal.md). Make sure to recompile the executable after adding it.
+Make your compiler flags (in `tasks.json`) include `-g`, [as was explained before](/articles/debugging_in_terminal.md). Make sure to recompile the executable after adding it.
 
 ## Configuring the debugger
 
@@ -46,7 +46,7 @@ Click `create a launch.json file`, and select `LLDB DAP Adapter`. It will create
 
 Replace `<your program>` with the name of your program, e.g. `"program": "${workspaceRoot}/prog.exe"`. (Here `${workspaceRoot}` means the currently opened directory.)
 
-Now pressing <kbd>F5</kbd> or the green 'play' button to start the debugger. [Like before](/debugging_in_terminal.md), you should see your application window flash for a moment, and close immediately.
+Now pressing <kbd>F5</kbd> or the green 'play' button to start the debugger. [Like before](/articles/debugging_in_terminal.md), you should see your application window flash for a moment, and close immediately.
 
 If nothing happens, you likely didn't configure LLDB-DAP [as was explained above](#installing-lldb-dap).
 
@@ -54,7 +54,7 @@ The output of your program should be visible in the `Debug Console` at the botto
 
 ## Using the debugger
 
-The experience is similar to [what you had in the terminal](/debugging_in_terminal.md).
+The experience is similar to [what you had in the terminal](/articles/debugging_in_terminal.md).
 
 Place a breakpoint by clicking to the left of a line number:
 
@@ -70,9 +70,9 @@ Control the debugger using the panel on the top:
 
 View the variable values on the left panel, or just by moving the mouse over them in the code.
 
-In the `Debug Console`, you can use [any commands you have learned before](/debugging_in_terminal.md), such as `p` to print the values of variables. Or type variable names directly to print them.
+In the `Debug Console`, you can use [any commands you have learned before](/articles/debugging_in_terminal.md), such as `p` to print the values of variables. Or type variable names directly to print them.
 
-Most of the things you see in the UI correspond to the [debugger commands](/debugging_in_terminal.md) you've already learned:
+Most of the things you see in the UI correspond to the [debugger commands](/articles/debugging_in_terminal.md) you've already learned:
 
 [![debugger layout](/images/vsc_debugger_layout.png)](/images/vsc_debugger_layout.png)
 
@@ -80,7 +80,7 @@ Most of the things you see in the UI correspond to the [debugger commands](/debu
 
 Right now, you need to manually compile the program (in the terminal, or with <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>B</kbd>) after every change to the code, before starting the debugger (by pressing <kbd>F5</kbd> or the green arrow).
 
-This can be automated. After the `"cwd": ...` line in `tasks.json`, add `"preLaunchTask": "Compile"` (where `Compile` is the task name that you specified in `tasks.json` as described [here](/configuring_vsc_tasks.md)).
+This can be automated. After the `"cwd": ...` line in `tasks.json`, add `"preLaunchTask": "Compile"` (where `Compile` is the task name that you specified in `tasks.json` as described [here](/articles/configuring_vsc_tasks.md)).
 
 Now pressing <kbd>F5</kbd> or the green arrow will automatically recompile the program before starting the debugger.
 

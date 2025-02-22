@@ -1,6 +1,6 @@
 # How to compile libraries manually using CMake?
 
-If you have [determined the build system](/using_libraries_compiling_manually.md#determine-and-use-the-build-system) to be CMake, follow this procedure.
+If you have [determined the build system](/articles/using_libraries_compiling_manually.md#determine-and-use-the-build-system) to be CMake, follow this procedure.
 
 ## Ensure you have CMake installed
 
@@ -26,7 +26,7 @@ Here `MySourceDir` is the library source directory containing `CMakeLists.txt`, 
 
 I also recommend adding `-DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON`, and `-DCMAKE_INSTALL_PREFIX=...` isn't strictly necessary, more on that below.
 
-**NOTE:** If your library [depends on other libraries you've installed manually](/using_libraries_compiling_manually.md#install-dependencies), you can specify the same installation directory for all of them, which should make CMake find them automatically. There are other solutions to this (to keep them separate), but this one is the easiest.
+**NOTE:** If your library [depends on other libraries you've installed manually](/articles/using_libraries_compiling_manually.md#install-dependencies), you can specify the same installation directory for all of them, which should make CMake find them automatically. There are other solutions to this (to keep them separate), but this one is the easiest.
 
 For example, I have extracted the OpenAL source to `C:\code` (so I have their `CMakeLists.txt` at `C:\code\openal-soft-1.23.1\CMakeLists.txt`), so I run following:
 ```sh
@@ -43,7 +43,7 @@ On success, you should see this after a while:
 ```
 And the directory you specified in `-B ...` will be created. Not the installation directory yet, though.
 
-You can look through the logs (as printed by `cmake ...`) to see if you get any warnings, such as ones about [missing dependencies](/using_libraries_compiling_manually.md#install-dependencies). Though you don't *have* to fix them immediately if the command above succeeds. Try to continue with this procedure and see if everything works fine or not
+You can look through the logs (as printed by `cmake ...`) to see if you get any warnings, such as ones about [missing dependencies](/articles/using_libraries_compiling_manually.md#install-dependencies). Though you don't *have* to fix them immediately if the command above succeeds. Try to continue with this procedure and see if everything works fine or not
 
 Additional information:
 
@@ -59,7 +59,7 @@ I've also thrown in a few more useful flags:
 
 * `-DCMAKE_BUILD_TYPE=Release` will perform a release build (with optimization enabled, and with no debugging information). Change this if you want to.
 
-* `-DBUILD_SHARED_LIBS=ON` will typically enable building [shared libraries](/using_libraries_pacman.md#step-2-make-sure-calling-functions-works), because some libraries don't enable this by default. This isn't strictly necessary.
+* `-DBUILD_SHARED_LIBS=ON` will typically enable building [shared libraries](/articles/using_libraries_pacman.md#step-2-make-sure-calling-functions-works), because some libraries don't enable this by default. This isn't strictly necessary.
 
 </details>
 
@@ -87,7 +87,7 @@ If you edit the library's source code, you normally only need to rerun this comm
 
 ## Install the library
 
-After finishing the previous step, the library is already compiled and can in theory be used as is (you'll find all the [`.dll`, `.a`, `.dll.a` files](/using_libraries_pacman.md#look-at-what-you-have-installed) in the build directory you have specified).
+After finishing the previous step, the library is already compiled and can in theory be used as is (you'll find all the [`.dll`, `.a`, `.dll.a` files](/articles/using_libraries_pacman.md#look-at-what-you-have-installed) in the build directory you have specified).
 
 But it's convenient to perform the "installation" step after that, which copies all userful files into one place, so you don't need to look for them and can delete the build directory which is no longer needed.
 
@@ -97,13 +97,13 @@ cmake --install MyBuildDir
 ```
 (Note, we're specifying the build directory, not the installation directory.)
 
-This should populate <code>My<b>Install</b>Dir</code> (which you [specified all the way back](#run-the-configuration-step)) will all the required files ([similar to those](/using_libraries_pacman.md#look-at-what-you-have-installed)).
+This should populate <code>My<b>Install</b>Dir</code> (which you [specified all the way back](#run-the-configuration-step)) will all the required files ([similar to those](/articles/using_libraries_pacman.md#look-at-what-you-have-installed)).
 
 You can now delete `MyBuildDir`, as it's no longer needed. And the source directory too, if you don't need it.
 
 ---
 
-For using the resulting library, proceed back to [this](/using_libraries_compiling_manually.md#determine-the-compiler-flags).
+For using the resulting library, proceed back to [this](/articles/using_libraries_compiling_manually.md#determine-the-compiler-flags).
 
 ---
 
@@ -115,7 +115,7 @@ Try pressing `File`→`Open Folder`, and open the source directory (`C:\code\ope
 
 Now if you open some source file (e.g. `core/ambdec.cpp`), you should immediately see some red squiggles, headers not being found, etc. You can read more about why this happens [here](TODO_link).
 
-Note that I'm assuming you [have Clangd installed in VSC](/configuring_code_completion.md), which you should have if you've been following this tutorial.
+Note that I'm assuming you [have Clangd installed in VSC](/articles/configuring_code_completion.md), which you should have if you've been following this tutorial.
 
 In this case, to tell Clangd where the missing headers are (and more), we need to generate a file called `compile_commands.json`, which contains compiler flags used for every source file in the library (which among other things contain the include directories that need to be searched).
 

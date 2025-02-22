@@ -27,7 +27,7 @@ Clangd needs two parts to work:
 * A extension for your IDE (for VSC in this case).
 * A program called `clangd` that the extension interacts with.
 
-Install the latter in MSYS2 using `pacman -S mingw-w64-clang-x86_64-clang-tools-extra`. *([Why not the official Clang installer?](/why_not_official_clang_installer.md))*
+Install the latter in MSYS2 using `pacman -S mingw-w64-clang-x86_64-clang-tools-extra`. *([Why not the official Clang installer?](/articles/why_not_official_clang_installer.md))*
 
 Install the former in VSC. Open the extension marketplace by pressing the 'boxes' button on the left:<br/>
 ![extensions marketplace icon](/images/vsc_extensions_icon.png)
@@ -39,13 +39,13 @@ Search for `clangd` and install it:<br/>
 
 ![clangd disables intellisense](/images/clangd_disables_intellisense.png)
 
-**NOTE:** If Clangd suggests downloading a "language server", refuse. It's not useful since we already installed the same thing from MSYS2, and has [the same downsides as the official Clang installer](/why_not_official_clang_installer.md).
+**NOTE:** If Clangd suggests downloading a "language server", refuse. It's not useful since we already installed the same thing from MSYS2, and has [the same downsides as the official Clang installer](/articles/why_not_official_clang_installer.md).
 
 ![clangd suggests download](/images/clangd_suggests_download.png)
 
 If you accidentally clicked `Install`, go to `File`→`Preferences`→`Settings`, search for `clangd path` (it will be set to `C:\Users\Username\AppData\...`), click the 'gear' icon to the left of it, then press `Reset Setting`.
 
-If you see this message in the first place, you didn't configure PATH correctly as [was explained here](/working_in_vscode_terminal.md). (Alternatively, you can go to `File`→`Preferences`→`Settings`, search for `clangd path`, and put `C:\msys64\clang64\bin\clangd.exe` in there.)
+If you see this message in the first place, you didn't configure PATH correctly as [was explained here](/articles/working_in_vscode_terminal.md). (Alternatively, you can go to `File`→`Preferences`→`Settings`, search for `clangd path`, and put `C:\msys64\clang64\bin\clangd.exe` in there.)
 
 If you change PATH, you'll need to restart VSC for it to take effect. And after changing Clangd settings, you might need to either restart VSC or press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`clangd: Restart language server` for them to take effect.
 
@@ -73,7 +73,7 @@ Try to use Clangd for a bit! See what features you like or don't like.
 
 Then come back here and see if you want to change any of the settings below.
 
-For now, I suggest continuing to the next chapter: [**Configuring hotkeys for compilation**](/configuring_vsc_tasks.md).
+For now, I suggest continuing to the next chapter: [**Configuring hotkeys for compilation**](/articles/configuring_vsc_tasks.md).
 
 ### Hiding inlay hints
 

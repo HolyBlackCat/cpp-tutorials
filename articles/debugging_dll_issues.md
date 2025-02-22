@@ -14,7 +14,7 @@ This article explains how to fix following errors:
 
 ## A simple fix
 
-If you're a newbie and you get this on your first program, the fix is to do everything inside MSYS2 terminal. Alternatively, [add `C:\msys64\clang64\bin` to PATH](/terminal_for_dummies.md#modifying-path). (Make sure you restarted your terminal and/or IDE after that, and that it's the first element of the system-wide PATH.)
+If you're a newbie and you get this on your first program, the fix is to do everything inside MSYS2 terminal. Alternatively, [add `C:\msys64\clang64\bin` to PATH](/articles/terminal_for_dummies.md#modifying-path). (Make sure you restarted your terminal and/or IDE after that, and that it's the first element of the system-wide PATH.)
 
 But if you want to know more (or if you're using third-party libraries, or want to distribute your executables to other people), then continue reading.
 
@@ -81,7 +81,7 @@ It searches through several predefined directories. This is explained in the [Mi
 
 * `C:\Windows` and some of its subdirectories, like `C:\Windows\System32`.
 
-* All directories in [PATH](/terminal_for_dummies.md#what-is-path), in the exact order they're listed (as explained in the link, there are two PATH settings, and it first searches system-wide PATH, then the user-specific one).
+* All directories in [PATH](/articles/terminal_for_dummies.md#what-is-path), in the exact order they're listed (as explained in the link, there are two PATH settings, and it first searches system-wide PATH, then the user-specific one).
 
   (This is why when you add your compiler to PATH, I suggest adding it to the beginning of the system-wide PATH, to make sure all applications you compile load the DLLs from the compiler installation, and not from other applications you have added to PATH.)
 
@@ -107,7 +107,7 @@ While static linking is good for tiny portable applications (don't need to unzip
 
 ### Static linking libraries
 
-If you're [using third-party libraries](/using_libraries.md), statically linking them will often require an extra step.
+If you're [using third-party libraries](/articles/using_libraries.md), statically linking them will often require an extra step.
 
 Let's say you're using library A (via `-lA` flag), and A internally uses another library B. When linking dynamically, `-lA` is enough, but when linking A statically, you need **both** `-lA` and `-lB`. This is because static libraries normally don't embed other libraries they depend on.
 

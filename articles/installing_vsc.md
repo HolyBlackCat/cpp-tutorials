@@ -6,7 +6,7 @@
 
 Some of the popular IDEs are: Visual Studio Code, Visual Studio (don't confuse the two!), CLion, Xcode, etc.
 
-We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why not Visual Studio?](/why_not_visual_studio.md))*
+We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why not Visual Studio?](/articles/why_not_visual_studio.md))*
 
 ## Installing and configuring Visual Studio Code
 
@@ -16,11 +16,11 @@ We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why not Vis
 
 Then follow those steps in order:
 
-* ### [Learn how to work in the VSC terminal](/working_in_vscode_terminal.md)
+* ### [Learn how to work in the VSC terminal](/articles/working_in_vscode_terminal.md)
 
-* ### [Configure code completion](/configuring_code_completion.md)
+* ### [Configure code completion](/articles/configuring_code_completion.md)
 
-* ### [Configure hotkeys for compilation](/configuring_vsc_tasks.md)
+* ### [Configure hotkeys for compilation](/articles/configuring_vsc_tasks.md)
 
 When you're done, go read your C++ book and practice for some time!
 

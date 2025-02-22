@@ -8,4 +8,4 @@ Also, since this tutorial recommends MSYS2 CLANG64 because it has ASAN, this loc
 
 In theory LLDB can handle both MinGW and MSVC programs (unlike GDB), but at the time of writing this the MSVC support was buggy.
 
-Additionally, VSC has a [nice extension to interact with LLDB](/why_lldb_dap.md).
+Additionally, VSC has a [nice extension to interact with LLDB](/articles/why_lldb_dap.md).

@@ -2,13 +2,13 @@
 
 Compiling manually in the terminal gets old very quickly. You can automate this in VSC by adding hotkeys and/or buttons in the interface that run the compilation command for you.
 
-We will be using something called "tasks". We won't be using the infamous Code Runner extension. *([Why not Code Runner?](/why_not_code_runner.md))*
+We will be using something called "tasks". We won't be using the infamous Code Runner extension. *([Why not Code Runner?](/articles/why_not_code_runner.md))*
 
 ## What is a "task" in VSC?
 
 A "task" in VSC is a prepared shell command, that you can run by pressing a hotkey or a button in the UI.
 
-If you don't understand what a "shell command" is, go read [Terminal for Dummies](/terminal_for_dummies.md) and [Compiling in the terminal](/compiling_in_terminal.md).
+If you don't understand what a "shell command" is, go read [Terminal for Dummies](/articles/terminal_for_dummies.md) and [Compiling in the terminal](/articles/compiling_in_terminal.md).
 
 ## How do I create a task?
 
@@ -34,7 +34,7 @@ I know, I know, this doesn't look very convenient. Bear with me.
 
 Now lets rewrite this task to perform compilation. Replace `echo Hello` with your compiler command (e.g. `clang++ prog.cpp -o prog`), and `"label": "echo"` with e.g. `"label": "Compile"`. Run this task and observe that it prints errors if the compilation fails, or prints nothing on success.
 
-If it says `clang++ : The term 'clang++' is not recognized as the name of ...`, you need to read [Working in VSC terminal](/working_in_vscode_terminal.md) again and configure PATH as it tells you to.
+If it says `clang++ : The term 'clang++' is not recognized as the name of ...`, you need to read [Working in VSC terminal](/articles/working_in_vscode_terminal.md) again and configure PATH as it tells you to.
 
 ## Dependent tasks
 
@@ -122,4 +122,4 @@ Now you can run the respective tasks by pressing those shortcuts (<kbd>Alt</kbd>
 
 ---
 
-Next step: [**Learn about debugging**](/debugging_in_terminal.md).
+Next step: [**Learn about debugging**](/articles/debugging_in_terminal.md).

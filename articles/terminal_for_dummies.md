@@ -76,7 +76,7 @@ As you might've guessed, you have to modify Powershell's PATH to include `C:\msy
 
 Open the Windows settings, type `env` in the search box, choose `Edit the system environment variables` then `Environment Variables...`.
 
-You will see two lists of variables, with `Path` in both of them. The top list (`User variables`) applies only to your user, while the bottom (`System variables`) applies to every user on this computer. **In this case, you want to modify the `System variables`, and add your directory to the very beginning,** because it gives it the most priority ([otherwise you can run into issues](/debugging_dll_issues.md)).
+You will see two lists of variables, with `Path` in both of them. The top list (`User variables`) applies only to your user, while the bottom (`System variables`) applies to every user on this computer. **In this case, you want to modify the `System variables`, and add your directory to the very beginning,** because it gives it the most priority ([otherwise you can run into issues](/articles/debugging_dll_issues.md)).
 
 [![modifying path](/images/modifying_path.png)](/images/modifying_path.png)
 

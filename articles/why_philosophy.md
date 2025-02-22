@@ -2,7 +2,7 @@
 
 This tutorial recommends Clang, MSYS2, Visual Studio Code, Clangd, LLDB-DAP.
 
-This page explains my criteria for picking tools. For explanations on specific tools, see: [Choosing a compiler](/choosing_compiler_and_more.md), [Why MSYS2?](/why_msys2.md), [Why Clangd?](/why_clangd.md), [Why LLDB-DAP?](/why_lldb_dap.md) and others.
+This page explains my criteria for picking tools. For explanations on specific tools, see: [Choosing a compiler](/articles/choosing_compiler_and_more.md), [Why MSYS2?](/articles/why_msys2.md), [Why Clangd?](/articles/why_clangd.md), [Why LLDB-DAP?](/articles/why_lldb_dap.md) and others.
 
 ## Open source
 
@@ -36,7 +36,7 @@ It's not like VSC requires any advanced knowledge to configure either, other tha
 
 ## Non-goal: Using "official" tools
 
-Most often I see this with MSVC (or [its ABI](/choosing_compiler_and_more.md)) being recommended over MinGW because Microsoft made them, which supposedly makes them "more native" and inherently better on Windows.
+Most often I see this with MSVC (or [its ABI](/articles/choosing_compiler_and_more.md)) being recommended over MinGW because Microsoft made them, which supposedly makes them "more native" and inherently better on Windows.
 
 People often struggle to explain what effect this actually has in practice, and why this makes them better.
 

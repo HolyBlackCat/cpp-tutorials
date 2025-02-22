@@ -6,7 +6,7 @@ Don't install any extensions VSC suggests you yet, we'll get to that later.
 
 ### Running the compiler
 
-Create a .cpp file in VSC and try to compile it in the VSC terminal, [like you did before in the MSYS2 terminal](/compiling_in_terminal.md).
+Create a .cpp file in VSC and try to compile it in the VSC terminal, [like you did before in the MSYS2 terminal](/articles/compiling_in_terminal.md).
 
 Running the compiler (`clang++ prog.cpp -o prog`) will likely result in an error:
 ```powershell
@@ -20,7 +20,7 @@ At line:1 char:1
     + FullyQualifiedErrorId : CommandNotFoundException
 ```
 
-This is to be expected. Read [Terminal for Dummies](/terminal_for_dummies.md) and do what it says.
+This is to be expected. Read [Terminal for Dummies](/articles/terminal_for_dummies.md) and do what it says.
 
 After following all the steps, `clang++` should work.
 
@@ -32,8 +32,8 @@ After compiling your executable, try running it using `./prog`.
 
 Make sure it actually runs and `cout` successfully prints things.
 
-If running an executable does nothing, read [Terminal for Dummies](/terminal_for_dummies.md) again. `C:\msys64\clang64\bin` should be first entry in the PATH, and it should be in the system-wide PATH setting rather than the user-specific one. Remember to restart VSC after changing the PATH. [Read this for more information.](/debugging_dll_issues.md)
+If running an executable does nothing, read [Terminal for Dummies](/articles/terminal_for_dummies.md) again. `C:\msys64\clang64\bin` should be first entry in the PATH, and it should be in the system-wide PATH setting rather than the user-specific one. Remember to restart VSC after changing the PATH. [Read this for more information.](/articles/debugging_dll_issues.md)
 
 ---
 
-As the next step, you might want to [**configure the code completion**](/configuring_code_completion.md).
+As the next step, you might want to [**configure the code completion**](/articles/configuring_code_completion.md).

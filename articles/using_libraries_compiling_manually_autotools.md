@@ -17,7 +17,7 @@ Download the source code from the link above (click `Download`, then click on th
 ```sh
 pacman -S make
 ```
-(Note that we're installing [`make` and not `mingw-w64-clang-x86_64-make`](/different_flavors_of_make.md), though the latter could work too, and having both isn't a problem.)
+(Note that we're installing [`make` and not `mingw-w64-clang-x86_64-make`](/articles/different_flavors_of_make.md), though the latter could work too, and having both isn't a problem.)
 
 ## Create a build directory and `cd` to it
 
@@ -32,7 +32,7 @@ cd freetype_build
 
 ## Run `configure`
 
-This needs to be done in the MSYS2 terminal (or at least in some form of [Bash](/terminal_for_dummies.md#what-is-a-shell)).
+This needs to be done in the MSYS2 terminal (or at least in some form of [Bash](/articles/terminal_for_dummies.md#what-is-a-shell)).
 
 From the build directory (without `cd`ing to the source directory), run
 
@@ -49,11 +49,11 @@ You'll often see people not create a separate build directory, and run `./config
 
 To compile the library, run `` make -j`nproc` `` and wait.
 
-[`-j` has the same meaning as with CMake.](/using_libraries_compiling_manually_cmake.md#build-the-library)
+[`-j` has the same meaning as with CMake.](/articles/using_libraries_compiling_manually_cmake.md#build-the-library)
 
 ## Install the library
 
-[Like with CMake](/using_libraries_compiling_manually_cmake.md#install-the-library), there's an optional (but recommended) installation step after building the library.
+[Like with CMake](/articles/using_libraries_compiling_manually_cmake.md#install-the-library), there's an optional (but recommended) installation step after building the library.
 
 Run `make install`, and everything should be installed to the directory that you [passed to `--prefix=...`](#run-configure).
 
@@ -61,7 +61,7 @@ You can delete the build directory, as it shouldn't be needed anymore. And the s
 
 ---
 
-For using the resulting library, proceed back to [this](/using_libraries_compiling_manually.md#determine-the-compiler-flags).
+For using the resulting library, proceed back to [this](/articles/using_libraries_compiling_manually.md#determine-the-compiler-flags).
 
 ---
 

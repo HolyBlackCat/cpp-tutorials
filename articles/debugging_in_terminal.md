@@ -10,15 +10,15 @@ I assume you have some minimal C++ knowledge: already tried compiling a few simp
 
 A debugger is a program that assists you in debugging. It can run *your* program step by step, letting you observe the values of all variables and so on.
 
-There are several popular debuggers: LLDB, GDB, and the Visual Studio debugger. They are commonly used with Clang, GCC, and MSVC [compilers](/installing_toolchain.md#what-is-a-compiler) respectively.
+There are several popular debuggers: LLDB, GDB, and the Visual Studio debugger. They are commonly used with Clang, GCC, and MSVC [compilers](/articles/installing_toolchain.md#what-is-a-compiler) respectively.
 
-We will be using LLDB *([Why LLDB?](/why_lldb.md))*, but the other debuggers should work fine too.
+We will be using LLDB *([Why LLDB?](/articles/why_lldb.md))*, but the other debuggers should work fine too.
 
 LLDB and GDB are similar on the surface level, most things explained on this page should work with GDB as well.
 
 ## Debugging in a terminal
 
-Go read [Terminal for Dummies](/terminal_for_dummies.md) if you haven't already.
+Go read [Terminal for Dummies](/articles/terminal_for_dummies.md) if you haven't already.
 
 Most debuggers (except for the Visual Studio one, from what I know) can be used in a terminal. There are ways to use them with UI as well, but we'll be covering that later.
 
@@ -26,7 +26,7 @@ Most of the time you won't be debugging in a terminal (though sometimes this is 
 
 ## Installing LLDB
 
-Install LLDB in MSYS2: `pacman -S mingw-w64-clang-x86_64-lldb`. *([Why not the official Clang installer?](/why_not_official_clang_installer.md))*
+Install LLDB in MSYS2: `pacman -S mingw-w64-clang-x86_64-lldb`. *([Why not the official Clang installer?](/articles/why_not_official_clang_installer.md))*
 
 Confirm that it works by running `lldb --version`.
 
@@ -203,4 +203,4 @@ Try it.
 
 ---
 
-Next step: learn [**How to debug in VSCode**](/configuring_vsc_debugger.md).
+Next step: learn [**How to debug in VSCode**](/articles/configuring_vsc_debugger.md).

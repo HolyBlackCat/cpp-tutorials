@@ -10,7 +10,7 @@ This tutorial uses CLANG64. UCRT64 is the officially recommended default. MINGW6
 
 * **Each environment installs its packages to a separate directory** under `C:\msys64`. E.g. CLANG64 installs to `C:\msys64\clang64`.
 
-* **Each environment has its own shortcut in the Start menu**, which opens a terminal with the respective directory added to [PATH](/terminal_for_dummies.md#what-is-path):
+* **Each environment has its own shortcut in the Start menu**, which opens a terminal with the respective directory added to [PATH](/articles/terminal_for_dummies.md#what-is-path):
 
     [![msys2 environment shortcuts](/images/msys2_env_shortcuts.png)](/images/msys2_env_shortcuts.png)
 
@@ -30,7 +30,7 @@ This tutorial uses CLANG64. UCRT64 is the officially recommended default. MINGW6
 
   Run `echo $MINGW_PACKAGE_PREFIX` in MSYS2 terminal to know the right prefix for your environment.
 
-  ⚠ Don't install unprefixed packages for compilers and libraries. Only use them for simple command-line tools (`grep`, `sed`, etc), only if there's no prefixed alternative. ([See below for more details.](#the-msys-environment)) There are exceptions from this rule, e.g. [both `make` and `mingw-w64-...-make` are viable](/different_flavors_of_make.md).
+  ⚠ Don't install unprefixed packages for compilers and libraries. Only use them for simple command-line tools (`grep`, `sed`, etc), only if there's no prefixed alternative. ([See below for more details.](#the-msys-environment)) There are exceptions from this rule, e.g. [both `make` and `mingw-w64-...-make` are viable](/articles/different_flavors_of_make.md).
 
 * **If you want to add MSYS2 to PATH, add the correct directory**: `C:\msys64\clang64\bin` for CLANG64 and so on.
 
@@ -44,9 +44,9 @@ Don't confuse it with the whole MSYS2, and don't confuse it with the ancient MSY
 
 * Package names for `MSYS` are **not prefixed** with anything. (`pacman -S clang` installs MSYS Clang). They are installed to `C:\msys64\usr`, and some directly to `C:\msys64`.
 
-* Packages in MSYS [are based on Cygwin](/why_msys2.md#msys2-and-cygwin) (or rather on MSYS2's own fork of it).
+* Packages in MSYS [are based on Cygwin](/articles/why_msys2.md#msys2-and-cygwin) (or rather on MSYS2's own fork of it).
 
-  **MSYS compilers create Cygwin applications**, which [isn't something you normally want](/why_msys2.md#mingw-vs-cygwin) for your applications. **Don't install MSYS compilers and libraries** unless you know what you're doing. They are also often outdated.
+  **MSYS compilers create Cygwin applications**, which [isn't something you normally want](/articles/why_msys2.md#mingw-vs-cygwin) for your applications. **Don't install MSYS compilers and libraries** unless you know what you're doing. They are also often outdated.
 
 * **All other environments "inherit" from `MSYS`**, in the sense that they add it to the PATH (they add `C:\msys64\usr\bin` after `C:\msys64\<environment>\bin`).
 
@@ -60,9 +60,9 @@ MINGW64, UCRT64, and CLANG64 are the three popular environments.
 
 ### CLANG64 vs UCRT64/MINGW64
 
-CLANG64 is limited to the Clang compiler and the tools associated with it ([libc++ only, no libstdc++](/choosing_compiler_and_more.md#choosing-c-standard-library); LLD linker only, no LD; `llvm-ar` only, no Binutils `ar`, etc). While UCRT64 and MINGW64 have **both** Clang and GCC, and both sets of tools.
+CLANG64 is limited to the Clang compiler and the tools associated with it ([libc++ only, no libstdc++](/articles/choosing_compiler_and_more.md#choosing-c-standard-library); LLD linker only, no LD; `llvm-ar` only, no Binutils `ar`, etc). While UCRT64 and MINGW64 have **both** Clang and GCC, and both sets of tools.
 
-On the other side, CLANG64 supports [sanitizers](/choosing_compiler_and_more.md), unlike other environments. And (in rare cases), Clang-based tools seem to work a bit better in it (e.g. at the time of writing, LLDB spams harmless warnings to the console on UCRT64).
+On the other side, CLANG64 supports [sanitizers](/articles/choosing_compiler_and_more.md), unlike other environments. And (in rare cases), Clang-based tools seem to work a bit better in it (e.g. at the time of writing, LLDB spams harmless warnings to the console on UCRT64).
 
 UCRT64 is the closest equivalent for CLANG64 that's not limited to Clang/LLVM tools.
 
@@ -70,11 +70,11 @@ In UCRT64 and MINGW64, GCC is considered to be the primary compiler, most packag
 
 #### C++ standard library implementation
 
-In UCRT64 and MINGW64, Clang uses [libstdc++](/msys2_environments.md) (GCC's C++ standard library) by default (instead of Clang's own [libc++](/msys2_environments.md), which has to be installed separately with `pacman -S ...-libc++` and enabled by passing `-stdlib=libc++` compiler flag).
+In UCRT64 and MINGW64, Clang uses [libstdc++](/articles/msys2_environments.md) (GCC's C++ standard library) by default (instead of Clang's own [libc++](/articles/msys2_environments.md), which has to be installed separately with `pacman -S ...-libc++` and enabled by passing `-stdlib=libc++` compiler flag).
 
 #### Linker
 
-In UCRT64 and MINGW64, both GCC and Clang use the LD linker by default, but Clang's LLD linker can be installed separately (`pacman -S ...-lld`) and enabled (in either compiler) using `-fuse-ld=lld` flag (when linking). Since LLD is way faster, it might be a good idea to always use it. Unlike LLD, LD is [sensitive to the order of the `-l` flags](/using_libraries_pacman.md#determining-compiler-flags-using-pkgconf).
+In UCRT64 and MINGW64, both GCC and Clang use the LD linker by default, but Clang's LLD linker can be installed separately (`pacman -S ...-lld`) and enabled (in either compiler) using `-fuse-ld=lld` flag (when linking). Since LLD is way faster, it might be a good idea to always use it. Unlike LLD, LD is [sensitive to the order of the `-l` flags](/articles/using_libraries_pacman.md#determining-compiler-flags-using-pkgconf).
 
 ### MINGW64 vs UCRT64/CLANG64
 
@@ -84,7 +84,7 @@ MINGW64 uses the old implementation of the C standard library (Microsoft's `msvc
 
 ### Additional information
 
-Consult [Choosing the compiler](/choosing_compiler_and_more.md) for more information.
+Consult [Choosing the compiler](/articles/choosing_compiler_and_more.md) for more information.
 
 ### Rarely used environments
 
