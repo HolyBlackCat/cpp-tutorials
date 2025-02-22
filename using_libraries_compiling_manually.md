@@ -43,6 +43,7 @@ As you can see, OpenAL uses CMake:
 ![OpenAL CMakeLists.txt](/images/openal_cmakelists_txt.png)
 
 * ### [Build using CMake](/using_libraries_compiling_manually_cmake.md)
+* ### [Build using Meson](/using_libraries_compiling_manually_meson.md)
 * ### [Build using Autotools](/using_libraries_compiling_manually_autotools.md)
 
 ## Determine the compiler flags

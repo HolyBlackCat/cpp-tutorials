@@ -46,6 +46,9 @@ The terminal has a concept of a "current directory", which you can change using 
 
 Notice the current directory being displayed in yellow text.
 
+Notice that the MSYS2 [shell](/terminal_for_dummies.md#what-is-a-shell) displays the paths in the Linux style, `/c/code/a` instead of `C:\code\a`.<br/>
+`cd` works with both path styles, so you could do `cd /c/code/a`.
+
 ## Compiling
 
 Assuming you have Clang installed as explained [here](/installing_toolchain_msys2.md), running `clang++ prog.cpp` should compile your code. (This is for C++, for C use `clang prog.c`.)
