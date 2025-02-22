@@ -4,7 +4,7 @@ MSYS2 has something called ["environments"](https://www.msys2.org/docs/environme
 
 **MSYS2 has multiple versions of each compiler and library, one per environment.** The compilers in each environment [have slighly different settings](#difference-between-the-environments). Some compilers/tools are missing from some environments.
 
-This tutorial uses CLANG64. UCRT64 is the officially recommended default. MINGW64 is also popular.
+This tutorial uses CLANG64 by default (but [can be adapted](/articles/variations/index.md) to other ones too). UCRT64 is the officially recommended default. MINGW64 is also popular.
 
 * **Each environment has its own packages** (compilers, libraries, tools, etc). The packages for each environment can be distinguished by the **common prefix in their names**, e.g. `mingw-w64-clang-x86_64-...` for CLANG64.
 

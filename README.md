@@ -1,4 +1,4 @@
-## Installing tools for C/C++ development - the tutorial
+## Installing and using MinGW C/C++ tooling - the tutorial
 
 ### What is this tutorial for?
 
@@ -6,11 +6,11 @@
 
 * This tutorial is primarly for Windows. Most parts can be used for other OSes too.
 
-* We are going to install Clang (in MSYS2 CLANG64), Visual Studio Code, Clangd, LLDB-DAP, which I consider to be the best choice. I also explain [why I picked those specific tools](/articles/why_philosophy.md), and what are the alternatives.
+* We are going to install the Clang compiler (or GCC if you prefer) using MSYS2, Visual Studio Code, Clangd, LLDB-DAP, which I consider to be the best choice. I also explain [why I picked those specific tools](/articles/why_philosophy.md), and what are the alternatives.
 
 ### How to read this tutorial?
 
-Follow the steps below **in order**.
+I recommend following the steps below **in order**, unless you already have a good idea what you're doing.
 
 If you're new to C/C++, don't binge-read everything at once. Practice writing small programs and read your C/C++ book between the chapters of this tutorial.
 

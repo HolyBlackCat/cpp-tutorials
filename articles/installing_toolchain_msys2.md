@@ -9,6 +9,8 @@ There are two prominent toolchains on Windows:
 
 We'll be installing the later, with the Clang compiler. *([Why MinGW rather than MSVC? And why Clang rather than GCC?](/articles/choosing_compiler_and_more.md) and [Why not Visual Studio?](/articles/why_not_visual_studio.md))*
 
+**NOTE:** If you want GCC instead of Clang for some reason, [read this](/articles/variations/index.md).
+
 More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSYS2?](/articles/why_msys2.md) and [Why not the official Clang installer?](/articles/why_not_official_clang_installer.md) and [Why not WSL?](/articles/why_not_wsl.md))*
 
 ## Installing MSYS2
