@@ -372,7 +372,7 @@ If you're using [`assert()`](https://en.cppreference.com/w/cpp/error/assert) in 
 
 ## Debug vs Release builds
 
-This is little detour on choosing the right flags for the situation.
+This is a little detour on choosing the right flags for the situation.
 
 A "build" refers to a specific compiled version of a program that you produce. Depending on the situation, you might want diffent builds with different flags.
 
