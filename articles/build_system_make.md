@@ -4,6 +4,8 @@
 
 This is a short introduction to Make. If you want to know more, read [the official manual](https://www.gnu.org/software/make/manual/make.html) after finishing this.
 
+Despite being short, I try to teach how to write actually **good** makefiles. Sadly there are many bad tutorials out there.
+
 ## Installation
 
 Run **`pacman -S make`** to install `make`. [Note that we're not installing `mingw-...-make`](/articles/different_flavors_of_make.md), though it's a viable option too.
@@ -113,6 +115,16 @@ clean:
 You can run this target using `make clean`.
 
 Bad tutorials often omit the `.PHONY: clean` part (which marks the target as phony), but if you've been paying attention, you should be able to guess why this is problematic. If you create a file named `clean`, then without this mark, this target wouldn't run.
+
+## Parallel builds
+
+By default Make builds one file at a time. Pass `-j...` flag to build in parallel, where `...` is the number of processes to run in parallel (usually should match the number of the CPU cores you have). E.g. `-j4` builds using 4 parallel jobs.
+
+One thing you can do is `-j$(nproc)`. This automatically uses the number of cores you have. `$(...)` runs the program you tell it, `nproc` in this case (which prints the number of cores), and substitutes whatever it prints to the command. This is not a feature of Make, but of your shell.
+
+**WARNING:** Make has a major footgun. Passing `-j` without a number will build using an infinite number of jobs (all commands will run at the same time). If you try this on a large project, this will exhaust all your RAM and can hang your PC. Don't do that. Another fun thing is that some [shells](/articles/terminal_for_dummies.md#what-is-a-shell) (Bash, I'm looking at you), if `nproc` is not installed, silently ignore the error and remove `$(nproc)`, leading to this issue.
+
+This can be automated, [more on that below](#automatic-parallel-builds).
 
 ## Simplifying the makefile
 
@@ -270,3 +282,117 @@ This is it, our final makefile. There are more improvements that could be made h
 All the other build systems like CMake work similarly (rely on the `.d` files). More advanced build systems often convert `.d` to some other more compact format to speed up compilation (reading tons of `.d`s on every compilation seems to be the main reason why Make is slow on large projects).
 
 There are some variations of this trick. For example, `-MD -MP` (instead of `-MMD -MP`) will also track the system headers, which is slower, but rebuilds correctly if you update the system libraries (or third-party ones). Some other variations run the compiler twice: one normally and one to generate the `.d` file, but this looks inferior to what we're doing here.
+
+# Advanced makefile usage
+
+The above is the minimal makefile knowledge that you should have. You can stop here and explore the other build systems.
+
+But if you decide you want to continue using makefiles as your build system, here are some tricks you might find useful.
+
+## Built-in rules
+
+Make has some built-in rules. For example, if you remove the `%.o: %.cpp` rule, it will do something similar automatically just because the `.o` files are mentioned as the prerequisites of `prog.exe`.
+
+This can often get confusing, so if you're not relying on those rules, you should disable them. Either by passing the `-R` flag to `make` every time, or by adding `MAKEFLAGS += -R` somewhere near the beginning of your makefile.
+
+## Automatic parallel builds
+
+[Passing `-j...`](#parallel-builds) can be automated. You can do `MAKEFLAGS += -j...` inside of the makefile.
+
+Here is how you do it properly:
+```make
+JOBS := $(shell nproc)
+ifneq ($(JOBS),)
+MAKEFLAGS += -j$(JOBS)
+endif
+```
+Firstly `$(shell nproc)` in a makefile is equivalent to `$(nproc)` in shell. It runs the command and returns whatever it has printed.
+
+Since it will silently return nothing if `nproc` is not installed, we must protect against that, to avoid [the footgun](#parallel-builds) mentioned before. `ifneq ($(JOBS),)` compares `JOBS` with an empty string, and only applies it if non-empty.
+
+## Moving the built files to a directory
+
+It's often desirable to have the `.exe`, `.o`, and `.d` in a subdirectory, e.g. to be able to easily delete the entire thing at once, or just to avoid it cluttering the view.
+
+Buckle up:
+
+```make
+MAKEFLAGS += -R
+
+JOBS := $(shell nproc)
+ifneq ($(JOBS),)
+MAKEFLAGS += -j$(JOBS)
+endif
+
+sources := 1.cpp 2.cpp
+
+CXX := clang++
+CXXFLAGS := -g
+LDFLAGS :=
+
+build_dir := build
+bin_dir := $(build_dir)/bin
+obj_dir := $(build_dir)/obj
+
+$(bin_dir) $(obj_dir):
+	mkdir -p $@
+
+$(obj_dir)/%.o: %.cpp | $(obj_dir)
+	$(CXX) $< -c -o $@ -MMD -MP $(CXXFLAGS)
+
+.DEFAULT_GOAL := $(bin_dir)/prog.exe
+$(bin_dir)/prog.exe: $(sources:%.cpp=$(obj_dir)/%.o) | $(bin_dir)
+	$(CXX) $^ -o $@ $(CXXFLAGS) $(LDFLAGS)
+
+.PHONY: clean
+clean:
+	rm -rf $(build_dir)
+
+-include $(sources:%.cpp=$(obj_dir)/%.d)
+```
+First we create variables `build_dir`, `bin_dir`, `obj_dir` to hold the names of our directories.
+
+We also define a rule to create the directories (`$(bin_dir) $(obj_dir):`). Notice that you can have more than one target in a rule, this is a shorthand for writing **multiple** individual rules.
+
+We add `| $(obj_dir)` prerequisite to the object files, to automatically create this directory before building them.
+
+The `|` separates ["order-only prerequisites"](https://www.gnu.org/software/make/manual/make.html#Types-of-Prerequisites). The short explanation is that this prevents unnecessary rebuilds when modification time of the **directory itself** changes (which happens when you add or remove contents to it). You should use `|` any time your prerequisite is a directory that needs to be created.
+
+We use a slightly different form of `$(a:x=y)` here, with the `%` signs. This is necessary because we now not only want to alter the suffix, but also add a prefix (`1.cpp` -> `build/obj/1.o`).
+
+And also now `clean:` can just remove the build directory, instead of the individual files.
+
+And lastly, one clever thing you can do here is replace `$(bin_dir) $(obj_dir):` with `%/:` to automatically create any directory mentioned as a prerequisite. But then you must make sure those prerequisites are spelled with `/` at the end.
+
+## Overriding variables
+
+Any variable in the makefile can be overridden with a flag. E.g. `make JOBS=42`. In this specific case it's not very useful, since `make -j...` overrides the `-j...` in `MAKEFLAGS`, but it's often useful in other cases.
+
+Note that `JOBS=42 make` doesn't work (this is an environment variable now). It only works if you do `JOBS=42 make -e`, or if the makefile doesn't define the `JOBS` variable at all (the environment variable will automatically get picked up as a Make variable), or if the makefile sets it using `JOBS ?= whatever` (this form accepts environment variables too).
+
+In any case, if the makefile defines the variable using `override JOBS := whatever`, it will not accept any user ever.
+
+I recommend marking all variables `override` by default. if you don't want them to be overridden. The conventional variables like `CXX`, `CXXFLAGS`, `LDFLAGS` should be overridable, so don't mark them.
+
+## Automatically finding the source files
+
+It can be desirable to automatically find all source files, instead of listing them manually in the makefile.
+
+This is easy, replace `1.cpp 2.cpp` with `$(wildcard *.cpp)`. I also recommend moving the source files into some directory and using `$(wildcard source/*.cpp)`. This not only looks cleaner, but the wildcard will also work faster if it has less files to check.
+
+Some people dislike this approach, because it makes the builds slower, because we need to rescan the directories every time. It should be fine for small projects though.
+
+### Finding the source files recursively
+
+Note that `wildcard` doesn't look into subdirectories. If your files are spread across multiple subdirectories, you need another approach.
+
+Here's a function that searches recursively:
+```make
+# $1 is a list of directories, $2 is a list of patterns.
+override rwildcard = $(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+```
+You can add it to your makefile, and then do the following, assuming you created a `source` directory for your source files.
+```
+sources := $(call rwilrdcard,source,*.cpp)
+```
+(This can search in `.` too if you pass that, but that is unwise, as it will have to search though a lot of junk.)
