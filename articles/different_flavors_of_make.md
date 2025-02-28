@@ -17,9 +17,13 @@ Normally the rule of thumb is to not install anything with the name not prefixed
 
 * When using it with CMake, `-G "MSYS Makefiles"` corresponds to `make`, and `-G "MinGW Makefiles"` corresponds to `mingw32-make`.
 
-I recommend `make` as the default choice, to have easy compatibility between Windows and Linux makefiles.
+## Which one to use?
+
+I recommend `make` for handwritten makefiles, because it's less quirky and makes it easier to write makefile that work both on Linux and Windows.
 
 If the performance becomes a problem, then you can tweak your makefiles (if needed) to support `mingw32-make` as well.
+
+If you were to use Make with something like CMake, then I would recommend `mingw32-make` for better performance. But since `ninja` is a thing, you should be using that with CMake instead.
 
 ## The default shell
 

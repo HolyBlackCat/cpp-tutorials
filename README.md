@@ -34,4 +34,6 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 
 * ### [Recommended compiler settings](/articles/recommended_compiler_flags.md)
 
+* ### [Compiling programs with multiple source code files](/articles/multifile_programs.md)
+
 * ### [Using third-party libraries](/articles/using_libraries.md)

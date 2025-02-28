@@ -23,7 +23,7 @@ pacman -S make
 
 For example, I unzipped the source to `C:\code\freetype-2.13.3`, created an empty directory at `C:\code\freetype_build`, and `cd`ed to it.
 
-```bash
+```sh
 cd /c/code
 mkdir freetype_build
 cd freetype_build
