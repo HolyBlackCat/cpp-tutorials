@@ -268,3 +268,5 @@ clean:
 This is it, our final makefile. There are more improvements that could be made here, but this is the minimal sane version that is actually usable in practice.
 
 All the other build systems like CMake work similarly (rely on the `.d` files). More advanced build systems often convert `.d` to some other more compact format to speed up compilation (reading tons of `.d`s on every compilation seems to be the main reason why Make is slow on large projects).
+
+There are some variations of this trick. For example, `-MD -MP` (instead of `-MMD -MP`) will also track the system headers, which is slower, but rebuilds correctly if you update the system libraries (or third-party ones). Some other variations run the compiler twice: one normally and one to generate the `.d` file, but this looks inferior to what we're doing here.
