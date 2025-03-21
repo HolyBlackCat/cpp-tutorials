@@ -396,3 +396,36 @@ You can add it to your makefile, and then do the following, assuming you created
 sources := $(call rwilrdcard,source,*.cpp)
 ```
 (This can search in `.` too if you pass that, but that is unwise, as it will have to search though a lot of junk.)
+
+### Cross-platform makefiles
+
+#### Operating systems
+
+Supporting other OSes in a makefile usually requires only minimal changes. In our case the only change needed is removing the `.exe` extension if we're not on Windows.
+
+First of all, we need to detect if we're on Windows or not. Here's one way to do it:
+
+```make
+ifeq ($(OS),Windows_NT)
+TARGET_OS := windows
+else
+TARGET_OS := other
+endif
+```
+And then:
+```make
+ifeq ($(TARGET_OS),windows)
+EXT_EXE := .exe
+else
+EXT_EXE :=
+endif
+```
+And use `prog$(EXT_EXE)` instead of `prog.exe`.
+
+The reason why we use two separate `if`s is to allow [overriding](#overriding-variables) `TARGET_OS`, and then respecting the override when selecting the extension.
+
+#### Compilers
+
+GCC and Clang mostly have compatible compiler flags, so you don't need to do much here.
+
+MSVC not only has different flags, but also can't generate [the `.d` files](#detecting-header-changes), so if you need to support it, it's easier to use a different build system (though it's technically possible to generate the `.d` files yourself, by using `/showIncludes` MSVC flag and parsing its output, that's not trivial).
