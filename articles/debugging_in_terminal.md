@@ -89,6 +89,27 @@ Lastly, when you want to unpause your program, type **`c`** (short for `continue
 
 Type **`quit`** or **`exit`** to exit LLDB and return to the shell.
 
+## Debugging programs that accept input
+
+At the time of writing, at least on Windows, LLDB seems to have issues with programs that use `std::cin` (or read the standard input in any other way).
+
+Let's try it on a simple program:
+```cpp
+#include <iostream>
+
+int main()
+{
+    int x = 0;
+    std::cin >> x;
+    std::cout << x << '\n';
+}
+```
+At the time or writing, the console opens, but I'm unable to input anything. If this works for you as is, skip the rest of this section.
+
+One solution is to prepare a text file with the input (let's say `in.txt` with `42` in it), and then before starting the program (before typing `r`), run **`settings set target.input-path in.txt`**. This will read input from a file instead of pausing and waiting for you to input something.
+
+Alternatively, replacing `r` with `process run -i in.txt` seems to work equally well.
+
 ## Debugging functions
 
 For this, you must understand what "functions" are. If you don't, read your C++ book more and come back later.

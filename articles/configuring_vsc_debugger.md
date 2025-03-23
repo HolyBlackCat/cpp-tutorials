@@ -12,11 +12,17 @@ Make sure you can run `lldb --version` in the VSC terminal. If you see `lldb : T
 
 There are several different extensions for debugging C/C++ in VSC:
 
-* [**Microsoft's C/C++ extension**](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
-
 * [**LLDB-DAP**](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.lldb-dap)
 
-We'll be using LLDB-DAP because it works better with MinGW in my experience, and because you can use it in most IDEs, not only in VSC.
+* [**CodeLLDB**](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
+
+* [**Native Debug**](https://marketplace.visualstudio.com/items?itemName=webfreak.debug)
+
+* [**Microsoft's C/C++ extension**](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+
+We'll be using LLDB-DAP because it works better with MinGW than the Microsoft's extension in my experience, and because you can use it in most IDEs, not only in VSC.
+
+LLDB-DAP is relatively new, so if you get any issues with it, you can try CodeLLDB or any other extension in this list (I listed them roughly in my order of preference).
 
 Like [Clangd](/articles/configuring_code_completion.md#installing-clangd), LLDB-DAP consists of two parts:
 
@@ -41,6 +47,8 @@ Open the `Run and Debug` tab by pressing the button on the left:<br/>
 ![run and debug icon](/images/vsc_debugging_icon.png)
 
 Click `create a launch.json file`, and select `LLDB DAP Adapter`. It will create a file called `launch.json` in the `.vscode` directory in the current directory. This file holds debugging configurations. You can create it manually once you get used to it.
+
+If you already have this file, delete it and try again.
 
 [![generated launch.json](/images/generated_launch_json.png)](/images/generated_launch_json.png)
 
@@ -84,9 +92,17 @@ This can be automated. After the `"cwd": ...` line in `tasks.json`, add `"preLau
 
 Now pressing <kbd>F5</kbd> or the green arrow will automatically recompile the program before starting the debugger.
 
+## Debugging programs that accept input
+
+As previously said [here](/articles/debugging_in_terminal.md#debugging-programs-that-accept-input), at the time of writing, LLDB seems to have issues with programs that accept input (via `std::cin` or similar) on Windows.
+
+I couldn't find a way to make it work with LLDB-DAP. If it doesn't work for you too, you can either temporarily change the program to not accept input (use constant inputs), or switch to a different VSC extension.
+
+CodeLLDB seems to work fine with input. Switching to CodeLLDB is simple: install the extension, and recreate `launch.json`, this time choosing `LLDB` instead of `LLDB-DAP`. It should result in exactly the same `launch.json` [as shown above](#configuring-the-debugger), but with `"type": "lldb"` instead of `"type": "lldb-dap`, and without `"env": []`. If you switch to CodeLLDB, the [next section](#improving-lldb-experience) doesn't apply to you.
+
 ## Improving LLDB experience
 
-There are a few extra settings you can add to `launch.json`:
+LLDB-DAP has a few extra settings you can add to `launch.json`:
 
 * **Open `Debug Console` automatically when starting the debugger:**
   ```json
