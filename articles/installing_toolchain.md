@@ -8,7 +8,7 @@ There are several different toolchains, we'll be installing one of them.
 
 ### What is a compiler?
 
-A compiler is one of the programs included in a toolchain, the most prominent part of it. It understands the source code you write, and translates it to something a computer can understand.
+A compiler is one of the programs included in a toolchain, that does the bulk of the work. It is what understands the source code you write, and translates it to something a computer can understand.
 
 The three most popular C/C++ compilers today are Clang, GCC, and MSVC.
 
