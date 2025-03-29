@@ -251,9 +251,9 @@ When using libstdc++ (GCC's implementation of the C++ standard library) ([which 
 
 Those are additional warnings that you can and should enable.
 
-<details><summary><b><code>-Wconversion</code></b> — warn on implicit conversions</summary>
+<details><summary><b><code>-Wconversion</code></b> — warn on implicit conversions (also <b><code>-Wno-implicit-int-float-conversion -Wsign-conversion</code></b>)</summary>
 
-This is a rather important warning.
+`-Wconversion` is a rather important warning.
 
 Consider the following code:
 ```cpp
@@ -267,10 +267,12 @@ The value of `z` is `0` rather than `0.6`, because its type is not `float`. `-Wc
 
 "Implicit conversion" means "without a cast". Adding a cast (`int z = int(x / y);`) disables the warning, because this is now an "explicit conversion", and it expresses that the programmer intended this to happen.
 
-</details>
-
 I also recommend adding **`-Wno-implicit-int-float-conversion`** to silence this warning for some of the "tame" conversions (namely integer to floating-point). This extra flag is only supported by Clang.
 
+I also recommend adding **`-Wsign-conversion`**. It's not needed on Clang (where `-Wconversion` enables it automatically), but GCC needs it to enable some extra conversion checks.
+
+
+</details>
 
 <details><summary><b><code>-Wimplicit-fallthrough</code></b> — detect forgotten <code>break</code> in <code>switch</code>es</h3></summary>
 
@@ -388,7 +390,7 @@ Some of the flags you want to use in all builds. Some only in debug or release b
 
 Summarizing the above, I recommend the following compilation flags:
 
-**`-std=c++23 -pedantic-errors -Wall -Wextra -Wconversion -Wno-implicit-int-float-conversion -Wimplicit-fallthrough -Wdeprecated -Wextra-semi`**
+**`-std=c++26 -pedantic-errors -Wall -Wextra -Wconversion -Wno-implicit-int-float-conversion -Wsign-conversion -Wimplicit-fallthrough -Wdeprecated -Wextra-semi`**
 
 And additionally:
 
