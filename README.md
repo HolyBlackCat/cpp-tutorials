@@ -6,7 +6,7 @@
 
 * This tutorial is primarly for Windows. Most parts can be used for other OSes too.
 
-* We are going to install the Clang compiler (or GCC if you prefer) using MSYS2, Visual Studio Code, Clangd, LLDB-DAP, which I consider to be the best choice. I also explain [why I picked those specific tools](/articles/why_philosophy.md), and what are the alternatives.
+* We are going to install the Clang compiler (or GCC if you prefer) using MSYS2, Visual Studio Code, Clangd, LLDB-DAP, which I consider to be the best choice. I also explain [why I picked those specific tools](/tooling/articles/why_philosophy.md), and what are the alternatives.
 
 ### How to read this tutorial?
 
@@ -16,24 +16,24 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 
 ### Basics:
 
-* ### [Installing a toolchain](/articles/installing_toolchain.md)
+* ### [Installing a toolchain](/tooling/articles/installing_toolchain.md)
 
-* ### [How to compile and run programs in the terminal](/articles/installing_toolchain.md)
+* ### [How to compile and run programs in the terminal](/tooling/articles/installing_toolchain.md)
 
-* ### [Installing and configuring VSC](/articles/installing_vsc.md)
+* ### [Installing and configuring VSC](/tooling/articles/installing_vsc.md)
 
 ### Debugging:
 
-* ### [Debugging in a terminal](/articles/debugging_in_terminal.md)
+* ### [Debugging in a terminal](/tooling/articles/debugging_in_terminal.md)
 
-* ### [Debugging in VSC](/articles/configuring_vsc_debugger.md)
+* ### [Debugging in VSC](/tooling/articles/configuring_vsc_debugger.md)
 
 ### Additional information:
 
 (You can read those in any order.)
 
-* ### [Recommended compiler settings](/articles/recommended_compiler_flags.md)
+* ### [Recommended compiler settings](/tooling/articles/recommended_compiler_flags.md)
 
-* ### [Compiling programs with multiple source code files](/articles/multifile_programs.md)
+* ### [Compiling programs with multiple source code files](/tooling/articles/multifile_programs.md)
 
-* ### [Using third-party libraries](/articles/using_libraries.md)
+* ### [Using third-party libraries](/tooling/articles/using_libraries.md)
