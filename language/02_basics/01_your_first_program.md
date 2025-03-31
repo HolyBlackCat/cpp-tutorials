@@ -13,19 +13,19 @@ int main()
 
 It should display `Hello, world!` on the screen when ran. This is a tradition for the first programs in most programming books and tutorials.
 
-First make sure you can actually run it, and after you do, then we'll discuss how it works and what it means.
+First, make sure you can actually run it, and after you do, then we'll discuss how it works and what it means.
 
-## The tools you will need
+To run C++ programs you'll need to install some tools...
 
-To program in C++ you'll need a computer, and you'll need to install some tools.
+## The necessary tools
 
 ### The compiler
 
-The compiler is a program that converts (or "compiles") the source you write into a program that you can run. You can send the resulting program to other people too, and they can run it without installing the compiler (like you've been doing so far).
+The compiler is a program that converts (or "compiles") the source you write into a program that you can run (called an "executable"). You can send the resulting executable to other people too, and they can run it without installing the compiler (like you've been doing so far).
 
 Not all languages require compilation. This, and the process of compilation will be explained in more details [later](TODO_link).
 
-The popular compilers are Clang, GCC, and MSVC (in my order of preference, but any of them will work fine)
+The popular compilers are Clang, GCC, and MSVC (in my order of preference, but any of them will work fine).
 
 ### The IDE
 
@@ -37,7 +37,7 @@ Some popular IDEs are Visual Studio Code, Visual Studio (two unrelated programs 
 
 I have [**a separate tutorial**](/README.md) to guide you through the process. That tutorial explains how to install and configure Visual Studio Code with Clang or some other compiler. If you want to use something else, install it on your own and come back here.
 
-If you already installed Visual Studio Code, I still recommend reading that tutorial. Some people use it without really understand what's going on, and my tutorial aims to fix that.
+If you already installed Visual Studio Code, I still recommend reading that tutorial. Some people use VSC without really understand what's going on, and my tutorial aims to fix that.
 
 If you decide to use that tutorial, **read the first few chapters only**. As soon as you're able to compile the simple program above, stop reading that tutorial and leave it for later. Continue learning C++ from here, and read that tutorial in parallel.
 
@@ -73,13 +73,12 @@ int main()
     std::cout << "It prints different things...\n";
 }
 ```
-This prints
+This should now print:
 ```
 Hello, world!
 This is a small test program.
 It prints different things...
 ```
-when executed.
 
 Try running this program and experiment with adding more statements.
 
@@ -111,7 +110,7 @@ The last unexplained part of the program is `#include <iostream>`. `#include` is
 
 The short explanation is that using certain features requires adding certain `#include` directives at the top of the program. E.g using `std::cout` to print things requires adding `#include <iostream>`.
 
-`iostream` is a name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the specified file in place of itself during compilation. The contents of `iostream` describe what `std::cout` is.
+`iostream` is a name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the specified file in place of itself during compilation. The contents of `iostream` describe to the compiler what `std::cout` is and allow you to use it.
 
 There are many different files that you can include, and the collection of them that comes with your compiler is called **the standard library**. Things that come from the standard library normally have `std::` in their names to indicate that.
 
