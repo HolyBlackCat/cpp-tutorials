@@ -37,6 +37,8 @@ Some popular IDEs are Visual Studio Code, Visual Studio (two unrelated programs 
 
 I have [**a separate tutorial**](/README.md) to guide you through the process. That tutorial explains how to install and configure Visual Studio Code with Clang or some other compiler. If you want to use something else, install it on your own and come back here.
 
+I recommend not using an online compiler, and instead installing the proper compiler on your computer. An online compiler is convenient to test simple programs, but usually isn't suitable for any serious work.
+
 If you already installed Visual Studio Code, I still recommend reading that tutorial. Some people use VSC without really understand what's going on, and my tutorial aims to fix that.
 
 If you decide to use that tutorial, **read the first few chapters only**. As soon as you're able to compile the simple program above, stop reading that tutorial and leave it for later. Continue learning C++ from here, and read that tutorial in parallel.
@@ -55,6 +57,10 @@ int main()
 ```
 
 This should print `Hello, world!` when ran, if you've done everything correctly.
+
+### Comments
+
+Lines starting with `//`
 
 ### Statements
 
@@ -122,7 +128,7 @@ People can make their own libraries (non-standard ones, called "third-party libr
 
 `cout` stands for "character output", because it's what you use to print characters (letters and other symbols).
 
-`iostream` standard for "input/output stream". `std::cout` is often called "the output stream".
+`iostream` stands for "input/output stream". `std::cout` is often called "the output stream".
 
 ## More information
 
@@ -189,42 +195,10 @@ world!
 ```
 It's customary to add `\n` after the last line printed by your program. You might run into some minor issues otherwise.
 
-If you want to print the `\` character itself, it must be spelled as `\\`. E.g. printing `"Hello\\world!\n"` will give you
-```
-Hello\world!
-```
-In general, `\...` are called **escape sequences**. There is about a dozen of them.
+`\` followed by some characters is called an **escape sequence**. They are used to insert various special characters into strings.
 
-### Comments
+Among others, `\\` is used to get the `\` character itself. E.g. printing `"Hello\\world"` would give you `Hello\world`, whereas printing `"Hello\world"` is a compilation error because the compiler tries to interpret `\w` as an escape sequence, and there's no such escape sequence.
 
-This is something that wasn't shown in the previous example. Consider this code:
-```cpp
-// This is a simple test program.
-#include <iostream>
+Another escape sequence is `\"`, which is used to get the `"` character. `"Hello\"world"` results in `Hello"world`, whereas `"Hello"world"` is again a compilation error, because here the string ends at the middle `"`, and the `world"` that follows is junk that the compiler can't understand.
 
-int main() // This is the main function!
-{
-    // This line prints some text.
-    std::cout << "Hello, world!\n";
-}
-```
-The lines starting with `//` are **comments**, they are ignored by the compiler.
-
-You can use them to explain how your program works (if it's too complex to be useful), to make the life of your future self (and of other programmers) easier. Don't overdo it (the example above is excessive).
-
-Notice that you can have code on the same line as `//` before it.
-
-It's customary to put the comments *before* the thing that they are explaining (or on the same line after it).
-
-There's also another style of comments: `/* ... */`. Those end not at the end of the line, but at the `*/`, and may or may not span multiple lines. For example:
-```cpp
-#include <iostream>
-
-int main()
-{
-    /* This code prints
-    some text. */
-    std::cout << /*we print this string -> */ "Hello, world!\n";
-}
-```
-This is once again an excessive example, you probably shouldn't write comments like this.
+You can find the full list of escape sequences on [cppreference](https://en.cppreference.com/w/cpp/language/escape).

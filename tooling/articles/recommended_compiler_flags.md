@@ -213,6 +213,30 @@ SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior prog.cpp:6:24
 
 </details>
 
+<details><summary><b><code>-fsanitize=memory</code></b> — enable the memory sanitizer (note, not compatible with <code>-fsanitize=address</code>)</h3></summary>
+
+The memory sanitizer catches the use of uninitialized variables:
+```cpp
+#include <iostream>
+
+int main()
+{
+    int x;
+    std::cout << x << '\n';
+}
+```
+This normally prints some arbitrary values.
+
+`-fsanitize=memory` would catch this and give you a runtime error. If you also add `-g`, it will give you line numbers.
+
+Note that this is **not compatible** with `-fsanitize=address`, and since the address sanitizer is vastly more important, the memory sanitizer gets less attention.
+
+So to get the full sanitizer coverage, you'll need to test on at least two different builds.
+
+
+
+</details>
+
 **NOTE:** On Windows, `-fsanitize=...` don't work with GCC. They also doesn't work if you installed Clang in any [environment](/tooling/articles/msys2_environments.md) other than MSYS2 CLANG64 (such as in [MSYS2 UCRT64](/tooling/articles/msys2_environments.md)). If you followed this tutorial, then they should work for you.
 
 <details><summary><b><code>-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG</code> <code>-D_GLIBCXX_DEBUG</code></b> — enable additional checks in the C++ standard library</summary>
@@ -394,6 +418,9 @@ Summarizing the above, I recommend the following compilation flags:
 
 And additionally:
 
+* In [release builds](#debug-vs-release-builds):<br/>
+  **`-O3 -s -flto=thin`**
+
 * In [debug builds](#debug-vs-release-builds):<br/>
   **`-g -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG -D_GLIBCXX_DEBUG -fsanitize=address -fsanitize=undefined`**
 
@@ -403,5 +430,4 @@ And additionally:
 
   If you're using GCC, remove `-Wno-implicit-int-float-conversion` as it doesn't understand it.
 
-* In [release builds](#debug-vs-release-builds):<br/>
-  **`-O3 -s -flto=thin`**
+  If you need additional validation (checking for uninitialized variables), you need a second separate build with `-fsanitize=memory` and without `-fsanitize=address` (because they are not compatible).
