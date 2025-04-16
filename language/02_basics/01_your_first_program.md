@@ -116,11 +116,11 @@ The last unexplained part of the program is `#include <iostream>`. `#include` is
 
 The short explanation is that using certain features requires adding certain `#include` directives at the top of the program. E.g using `std::cout` to print things requires adding `#include <iostream>`.
 
-`iostream` is a name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the specified file in place of itself during compilation. The contents of `iostream` describe to the compiler what `std::cout` is and allow you to use it.
+`iostream` is a name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the file you give it in place of itself during compilation. The contents of `iostream` describe to the compiler what `std::cout` is and allow you to use it.
 
-There are many different files that you can include, and the collection of them that comes with your compiler is called **the standard library**. Things that come from the standard library normally have `std::` in their names to indicate that.
+There are many different files that you can include (those files are called **headers**), and the collection of them that comes with your compiler is called **the standard library**. Things that come from the standard library normally have `std::` in their names to indicate that.
 
-People can make their own libraries (non-standard ones, called "third-party libraries") to add features to C++ that it otherwise doesn't have (such as working with graphics, which you'll need if you want to make games).
+People can make their own libraries (non-standard ones, called "third-party libraries") to add features to C++ that it otherwise doesn't have (such as the ability to work with graphics, which you'll need if you want to make games).
 
 ### Meaning of words
 

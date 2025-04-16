@@ -28,16 +28,6 @@ The left operand of some operator will often be called an **lhs** (left hand sid
 
 Experiment with printing different expressions. This already has some practical use.
 
-## Expressions and objects
-
-The word "expression" always means a part of the source code.
-
-When you print `(10 + 20) / 2`, the resulting number `15` (or the result of `+` which is `30`) are **not** expressions, because they aren't written directly in the source.
-
-The numbers that are being manipulated (which exist in computer's memory while the program is running, not during compilation) are called **objects**.
-
-Expressions refer to objects.
-
 ## Expressions are composable
 
 Expressions often have other expressions as their parts. In expression `(10 + 20) / 2`, the parts `(10 + 20)` and `2` are themselves expressions. And so are `10 + 20`, `10`, and `20`.
