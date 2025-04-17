@@ -23,7 +23,7 @@ To run C++ programs you'll need to install some tools...
 
 The compiler is a program that converts (or "compiles") the source you write into a program that you can run (called an "executable"). You can send the resulting executable to other people too, and they can run it without installing the compiler (like you've been doing so far).
 
-Not all languages require compilation. This, and the process of compilation will be explained in more details [later](TODO_link).
+Not all languages require compilation. This, and the process of compilation will be explained in more details later.
 
 The popular compilers are Clang, GCC, and MSVC (in my order of preference, but any of them will work fine).
 
@@ -57,6 +57,8 @@ int main()
 ```
 
 This should print `Hello, world!` when ran, if you've done everything correctly.
+
+If you're typing it manually instead of copy-pasting, use the <kbd>Tab</kbd> key to add the spaces before `std::cout` instead of hitting <kbd>Space</kbd> multiple times, this saves time.
 
 ### Comments
 
