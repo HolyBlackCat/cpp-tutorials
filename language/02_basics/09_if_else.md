@@ -25,11 +25,13 @@ int main()
 }
 ```
 
-The **`if` statement** takes a condition in `(...)`, and then a list of statements in `{...}`. The statements are executed only if the condition is true.
+The **`if` statement** takes a condition in `(...)`, and then a list of statements in `{...}` (its **"body"**). The statements in its body are executed only if the condition is true.
 
 Some of the operators that can be used in the conditions are: `==` (equal), `!=` (not equal), `<`,`<=`,`>`,`>=` (less, less-or-equal, greater, greater-or-equal).
 
 So above, the first condition is true if `age` is `17` or less, and the second condition is true if `age` is `18` or greater.
+
+## `else`
 
 In situations like the above, when the second condition is the opposite of the first one, you can and should use `else` instead of the second `if`:
 ```cpp
@@ -43,6 +45,17 @@ else
 }
 ```
 This has the same effect, except it can be a bit faster in some cases, since there's one less condition to check.
+
+A lone `else` causes a compilation error, of course:
+```cpp
+int age;
+std::cin >> age;
+
+else // Error here.
+{
+    std::cout << "Allowed!\n";
+}
+```
 
 ## Nesting
 
@@ -69,6 +82,8 @@ And of course you can group those with `(...)`:
 if (x > 10 && (x < 20 || x == 100))
 ```
 Can you tell for which values of `x` this is true? Experiment with it for a bit.
+
+`||` is an **"inclusive or"**, meaning it checks if **one or both** conditions are true, rather than exactly one condition (which would be "exclusive or", which C++ doesn't support directly).
 
 `&&` and `||` in C and C++ are said to be **"short-circuiting"**, meaning that the first operand is checked first, and then if that's enough to determine the final result (`false` for `&&`, `true` for `||`), then the second operand is skipped. This probably isn't very useful to you right now, because you have no way of observing that this actually happens, but this will be useful later.
 
@@ -208,3 +223,190 @@ if (age < 18)
 std::cout << "Go away!\n";
 ```
 ...to clearly indicate this fact.
+
+Everything above is also true for `else`. You can do this:
+
+```cpp
+if (age < 18)
+    std::cout << "Too young!\n";
+else
+    std::cout << "Allowed!\n";
+```
+
+You can also have braces in one branch (`if` or `else`) and not another, though it does look ugly:
+```cpp
+if (age < 18)
+{
+    std::cout << "Too young!\n";
+}
+else
+    std::cout << "Allowed!\n";
+```
+```cpp
+if (age < 18)
+    std::cout << "Too young!\n";
+else
+{
+    std::cout << "Allowed!\n";
+}
+```
+
+Now, can you guess what happens here:
+```cpp
+if (age < 18)
+    std::cout << "Too young!\n";
+    std::cout << "Go away!\n";
+else
+    std::cout << "Allowed!\n";
+```
+This is again a compilation error, because since the second `std::cout << ...`, isn't a part of `if`, this `else` is now dangling (not attached to any `if`), which as shown above is a compilation error.
+
+And this should be obvious now, hopefully:
+
+```cpp
+if (age < 18)
+    std::cout << "Too young!\n";
+else
+    std::cout << "Allowed!\n";
+    std::cout << "Go on.\n";
+```
+
+This is equivalent to:
+```cpp
+if (age < 18)
+    std::cout << "Too young!\n";
+else
+    std::cout << "Allowed!\n";
+
+std::cout << "Go on.\n";
+```
+
+## Chaining `if` `else`
+
+You'll often see things like this:
+
+```cpp
+if (age < 10)
+    std::cout << "A\n";
+else if (age < 20)
+    std::cout << "B\n";
+else if (age < 30)
+    std::cout << "C\n";
+else
+    std::cout << "D\n";
+```
+
+This (`else if`) isn't some special language feature, we're just omitting braces. After adding the braces back, you should see that it's entirely equivalent to:
+```cpp
+if (age < 10)
+{
+    std::cout << "A\n";
+}
+else
+{
+    if (age < 20)
+    {
+        std::cout << "B\n";
+    }
+    else
+    {
+        if (age < 30)
+            std::cout << "C\n";
+        else
+            std::cout << "D\n";
+    }
+}
+```
+
+## Empty bodies
+
+A common trap that newbies fall into is this:
+```cpp
+if (age < 18); // Note the `;`!
+{
+    std::cout << "Too young!\n";
+}
+```
+Adding `;` here makes it seemingly ignore the condition and always execute the body. Why?
+
+First of all, a lone `;` is a statement too, an **empty statement**.
+
+So the above is equivalent to:
+```cpp
+if (age < 18)
+    ;
+
+{
+    std::cout << "Too young!\n";
+}
+```
+Which is in turn equivalent to:
+```cpp
+if (age < 18)
+{
+    ; // Does nothing.
+}
+
+{
+    std::cout << "Too young!\n";
+}
+```
+As you can see, adding `;` after `if (...)` gives it an empty body, same as `{}`.
+
+Now the only question is what are those lone `{...}` braces after the `if`?
+
+They do nothing, the contents are always executed. The only effect they have is acting as a scope for variables (variables declared inside still stop existing when exiting the braces).
+
+Braces are rarely used like this intentionally (more often this is a typo). In rare cases this can be useful to limit the scope of variables you no longer need. Here's a small made-up example:
+```cpp
+int x;
+
+{
+    int y = 10 + 20 + 40;
+    x = y * (y - 1);
+}
+
+// `y` doesn't exist anymore.
+
+std::cout << x << "\n";
+```
+
+And lastly, this common typo (`;` after `if (...)`) can be caught by your compiler automatically, if you enable compiler warnings. If you're also following my tooling tutorial, that is explained [here](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors).
+
+## Terminology
+
+Now I want to give the correct terminology for describing `if`/`else`.
+
+As I said before, `int main() {...}` holds a list of statements. Therefore the entire `if (...) {...}` or even `if (...) {...} else {...}` is one big statement. This is a separate kind of statements, called **`if` statements** (unsurprisingly).
+
+`{...}` braces with their contents are yet another kind of statements, called **compound statements**, or **block statements**. They are statements that contain other statements inside of them.
+
+Therefore, `if` in general looks like this:
+```cpp
+if (expression)
+    statement
+```
+or:
+```cpp
+if (expression)
+    statement
+else
+    statement
+```
+And the ability to add `{...}` braces isn't some special feature of `if`, but a consequence of compound statements being a thing.
+
+## Indentation
+
+Let me digress for a moment.
+
+You can see that in all examples above I've been adding whitespace to the beginning of lines in a certain manner that makes it look "good". If you're familiar with other programming languages, this is probably obvious.
+
+Using the "correct" amount of whitespace at the beginning of lines is called **indentation**, and is something you should get used to.
+
+C++ doesn't have any *official* rules of how things should be indented, and this tutorial shows one of the popular styles.
+
+Additionally, some people put `{` at the end of the previous line, and some don't (like myself).
+
+Different people use different number of spaces for each indentation level, 4 spaces is a popular option.
+
+Indentation is usually performed by pressing the <kbd>Tab</kbd> key (instead of repeatedly hitting <kbd>Space</kbd>), but whether <kbd>Tab</kbd> inputs an actual Tab character or a bunch of spaces should be configurable in your IDE. It's matter of preference.
