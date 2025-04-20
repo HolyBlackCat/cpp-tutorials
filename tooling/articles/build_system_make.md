@@ -4,7 +4,7 @@
 
 This is a short introduction to Make. If you want to know more, read [the official manual](https://www.gnu.org/software/make/manual/make.html) after finishing this.
 
-Despite being short, I try to teach how to write actually **good** makefiles. Sadly there are many bad tutorials out there.
+Despite being short, I try to teach how to write actually **decent** makefiles. Sadly there are many bad tutorials out there.
 
 ## Installation
 
@@ -392,10 +392,27 @@ Here's a function that searches recursively:
 override rwildcard = $(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 ```
 You can add it to your makefile, and then do the following, assuming you created a `source` directory for your source files.
-```
+```make
 sources := $(call rwilrdcard,source,*.cpp)
 ```
 (This can search in `.` too if you pass that, but that is unwise, as it will have to search though a lot of junk.)
+
+#### Directory prerequisites for files in multiple directories
+
+Setting up directory prerequisites for the source files spread across multiple directories can be a bit tricky. The best way I've found is as follows.
+
+Ideally, we'd want something like this: `$(obj_dir)/%.o: %.cpp | $(dir $@)`. (But this doesn't work, see below.)
+
+Here `$(dir )` is a built-in function that rermoves the last component from the path, so `$(dir a/b/c.cpp)` is `a/b/`. This would work really well with the `%/:` (universal target for creating directories) explain above.
+
+But sadly this doesn't work directly, because `$@` doesn't work in the prerequisite list. There is a way to make it work though.
+
+Add [`.SECONDEXPANSION:`](https://www.gnu.org/software/make/manual/html_node/Secondary-Expansion.html) somewhere near the top of the makefile (on a separate line), and then use:
+```make
+$(obj_dir)/%.o: %.cpp | $$(dir $$@)
+```
+`SECONDEXPANSION` is a fairly obscure feature. It makes Make scan (expand variables and functions) in the prerequisite lists *twice*. During the second expansion `$@` is accessible, so we can use it. Using `$$` instead of `$` escapes the `$` to delay it until the second expansion, because we don't want it to be expanded to early (because during the first expansion `$@` returns an empty string).
+
 
 ### Cross-platform makefiles
 
@@ -423,6 +440,12 @@ endif
 And use `prog$(EXT_EXE)` instead of `prog.exe`.
 
 The reason why we use two separate `if`s is to allow [overriding](#overriding-variables) `TARGET_OS`, and then respecting the override when selecting the extension.
+
+There's another detection mechanism: running [`uname`](https://linux.die.net/man/1/uname) and examining the OS name it prints. For example, this detects Linux:
+```make
+ifeq ($(shell uname -o),GNU/Linux)
+```
+This isn't 100% reliable on Windows, because if the user is running [`mingw32-make` instead of `make`](./different_flavors_of_make.md) and didn't add `uname` to the PATH, it won't work. And running `uname` is probably slower too. So my recommendation would be to check the `$(OS)` environment variable first, and if we're not Windows (and you need a more detailed detection, e.g. Linux vs Mac), *then* run `uname`.
 
 #### Compilers
 
