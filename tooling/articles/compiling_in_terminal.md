@@ -46,7 +46,7 @@ The terminal has a concept of a "current directory", which you can change using 
 
 Notice the current directory being displayed in yellow text.
 
-Notice that the MSYS2 [shell](/tooling/articles/terminal_for_dummies.md#what-is-a-shell) displays the paths in the Linux style, `/c/code/a` instead of `C:\code\a`.<br/>
+Notice that MSYS2 displays the paths in the Linux style, `/c/code/a` instead of `C:\code\a`.<br/>
 `cd` works with both path styles, so you could do `cd /c/code/a`.
 
 ## Compiling

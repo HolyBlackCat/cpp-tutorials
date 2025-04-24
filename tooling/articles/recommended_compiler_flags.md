@@ -127,6 +127,32 @@ This does two things:
 
 </details>
 
+<details><summary><b><code>-fno-ms-extensions</code></b> — disable Microsoft-specific extensions (only useful for GCC on Windows)</h3></summary>
+
+This flag is relatively little-known. The Clang compiler ignores it, so if you've been following this tutorial as is, you can skip it.
+
+It's only useful on the GCC compiler. Moreover, it's only useful on Windows, since on other OSes GCC already does the right thing by default.
+
+It disables even more language extensions (non-standard features that only some compilers have).
+
+In this case, specifically the extensions imitating those of the MSVC compiler (the Microsoft's compiler, hence `ms`).
+
+Here are some fun errors that GCC doesn't catch without this flag:
+
+* ```cpp
+  template <typename T>
+  foo() {return 42;} // Missing return type.
+  ```
+
+* ```cpp
+  struct A {void blah() {}};
+  auto ptr = A::blah; // Missing `&` before `A::blah`.
+  ```
+
+Clang ignores this flag in MinGW mode (see [this](./choosing_compiler_and_more.md) for more details). When in MSVC-compatible mode, the flag removes some actually useful features, such as `__declspec(dllexport)` and friends (this specific feature can be enabled back via `-fdeclspec`, but there are probably other useful things that it disables too), so it shouldn't be used in that case.
+
+</details>
+
 ## Flags to catch errors
 
 Those will catch many programming errors for you. They will also slow down your program, [see the discussion below](#debug-vs-release-builds) on when they should be removed.
@@ -414,7 +440,7 @@ Some of the flags you want to use in all builds. Some only in debug or release b
 
 Summarizing the above, I recommend the following compilation flags:
 
-**`-std=c++26 -pedantic-errors -Wall -Wextra -Wconversion -Wno-implicit-int-float-conversion -Wsign-conversion -Wimplicit-fallthrough -Wdeprecated -Wextra-semi`**
+**`-std=c++26 -pedantic-errors -fno-ms-extensions -Wall -Wextra -Wconversion -Wno-implicit-int-float-conversion -Wsign-conversion -Wimplicit-fallthrough -Wdeprecated -Wextra-semi`**
 
 And additionally:
 
