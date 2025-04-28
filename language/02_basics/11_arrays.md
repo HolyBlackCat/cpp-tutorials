@@ -72,7 +72,7 @@ int arr[size]; // Compilation error.
 ```
 Try it.
 
-It is possible that this actually will compile for you, but this is a sign of an improperly configured compiler. Compilers tend to accept some invalid things by default, and need to be configured not to. If you're also following my tooling tutorial, this is a good time to read about [the recommended compiler settings](/tooling/articles/recommended_compiler_flags.md). If you're using GCC or Clang, use `-std=c++26 -pedantic-errors` (or some other `-std=c++??`) to make the compiler error on this. MSVC should reject this by default.
+It is possible that this actually will compile for you, but this is a sign of an improperly configured compiler. Compilers tend to accept some invalid things by default, and need to be configured not to. If you're also following my tooling tutorial, this is (again!) a good time to read about [the recommended compiler settings](/tooling/articles/recommended_compiler_flags.md). If you're using GCC or Clang, use `-std=c++26 -pedantic-errors` (or some other `-std=c++??`) to make the compiler error on this. MSVC should reject this by default.
 
 You might be wondering, if this happens to work for you, why do anything? First of all, you should try to write code that works on all three big compilers, and this doesn't work on one of the three (MSVC). Second, VLAs (variable-length arrays, which is how this is called) seem to be [bug-prone in general](https://stackoverflow.com/q/12407754/2752075). C++ has better alternatives (namely `std::vector`), which will be discussed in the later chapters.
 

@@ -1,6 +1,6 @@
 # Constants
 
-Let's look at the example from the last chapter again:
+Let's look at the example from the Arrays chapter again:
 ```cpp
 int arr[5];
 

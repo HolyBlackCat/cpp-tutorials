@@ -42,7 +42,7 @@ Just like you can do `std::cout << 1 << 2;`, you can also do `std::cin >> x >> y
 
 The two are completely equivalent, just like with `<<` and `std::cout`.
 
-# Asking nicely for input
+## Asking nicely for input
 
 Programmers often do this one little trick:
 ```cpp
@@ -54,7 +54,7 @@ So the program tells you what it wants you to input, instead of just waiting on 
 
 Also notice how we don't have to add `\n` here. This will make the input appear on the same line as the prompt (meaning "the request for input") that you printed.
 
-# Pausing for input
+## Pausing for input
 
 I previously said that `std::cin >> x;` pauses the program to wait for input.
 
@@ -103,7 +103,7 @@ That is because you provided more input than necesasry the first time, so it did
 
 Try to experiment with this a bit. E.g. input 2 numbers instead of 3 and see what happens.
 
-# Inputting wrong things
+## Inputting wrong things
 
 Try to type something other than a number, e.g. `blah`, and see what happens.
 
