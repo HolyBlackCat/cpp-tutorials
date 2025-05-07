@@ -15,9 +15,9 @@ std::cout << "Third:  " << arr[2] << "\n";
 
 The `3` in `int arr[3];` (the **size** of the array) means that it can hold 3 values, which can then be accessed as `arr[0]`, `arr[1]`, `arr[2]` (`0`,`1`,`2` being the **indices**). Note that the indices start from zero.
 
-Note that `arr[3]` and larger is illegal (`arr[3]` would be the fourth number).
+Note that `arr[3]` and larger is illegal (`arr[3]` would be the fourth element).
 
-So far this probably doesn't look too useful compared to just `int arr0, arr1, arr2;`, but bear with me. It'll make sense in the next chapter.
+While in this example the array doesn't look very useful compared to `int arr0, arr1, arr2;`, things change when you start using loops. This is explained later in this chapter.
 
 ## Initialization
 
@@ -27,18 +27,21 @@ You can initialize them:
 ```cpp
 int arr[3] = {10, 20, 30};
 ```
-In this can you can omit the same, this is completely equivalent:
+If you initialize the array, you can omit the size:
 ```cpp
 int arr[] = {10, 20, 30};
 ```
-If you specify the size and provide less initializers than the size, the remaining elements are zeroed:
+This is exactly the same as the above.
+
+But if you do specify the size and provide **more** initializers (elements) than the size, this is a compilation error.
+
+If you provide **less** elements than the size, the remaining elements are zeroed:
 ```cpp
 int arr[5] = {10, 20, 30};
 ```
 This is exactly the same as `= {10, 20, 30, 0, 0}`.
 
-And if you provide **more** elements than the size, this is a compilation error.
-
+Therefore `= {}` is a common way to initialize an array to all zeroes.
 
 ## Assignment
 
@@ -56,7 +59,7 @@ You can't assign the entire array at once.
 int arr[3];
 arr = {10, 20, 30}; // Compilation error.
 ```
-You also can't print the entire array at once, and can't input the entire array with a single use of `std::cin >>`.
+You also can't print the entire array at once, and can't input the entire array with a single use of `std::cin >>`. Only the individual elements.
 
 ## Array size
 
@@ -72,9 +75,11 @@ int arr[size]; // Compilation error.
 ```
 Try it.
 
-It is possible that this actually will compile for you, but this is a sign of an improperly configured compiler. Compilers tend to accept some invalid things by default, and need to be configured not to. If you're also following my tooling tutorial, this is a good time to read about [the recommended compiler settings](/tooling/articles/recommended_compiler_flags.md). If you're using GCC or Clang, use `-std=c++26 -pedantic-errors` (or some other `-std=c++??`) to make the compiler error on this. MSVC should reject this by default.
+It is possible that this will actually compile for you, but this is a sign of an improperly configured compiler. Compilers tend to accept some invalid things by default (that are disallowed by the C++ standard, the document that describes how C++ is supposed to work), and need to be configured not to. If you're also following my tooling tutorial, it [explains this in more detail](/tooling/articles/recommended_compiler_flags.md). If you're using GCC or Clang, use `-std=c++26 -pedantic-errors` (or some other `-std=c++??`) to make the compiler error on this. MSVC rejects this by default (but you should still use `/std:c++latest` to make it reject other non-standard things).
 
-You might be wondering, if this happens to work for you, why do anything? First of all, you should try to write code that works on all three big compilers, and this doesn't work on one of the three (MSVC). Second, VLAs (variable-length arrays, which is how this is called) seem to be [bug-prone in general](https://stackoverflow.com/q/12407754/2752075). C++ has better alternatives (namely `std::vector`), which will be discussed in the later chapters.
+You might be wondering, if this happens to work for you, why do anything? Isn't this a useful feature to have?
+
+First of all, you should try to write code that works on all three big compilers, and this doesn't work on one of the three (MSVC). Second, VLAs (variable-length arrays, which is how this feature is called) seem to be [bug-prone in general](https://stackoverflow.com/q/12407754/2752075). C++ has better alternatives (namely `std::vector`), which will be discussed in the later chapters.
 
 ## Loops
 
@@ -91,7 +96,7 @@ for (int i = 0; i < 5; i++)
 ```
 This reads 5 values, and then prints all of them.
 
-## Multi-dimensional arrays.
+## Multi-dimensional arrays
 
 `int arr[3];` is said to be one-dimentional (1D).
 
@@ -101,7 +106,7 @@ int arr[3][5];
 ```
 This is a 2D array, a rectangular table of numbers of size 10×20. Larger dimensions are possible too: `int arr[3][5][7];` and so on.
 
-You can think of `int arr[3][5];` as an array of arrays. It's an array of size `3`, the elemenets of which are themselves arrays (of 5 `int`s each).
+You can think of `int arr[3][5];` as an array of arrays. It's an array of size `3`, the elements of which are themselves arrays (of 5 `int`s each).
 
 And to access the elements, you do `arr[1][2] = 42;`, as you would expect.
 

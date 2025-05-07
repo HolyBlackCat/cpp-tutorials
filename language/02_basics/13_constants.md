@@ -1,6 +1,6 @@
 # Constants
 
-Let's look at the example from the last chapter again:
+Let's look at the example from the Arrays chapter again:
 ```cpp
 int arr[5];
 
@@ -26,7 +26,7 @@ for (int i = 0; i < size; i++)
 ```
 But as explained before, the array size must be fixed at compile-time, so `int arr[size];` is a compilation error.
 
-Enter **constants**.
+Enter **constants**:
 
 ```cpp
 const int size = 5;
@@ -45,7 +45,7 @@ This now compiles.
 
 Constant variables can't be changed, `size = 42;` or `std::cin >> size;` would give you a compilation error.
 
-Since the compiler can now clearly see that the array size is fixed, the example above compiles. (You might be wondering why it can't see that with a non-constant variable. While this specific case looks simple, in more complex cases analyzing this would be impossible, so the compiler doesn't try at all.)
+Since the compiler can now clearly see that the array size is fixed, the example above compiles. You might be wondering why it can't see that with a non-constant variable. While this specific case looks simple, in more complex cases analyzing this would be impossible, so the compiler doesn't try at all.
 
 ## Other uses of constants
 
@@ -80,6 +80,6 @@ For example, when you do `int x = 42;`, the `42` is an **integer literal**.
 
 Variables (`const` or not) are also **not** literals.
 
-Like "expression", the word "literal" always refers to a piece of the source code, rather than some value your program manipulates when ran.
+Like "expression", the word "literal" always refers to a piece of the source code, rather than some value your program manipulates at runtime.
 
 Strings in quotes are also literals. In `std::cout << "Hello!\n";`, the `"Hello!\n"` is a **string literal**.

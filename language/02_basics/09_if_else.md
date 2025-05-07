@@ -2,7 +2,7 @@
 
 All C++ programs you've written so far were doing computations.
 
-Let's try something else. Let's say you want to write a program that, given person's age, prints whether they're legally allowed to buy alcohol or not. How would you do that?
+Let's try something else. Let's say you want to write a program that, given person's age, checks if they're legally allowed to drink. How would you do that?
 
 ```cpp
 #include <iostream>
@@ -73,7 +73,7 @@ if (age < 18)
 
 ## Combining several conditions
 
-Use operators `&&` ("and") and `||` ("or") to combine together several conditions.
+Use operators **`&&`** ("and") and **`||`** ("or") to combine together several conditions.
 
 For example, `if (x < 10 || x > 20)` means "x is smaller than 10 or larger than 20".
 
@@ -85,7 +85,23 @@ Can you tell for which values of `x` this is true? Experiment with it for a bit.
 
 `||` is an **"inclusive or"**, meaning it checks if **one or both** conditions are true, rather than exactly one condition (which would be "exclusive or", which C++ doesn't support directly).
 
-`&&` and `||` in C and C++ are said to be **"short-circuiting"**, meaning that the first operand is checked first, and then if that's enough to determine the final result (`false` for `&&`, `true` for `||`), then the second operand is skipped. This probably isn't very useful to you right now, because you have no way of observing that this actually happens, but this will be useful later.
+`&&` and `||` in C and C++ are said to be **"short-circuiting"**, meaning that the first operand is checked first, and then if that's enough to determine the final result (false for `&&`, true for `||`), then the second operand is skipped. This probably isn't very useful to you right now, because you have no way of observing that this actually happens, but this will be useful later.
+
+
+## Negating conditions
+
+Use **`!`** ("not") to negate conditions.
+
+For example, `!(a > b)` ("a isn't larger than b") is (in most cases) equivalent to `a <= b`.
+
+In this simple case you should just use `<=` directly, but it can be helpful in the more complex cases.
+
+Another example:
+
+```cpp
+if (x > 0 && !(x == 10 || x == 20))
+```
+Do you understand what this does? Experiment with it a bit.
 
 
 ## Conditions are expressions
@@ -126,11 +142,11 @@ In case it's not obvious, you can do `if (true)` (always executes) and `if (fals
 
 ### Conversions to and from `bool`
 
-Intuitively, converting `bool` to a number (`int` or `double`) returns in `1` for `true` and `0` for `false`.
+Intuitively, converting `bool` to a number (`int` or `double`) results in `1` for `true` and `0` for `false`.
 
 The reverse, converting a number to `bool`, results in `false` if the number is zero and `true` if it's not zero.
 
-So given `int x;`, `if (x)` means the same thing as `if (x != 0)`, because the condition of an `if` is converted to a `bool`.
+So, given `int x;`, `if (x)` means the same thing as `if (x != 0)`, because the condition of an `if` is converted to a `bool`.
 
 You can cast to `bool` too, `if (bool(x))` has the same effect as the above.
 

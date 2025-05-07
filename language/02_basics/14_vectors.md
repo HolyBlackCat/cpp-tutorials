@@ -14,7 +14,8 @@ This is how you use a `vector`:
 
 Array | Vector | Comment
 ---|---|---
-`int arr[10];`|`std::vector<int> arr(10);`|The vector zeroes all elements by default, unlike the array.
+`int arr[10] = {};`|`std::vector<int> arr(10);`|Creating an array of `10` zeroes.
+`int arr[10];`|—|There's no (simple) way of creating a vector with uninitialized elements.
 `int arr[] = {1,2,3};`|`std::vector<int> arr = {1,2,3};`
 ~~`int arr[0];`~~|`std::vector<int> arr;`| Arrays can't be empty but vectors can. This makes sense for them becase you can add elements to them later.
 `arr[i]`|`arr[i]`|Accessing the elements works the same way.
@@ -23,8 +24,13 @@ Notice that creating a vector of a specific size is done using `std::vector<int>
 
 Now the unique features of vectors:
 * `arr.size()` gives you the current vector size.
+* `arr.empty()` results in `true` if the vector is empty and `false` otherwise, it's a shorthand for `arr.size() == 0`.
 * `arr.push_back(42);` adds an element to the end of the vector.
+
+  Note that accessing a vector using `[]` out of bounds doesn't automatically insert the element. Like for arrays, this is UB.
+
 * `arr.pop_back();` removes the last element.
+* `arr.clear();` removes all elements.
 * `arr.resize(3);` changes the vector size (to `3` here). If it's larger than before, the new elements are zeroed. If it's smaller than before, the excess elements are removed.
 
 * Also, you can assign to an entire vector at once, including from another vector. You can also initialize one vector with another.

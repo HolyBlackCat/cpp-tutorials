@@ -45,7 +45,7 @@ int x = 57, y = 10;
 std::cout << double(x) / double(y) << "\n"; // 5.7
 ```
 
-In this example we use **casts** to change the types of the expressions from `int` to `double`, so the division returns a fractional number.
+In this example we use **casts** to change the types of the expressions from `int` to `double`, so the division results in a fractional number.
 
 Those casts have no lasting effects on the variables themselves, so if after the code above you print `x / y`, you'll still get `5`.
 

@@ -31,7 +31,7 @@ for (int elem : arr)
 
 What do you think this prints? Surprisingly, this prints `1 2 3`.
 
-The reason for this is that `int elem` is a **copy** of the respective element.
+The reason for this is that `int elem` is a **copy** of the respective element, changing which doesn't affect the original.
 
 This is very similar to the following:
 ```cpp
@@ -41,16 +41,16 @@ y = 20;
 std::cout << x << "\n"; // Still 10.
 ```
 
-The solution is to do following:
+The fix for that is:
 ```cpp
 for (int &elem : arr)
     elem = 0;
 ```
-`&` makes `elem` a **reference**, as opposed to the regular variable.
+`&` makes `elem` a **reference**, as opposed to a regular variable.
 
-Roughly speaking, references act as other names for variables (or rather for *objects*, since the individual array elements are not variables, only the whole array is; the correct word that covers variables, array elements, etc is "object").
+References will be explain in more detail later, but roughly speaking, references act as other names for variables (or rather for *objects*, since the individual array elements are not variables, only the whole array is; the correct word that covers (most) variables, array elements, etc is "object").
 
-This is similar to:
+Here's a simpler (but not very practical) example demonstrating the use of references:
 ```cpp
 int x = 10;
 int &y = x;
