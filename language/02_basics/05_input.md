@@ -44,15 +44,15 @@ The two are completely equivalent, just like with `<<` and `std::cout`.
 
 ## Asking nicely for input
 
-Programmers often do this one little trick:
+You'll often see code like this:
 ```cpp
 std::cout << "Please input x: ";
 int x;
 std::cin >> x;
 ```
-So the program tells you what it wants you to input, instead of just waiting on an empty screen.
+Here the program tells you what it wants you to input, instead of just waiting on an empty screen.
 
-Also notice how we don't have to add `\n` here. This will make the input appear on the same line as the prompt (meaning "the request for input") that you printed.
+Also notice how we don't have to add `\n` here. This will make the input appear on the same line after the printed text. Whether or not to add `\n` is of course up to you.
 
 ## Pausing for input
 
@@ -109,4 +109,8 @@ Try to type something other than a number, e.g. `blah`, and see what happens.
 
 When `std::cin` fails to read what you asked it to read, it should assign zero to that variable, and go into an "error state". Meaning the program is unpaused, and all future `std::cin >> ...;` statements are ignored.
 
-It's possible to recover from this state (to e.g. tell the user what they did wrong), but that will be discussed later.
+It's possible to recover from this state (to e.g. to ask the user for new input), but I'm not going to explain this now.
+
+## Exercise
+
+Make a program that converts days to minutes. Ask the user for the number of days, and print the number of minutes in those.

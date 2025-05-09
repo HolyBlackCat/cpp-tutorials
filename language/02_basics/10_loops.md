@@ -24,9 +24,15 @@ Like `if`, `while` checks the condition and then executes the body if the condit
 
 Each repetition a loop is called an **iteration**.
 
-Like in an `if`, in loops the `{...}` braces are optional if the body is a single statement. And like `if`, it has the same empty body pitfall applies (adding `;` after `while (...)` makes the body empty, which in the case of `while` typically makes the loop *infinite*, meaning the program gets stuck on it).
+Like in an `if`, in loops the `{...}` braces are optional if the body is a single statement. And like `if`, it has the same empty body pitfall (adding `;` after `while (...)` makes the body empty, which in the case of `while` typically makes the loop *infinite*, meaning the program gets stuck on it).
 
-Any variables declared inside of the body are recreated on each iteration. That's why we declared `x` outside of the loop.
+Any variables declared inside of the body are recreated on each iteration (meaning they lose their values). That's why we declared `x` outside of the loop.
+
+## Exercise 1
+
+Write a program that utilizes the `while` loop.
+
+Do this for the two other kinds of loops described below too, after reading about them.
 
 ## The `do`-`while` loop
 
@@ -62,7 +68,7 @@ But the `;` after the `while (...)` part always has to be present.
 
 ## The `for` loop
 
-This is the kind of loop that you'll see most often.
+This is the kind of loop you'll see most often.
 
 ```cpp
 for (int i = 0; i < 5; i++)
@@ -85,7 +91,7 @@ The `for` loop is just a glorified `while`. The above is equivalent to:
     }
 }
 ```
-First of all, `i++;`. This operator is called an **increment**. This is equivalent to `i += 1;`, which is in turn equivalent to `i = i + 1;`. You could use any of those in the examples above, but `i++` is shorter to write.
+First of all, `i++;`. This operator is called an **increment**. Here it is equivalent to `i += 1;`, which is in turn equivalent to `i = i + 1;`. You could use any of those in the examples above, but `i++` is shorter to write. (Increments are explained in more detail in a later chapter.)
 
 Second, notice the outer `{...}`. In the first example, `int i` only exists until the end of the loop, so if we didn't limit its scope with the `{...}` in the second example, it wouldn't be fully equivalent to the first one, because `int i` would outlive the loop.
 
@@ -216,3 +222,7 @@ This prints `3` `4`.
 This means that the earlier example of rewriting a `for` in terms of a `while` doesn't hold if `continue;` is used.
 
 Lastly, like `break;`, in nested loops `continue;` only affects a single loop (the most nested one), not all of them.
+
+## Exercise 2
+
+Write a program that utilizes `break;`. Then another one for `continue;`.

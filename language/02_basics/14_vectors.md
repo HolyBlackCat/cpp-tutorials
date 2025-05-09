@@ -24,7 +24,7 @@ Notice that creating a vector of a specific size is done using `std::vector<int>
 
 Now the unique features of vectors:
 * `arr.size()` gives you the current vector size.
-* `arr.empty()` results in `true` if the vector is empty and `false` otherwise, it's a shorthand for `arr.size() == 0`.
+* `arr.empty()` results in `true` if the vector is empty and `false` otherwise, it is a shorthand for `arr.size() == 0`.
 * `arr.push_back(42);` adds an element to the end of the vector.
 
   Note that accessing a vector using `[]` out of bounds doesn't automatically insert the element. Like for arrays, this is UB.
@@ -79,8 +79,18 @@ If you input `1 2 3 0`, this prints `1 2 3`.
 
 (Advanced readers might be yelling at their screens now for me not using `size_t` here. Yes, I know. This will be explained later.)
 
+## Exercise 1
+
+Write a program that lets the user input as many integers as they like, ending with `0`.
+
+Add the positive numbers to one vector and the negative numbers to another. After the user inputs `0`, print both vectors.
+
 ## Multidimensional vectors
 
 `std::vector<std::vector<int>> v;` is a vector of vectors.
 
 Unlike multidimensional arrays, here each inner vector can have different size (this is what's called a "jagged" array).
+
+## Exercise 2
+
+Make a vector of vectors, and fill it with numbers in a jagged manner (so that each inner vector has different size). Print it using a nested loop, so that each inner vector is on its own line. Observe that different lines show different number of elements, so the vector is indeed jagged.

@@ -40,7 +40,7 @@ It's not a bad idea to always initialize your variables, to avoid subtle bugs. I
 
 ## Nuances of the word "initialization"
 
-Note that the word "initialization" is often used loosely. In general in programming it has a meaning of "setting the initial (meaning "first") value", while in C++ for variables it has a narrow meaning of setting the value in the declaration. So there are two distinct meanings.
+Note that the word "initialization" is often used loosely. In general in programming it has a meaning of "setting the initial (meaning "first") value", while in C++ for variables it has the narrow meaning of setting the value in the declaration. So there are two distinct meanings.
 
 So you'll often see things like:
 ```cpp
@@ -56,3 +56,9 @@ Another situation where this comes up is that we no longer call `x` uninitialize
 ### Default-initialization
 
 Another annoying nuance is that not initiailizing a variable is technically called "default-initializing" it. This is just a wording quirk, and a funny way to nitpick people.
+
+## Exercise
+
+Create a few uninitialized variables and print them. Hopefully you'll see a few random values.
+
+Now initialize them and print them again.

@@ -54,13 +54,27 @@ ASCII only describes English letters and basic punctuation. The situation with o
 
 `std::cin >>` can be used to input `std::string`s, just like numbers.
 
-It stops at whitespace, so e.g. `Hello, world!` would be read as two separate strings, `Hello,` and `world!`.
+## Exercise 1
+
+Make a program that asks the user for their name, and then prints `Hello` and that name.
+
+Try inputting a name with and without spaces and see what happens.
+
+## Inputting strings with spaces
+
+As you should've just noticed, `std::cin >>` stops at whitespace, so e.g. `Hello, world!` would be read as two separate strings, `Hello,` and `world!`.
 
 To thread the entire line (possibly with spaces), do this:
 ```cpp
 std::string s;
 std::getline(std::cin, s);
 ```
+
+## Exercise 2
+
+Modify your program to use `getline`.
+
+## More about inputting strings
 
 There is a common pitfall that occurs when mixing `getline` with `>>`:
 ```cpp
@@ -85,6 +99,16 @@ You can see this more clearly by inputting `42 Hello`, which prints `42` and ` H
 
 And the reason why multiple subsequent `>>`s are not affected by this issue is that `>>` skips any whitespace before reading the value, and newlines count as whitespace too.
 
+A simple solution to this is to do `getline` twice. Or perhaps after doing it the first time, do it again if the string was empty.
+
+## Exercise 3
+
+Make a program that asks you for your age, and then your name, and then prints both.
+
+Make sure spaces in the name are handled correctly.
+
+Make sure inputting the name works both on a separate line and on the same name as the age.
+
 ## Manipulating strings
 
 `std::string`, in addition to `[]` and `.size()` (which is shares with `std::vector`) has some additional features.
@@ -107,6 +131,9 @@ std::cout << part << '\n'; // Prints `llo`.
 ```
 `s.substr(n, m)` returns a part of the string, skipping the first `n` characters and taking only `m` characters starting from there.
 
+## Exercise 4
+
+Write a program that inputs the string, and then prints it with dashes between each letter. E.g. given `Hello`, print `H-e-l-l-o`.
 
 ## String literals
 
@@ -200,6 +227,12 @@ First, notice that `std::cout` can print `char` arrays as a special case (it can
 
 This code causes undefined behavior, because `std::cout` wants `char` arrays to be null-terminated. If you have ASAN enabled, it will complain about this. If not, you'll likely see some garbage characters printed after your string.
 
+## Exercise 5
+
+Using a cast to `int` to print character codes, print the code of a null terminator and observe that it's 0.
+
+Make a non-null-terminated char array, try printing it with `cout` and try observing the breakage (which may or may not happen, since it's UB). Now fix it by adding the null terminator.
+
 ## Languages other than English
 
 While English strings "just work", as soon as you start adding letters from other languages, or unusual characters such as emojis, you can get issues if you don't know what you're doing.
@@ -263,3 +296,11 @@ I recommend embracing option (1). To do that:
 4. If you're using the MSVC compiler, enable the `/utf-8` setting.
 
 Doing steps 2,3,4 above should hopefully make the example above work correctly.
+
+## Exercise 6
+
+Skip this if you skipped the section above about non-English characters.
+
+Write a program that prints a non-English string. Compare how it works with and without the workaround provided in the previous section.
+
+Print the size of the string and confirm that it's larger than the number of characters that you see. Print the values of the individual `char`s by casting them to `int`, observe multiple integers per character.

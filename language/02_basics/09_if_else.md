@@ -25,7 +25,7 @@ int main()
 }
 ```
 
-The **`if` statement** takes a condition in `(...)`, and then a list of statements in `{...}` (its **"body"**). The statements in its body are executed only if the condition is true.
+The **`if` statement** takes a condition in `(...)`, and then a list of statements in `{...}` (its **"body"**). The statements in the body are executed only if the condition is true.
 
 Some of the operators that can be used in the conditions are: `==` (equal), `!=` (not equal), `<`,`<=`,`>`,`>=` (less, less-or-equal, greater, greater-or-equal).
 
@@ -85,7 +85,7 @@ Can you tell for which values of `x` this is true? Experiment with it for a bit.
 
 `||` is an **"inclusive or"**, meaning it checks if **one or both** conditions are true, rather than exactly one condition (which would be "exclusive or", which C++ doesn't support directly).
 
-`&&` and `||` in C and C++ are said to be **"short-circuiting"**, meaning that the first operand is checked first, and then if that's enough to determine the final result (false for `&&`, true for `||`), then the second operand is skipped. This probably isn't very useful to you right now, because you have no way of observing that this actually happens, but this will be useful later.
+`&&` and `||` in C and C++ are said to be **"short-circuiting"**, meaning that the first operand is checked first, and then if that's enough to determine the final result (if the first operand is false for `&&`, or true for `||`), then the second operand is not computed. This probably isn't very useful to you right now, because you have no way of observing what is or isn't computed, but this will be useful later.
 
 
 ## Negating conditions
@@ -110,13 +110,13 @@ Conditions are also expressions, like any other expression. For example, `if (10
 
 Comparison operators listed above (`==`,`!=`,`<`,`<=`,`>`,`>=`) result in 1 if the condition true and 0 if it's false.
 
-To confirm this, try running `std::cout << (1 < 2) << "\n";` and observe that it prints `1` (meaning `1` is indeed less than `2`).
+To confirm this, try running `std::cout << (10 < 20) << "\n";` and observe that it prints `1` (meaning `10` is indeed less than `20`).
 
-Here, notice the `(...)` which is necessary to avoid a compilation error, because otherwise this would be understood by the compiler as `(std::cout << 1) < (2 << "\n");` (which is meaningless), because `<<` has higher ["precedence"](https://en.cppreference.com/w/cpp/language/operator_precedence) (priority) than `<` (just like `*` has higher precedence than `+`, and `(1 + 2) * 3` needs the `(...)` to prevent `*` from being executed first).
+Here, notice the `(...)` which is necessary to avoid a compilation error, because otherwise this expression would be understood by the compiler as `(std::cout << 10) < (20 << "\n");` (which is meaningless), because `<<` has higher ["precedence"](https://en.cppreference.com/w/cpp/language/operator_precedence) (priority) than `<` (just like `*` has higher precedence than `+`, and `(1 + 2) * 3` needs the `(...)` to prevent `*` from being executed first).
 
 ### The `bool` type
 
-But the type of that `1` or `0` (the result of a comparison) isn't `int`. It's a new type that you need to learn, **`bool`** (a "boolean", named after matematician [George Boole](https://en.wikipedia.org/wiki/George_Boole)).
+But the type of that `1` or `0` (the result of a comparison) isn't `int`. It's a new type that you need to learn, **`bool`** (a "boolean", named after matematician [George Boole](https://en.wikipedia.org/wiki/George_Boole) and his "boolean algebra", which deals only with two values, 0 and 1).
 
 A `bool` can only hold two values, 1 or 0. The correct way to spell them is `true` and `false` respectively. Just like `0` and `0.0` are different (`int` zero and `double` zero), `false` is also different (the `bool` zero). Same for `true`.
 
@@ -138,7 +138,7 @@ if (underage)
 }
 ```
 
-In case it's not obvious, you can do `if (true)` (always executes) and `if (false)` (never executes). They aren't very useful, other than for teaching purposes.
+In case it's not obvious, you can do things like `if (true)` or `if (1)` (always executes), and `if (false)` or `if (0)` (never executes). They aren't very useful, other than for teaching purposes.
 
 ### Conversions to and from `bool`
 
@@ -152,7 +152,7 @@ You can cast to `bool` too, `if (bool(x))` has the same effect as the above.
 
 ## Variables in braces
 
-Variables can be declared in the `{...}` braces of an `if` or `else`:
+Variables can be declared in the `{...}` braces, in the bodies of `if` and `else`:
 ```cpp
 if (age < 18)
 {
@@ -168,7 +168,8 @@ if (age < 18)
     int difference = 18 - age;
 }
 
-// This is a compilation error because `difference` no longer exists.
+// This is a compilation error because `difference` no longer exists,
+//   as if it was never declared at all.
 std::cout << "You must be " << difference << " years older.\n";
 ```
 In this context the `{...}` are often referred to as the **scope** of the variable. As long as a variable exists, it's said to be **in scope**.
@@ -198,7 +199,7 @@ std::cout << x << "\n";
 ```
 This compiles and prints `10` `20` `10`.
 
-How this works should be fairly intuitive. The `int x = 20;` declaration is said to **shadow** (hide) the original `int x = 10;`, and now for as long as the second `x` exists (until we leave its scope), the name `x` refers to this second variable.
+How this works should be fairly intuitive. The `int x = 20;` declaration is said to **shadow** (hide) the original `int x = 10;`, and for as long as the second `x` exists (until we leave its scope), the name `x` refers to this second variable.
 
 But the original variable continues to exist, and when the second one dies, the name `x` begins to refer to the original variable once again.
 
@@ -229,7 +230,7 @@ if (age < 18)
 ```
 Only the first of the two statements will be guarded by the `if`. And the the second one will always run regardless of whether the condition is true.
 
-As was already explained in the first chapter, in C++ the amount of whitespace (including at the beginning of lines) is ignored by the compiler (unlike in languages like Python).
+As was already explained in the first chapter, in C++ the amount of whitespace (including at the beginning of lines) is ignored by the compiler (unlike in the Python language, for example).
 
 So it would be more correct to write the last example as
 ```cpp
@@ -311,8 +312,27 @@ else if (age < 30)
 else
     std::cout << "D\n";
 ```
+Or equivalently:
+```cpp
+if (age < 10)
+{
+    std::cout << "A\n";
+}
+else if (age < 20)
+{
+    std::cout << "B\n";
+}
+else if (age < 30)
+{
+    std::cout << "C\n";
+}
+else
+{
+    std::cout << "D\n";
+}
+```
 
-This (`else if`) isn't some special language feature, we're just omitting braces. After adding the braces back, you should see that it's entirely equivalent to:
+This (`else if`) isn't some special language feature, we're just omitting some braces here. After adding the braces back, you should see that it's entirely equivalent to:
 ```cpp
 if (age < 10)
 {
@@ -327,9 +347,13 @@ else
     else
     {
         if (age < 30)
+        {
             std::cout << "C\n";
+        }
         else
+        {
             std::cout << "D\n";
+        }
     }
 }
 ```
@@ -343,7 +367,7 @@ if (age < 18); // Note the `;`!
     std::cout << "Too young!\n";
 }
 ```
-Adding `;` here makes it seemingly ignore the condition and always execute the body. Why?
+Adding `;` here makes `if` seemingly ignore the condition and always execute the body. Why?
 
 First of all, a lone `;` is a statement too, an **empty statement**.
 
@@ -373,7 +397,7 @@ Now the only question is what are those lone `{...}` braces after the `if`?
 
 They do nothing, the contents are always executed. The only effect they have is acting as a scope for variables (variables declared inside still stop existing when exiting the braces).
 
-Braces are rarely used like this intentionally (more often this is a typo). In rare cases this can be useful to limit the scope of variables you no longer need. Here's a small made-up example:
+Braces are rarely used like this intentionally (more often this is a typo). But in rare cases this can be useful to limit the scope of variables. Here's a small made-up example:
 ```cpp
 int x;
 
@@ -382,18 +406,18 @@ int x;
     x = y * (y - 1);
 }
 
-// `y` doesn't exist anymore.
+// `y` doesn't exist anymore. We no longer need it.
 
 std::cout << x << "\n";
 ```
 
-And lastly, this common typo (`;` after `if (...)`) can be caught by your compiler automatically, if you enable compiler warnings. If you're also following my tooling tutorial, that is explained [here](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors).
+And lastly, this common typo (`;` after `if (...)`) can be caught by your compiler automatically, if you enable compiler warnings. If you're also following my tooling tutorial, that is explained [here](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors) (use `-Wall -Wextra` if you're using Clang or GCC).
 
 ## Terminology
 
 Now I want to give the correct terminology for describing `if`/`else`.
 
-As I said before, `int main() {...}` holds a list of statements. Therefore the entire `if (...) {...}` or even `if (...) {...} else {...}` is one big statement. This is a separate kind of statements, called **`if` statements** (unsurprisingly).
+As I said before, `int main() {...}` holds a list of statements. Therefore the entire `if (...) {...} else {...}` (or `if (...) {...}` if there is no `else`) is one big statement. This is a separate kind of statements, called **`if` statements** (unsurprisingly).
 
 `{...}` braces with their contents are yet another kind of statements, called **compound statements**, or **block statements**. They are statements that contain other statements inside of them.
 
@@ -421,8 +445,12 @@ Using the "correct" amount of whitespace at the beginning of lines is called **i
 
 C++ doesn't have any *official* rules of how things should be indented, and this tutorial shows one of the popular styles.
 
-Additionally, some people put `{` at the end of the previous line, and some don't (like myself).
+Some people put `{` at the end of the previous line, and some don't (like myself).
 
 Different people use different number of spaces for each indentation level, 4 spaces is a popular option.
 
 Indentation is usually performed by pressing the <kbd>Tab</kbd> key (instead of repeatedly hitting <kbd>Space</kbd>), but whether <kbd>Tab</kbd> inputs an actual Tab character or a bunch of spaces should be configurable in your IDE. It's matter of preference.
+
+## Exercise
+
+Create a program that lets you input the current temperature, and describes how hot or cold it feels. Include 3 or 4 different responses.

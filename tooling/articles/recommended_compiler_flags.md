@@ -279,21 +279,16 @@ int main()
     std::cout << v[10] << '\n';
 }
 ```
-Without those flags, this might print a junk number. With the flag, you'll get:
+Without those flags, this might (see below) print a junk number. With the flag, you'll get something like:
 ```
 C:/msys64/clang64/include/c++/v1/vector:1393: assertion __n < size() failed: vector[] index out of bounds
 ```
-
-There are also weaker versions of those flags with less overhead, consult the manual for the [first](https://libcxx.llvm.org/Hardening.html) and the [second](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_macros.html) flags respectively.
 
 Strictly speaking you never need both of those flags at the same time, you need one. But it's often easier to not determine which one you need, and use both.
 
 The first flag is for libc++, and the second is for libstdc++. Those are two different implementations of the C++ standard library, Clang's one and GCC's one respectively. If you've been following this tutorial as is, you're using libc++ and only need the first flag. If you're using GCC, use the second flag. In some situations Clang can use libstdc++ instead of libc++ and so you will need the second flag, e.g. if you installed Clang from [MSYS2 UCRT64](/tooling/articles/msys2_environments.md).
 
-Note that this flag only works when using libc++ (Clang's own implementation of the C++ standard library.)
-
-When using libstdc++ (GCC's implementation of the C++ standard library) ([which can be used with Clang too](/tooling/articles/msys2_environments.md#c-standard-library-implementation)), use **`-D_GLIBCXX_DEBUG`. ([See manual](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_macros.html). There are some other variations of this flag too.)
-
+There are also weaker versions of those flags with less overhead, consult the manual for the [first](https://libcxx.llvm.org/Hardening.html) and the [second](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_macros.html) flags respectively. Note that the newer versions of libstdc++ (15 and newer) enable the weak checks by default if you don't use `-O...` (see below), so `v[10]` will error by default on those. `*(v.begin() + 10)` will not error though, this requires the full checks.
 
 </details>
 

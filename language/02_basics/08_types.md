@@ -13,7 +13,7 @@ std::cout << a << "\n"; // 5
 std::cout << b << "\n"; // 5.7
 ```
 
-`double` stands for "double precision" (compared to a less precise kind of fractional numbers). This will be explained in more detail later.
+`double` stands for "double precision" (compared to a less precise kind of fractional numbers, this will be explained in more detail later).
 
 There are many more other types, which will also be explained later.
 
@@ -21,7 +21,7 @@ There are many more other types, which will also be explained later.
 
 Not only variables have types, expressions do to. A lone `5` is an `int`. A lone `5.7` is a `double`. Notably `5.0` is also a `double`, because of the `.`.
 
-`5 + 10` is an `int`, as expected, and `5.7 + 100.1` is a `double`.
+`5 + 10` is an `int`, as expected, and `5.7 + 100.1` is a `double`. And `5.0 + 10.0` is also a `double`.
 
 The fun begins when you start mixing the types. `100 + 5.7` gives `105.7` and has type `double`. It makes sense that the larger type is selected, so we're able to store the fractional part.
 
@@ -65,3 +65,7 @@ std::cout << x << "\n"; // 5
 ...and are confused why this doesn't print `5.7`. Do you understand why?
 
 An `int` divided by an `int` always results in an `int`, which in this case is then converted to a `double`. It doesn't matter what the result of the division is used for, it doesn't affect how the division itself is performed.
+
+## Exercise
+
+Create a program that asks the user for a temperature in Celsius and converts it to Fahrenheit, and the reverse. Google the conversion formulas if needed.

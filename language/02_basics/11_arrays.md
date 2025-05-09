@@ -15,7 +15,7 @@ std::cout << "Third:  " << arr[2] << "\n";
 
 The `3` in `int arr[3];` (the **size** of the array) means that it can hold 3 values, which can then be accessed as `arr[0]`, `arr[1]`, `arr[2]` (`0`,`1`,`2` being the **indices**). Note that the indices start from zero.
 
-Note that `arr[3]` and larger is illegal (`arr[3]` would be the fourth element).
+Note that accessing `arr[3]` (same index as the array size) and larger indices is illegal (`arr[3]` would be the fourth element, but this array only has three).
 
 While in this example the array doesn't look very useful compared to `int arr0, arr1, arr2;`, things change when you start using loops. This is explained later in this chapter.
 
@@ -59,7 +59,30 @@ You can't assign the entire array at once.
 int arr[3];
 arr = {10, 20, 30}; // Compilation error.
 ```
-You also can't print the entire array at once, and can't input the entire array with a single use of `std::cin >>`. Only the individual elements.
+You also can't print the entire array at once, and can't input the entire array with a single use of `std::cin >>`. Only the individual elements. There is no technical reason for this, this is simply how `std::cout` and std::cin` are designed.
+
+## Loops
+
+While the size must be a compile-time constant, the indices don't. In fact, you'll often see loop counters (counter variables) as indices:
+
+```cpp
+int arr[5];
+
+for (int i = 0; i < 5; i++)
+    std::cin >> arr[i];
+
+for (int i = 0; i < 5; i++)
+    std::cout << arr[i] << "\n";
+```
+This reads 5 values, and then prints all of them.
+
+## Exercise 1
+
+Write a program that lets you input 10 numbers, and then prints their sum.
+
+Use an array of size 10, one loop to input, then another to sum.
+
+Now rewrite this program to not use an array, and do the summation in the same single loop as the input.
 
 ## Array size
 
@@ -81,21 +104,6 @@ You might be wondering, if this happens to work for you, why do anything? Isn't 
 
 First of all, you should try to write code that works on all three big compilers, and this doesn't work on one of the three (MSVC). Second, VLAs (variable-length arrays, which is how this feature is called) seem to be [bug-prone in general](https://stackoverflow.com/q/12407754/2752075). C++ has better alternatives (namely `std::vector`), which will be discussed in the later chapters.
 
-## Loops
-
-While the size must be a compile-time constant, the indices don't. In fact, you'll often use a loop variable as the index:
-
-```cpp
-int arr[5];
-
-for (int i = 0; i < 5; i++)
-    std::cin >> arr[i];
-
-for (int i = 0; i < 5; i++)
-    std::cout << arr[i] << "\n";
-```
-This reads 5 values, and then prints all of them.
-
 ## Multi-dimensional arrays
 
 `int arr[3];` is said to be one-dimentional (1D).
@@ -108,6 +116,15 @@ This is a 2D array, a rectangular table of numbers of size 10×20. Larger dimens
 
 You can think of `int arr[3][5];` as an array of arrays. It's an array of size `3`, the elements of which are themselves arrays (of 5 `int`s each).
 
+They can be initialized like so:
+```cpp
+int arr[3][5] = {
+    {1, 2, 3, 4, 5},
+    {6, 7, 8, 9, 10},
+    {11, 12, 13, 14, 15},
+};
+```
+
 And to access the elements, you do `arr[1][2] = 42;`, as you would expect.
 
 ### Rows vs columns
@@ -117,3 +134,16 @@ People naturally tend to ask which index is which, is it `arr[row][column]` or `
 The answer is: whatever you decide. The language itself doesn't give an inherent meaning to the indices.
 
 Though by convention people usually prefer `arr[row][column]`.
+
+## Exercise 2
+
+Write a program that uses nested loops to fill an array with those numbers:
+
+```
+ 1  2  3  4  5
+ 6  7  8  9 10
+11 12 13 14 15
+```
+Do not use an array initializer to achieve this (so not like in the last example).
+
+Then use another pair of nested loops to print the array.

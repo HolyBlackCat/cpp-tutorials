@@ -21,27 +21,29 @@ To run C++ programs you'll need to install some tools...
 
 ### The compiler
 
-The compiler is a program that converts (or "compiles") the source you write into a program that you can run (called an "executable"). You can send the resulting executable to other people too, and they can run it without installing the compiler (like you've been doing so far).
+The compiler is a program that converts (or "compiles") the source you write into a program that you can run (an "executable"). You can send the resulting executable to other people too, and they can run it without installing the compiler (like you've been doing so far with various programs you've been using).
 
-Not all languages require compilation. This, and the process of compilation will be explained in more details later.
+Not all languages require compilation. This, and the process of compilation will be explained in more details in later chapters.
 
-The popular compilers are Clang, GCC, and MSVC (in my order of preference, but any of them will work fine).
+The popular C++ compilers are: Clang, GCC, and MSVC (in my order of preference, but any of them will work fine).
 
 ### The IDE
 
-Not strictly necessary, especially for a beginner. IDEs are basically text editors for programmers. "IDE" stands for "integrated development environment", where "integrated" means it *combines* together various useful programming tools.
+Not strictly necessary, especially for a beginner. IDEs are text editors for programmers. "IDE" stands for "integrated development environment", where "integrated" means it *combines* together various useful programming tools.
 
-Some popular IDEs are Visual Studio Code, Visual Studio (two unrelated programs despite the naming), CLion, XCode, QtCreator.
+Some popular IDEs are: Visual Studio Code, Visual Studio (two unrelated programs despite the similar names), CLion, XCode, QtCreator.
 
 ### How to install?
 
-I have [**a separate tutorial**](/README.md) to guide you through the process. That tutorial explains how to install and configure Visual Studio Code with Clang or some other compiler. If you want to use something else, install it on your own and come back here.
-
-I recommend not using an online compiler, and instead installing the proper compiler on your computer. An online compiler is convenient to test simple programs, but usually isn't suitable for any serious work.
+I have [**a separate tutorial**](/README.md) to guide you through the process. That tutorial explains how to install and configure Visual Studio Code with the Clang compiler (or GCC if you prefer). If you want to use something else, install it on your own and come back here.
 
 If you already installed Visual Studio Code, I still recommend reading that tutorial. Some people use VSC without really understand what's going on, and my tutorial aims to fix that.
 
 If you decide to use that tutorial, **read the first few chapters only**. As soon as you're able to compile the simple program above, stop reading that tutorial and leave it for later. Continue learning C++ from here, and read that tutorial in parallel.
+
+### Online compilers
+
+There are websites that let you compile and run simple programs without installing anything. They can sometimes be useful (to test small programs), but are unsuitable for any serious work. I don't recommend using them for learning. Install a proper compiler on your machine instead of using those.
 
 ## What this program means
 
@@ -59,10 +61,6 @@ int main()
 This should print `Hello, world!` when ran, if you've done everything correctly.
 
 If you're typing it manually instead of copy-pasting, use the <kbd>Tab</kbd> key to add the spaces before `std::cout` instead of hitting <kbd>Space</kbd> multiple times, this saves time.
-
-### Comments
-
-Lines starting with `//`
 
 ### Statements
 
@@ -104,7 +102,7 @@ std::cout << "Hello, world!\n";
 
 ### The `main` function
 
-`int main() {...}` is the `main` function. It contains those statements (those inside of `{...}`).
+`int main() {...}` is the "`main` function". It contains those statements (those inside the `{...}`).
 
 Functions are sequences of statements that have names. The function named `main` is special, it is what's executed when you run the program. Every C++ program must contain a function named `main`.
 
@@ -116,7 +114,7 @@ As already shown above, statements can only appear inside of functions, not outs
 
 The last unexplained part of the program is `#include <iostream>`. `#include` is often called "the include directive" (where "directive" is a word that means "an order" or "a command").
 
-The short explanation is that using certain features requires adding certain `#include` directives at the top of the program. E.g using `std::cout` to print things requires adding `#include <iostream>`.
+In short, using certain features in a program requires adding certain `#include` directives at the top of the program. E.g using `std::cout` to print things requires adding `#include <iostream>`.
 
 `iostream` is a name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the file you give it in place of itself during compilation. The contents of `iostream` describe to the compiler what `std::cout` is and allow you to use it.
 
@@ -136,7 +134,7 @@ People can make their own libraries (non-standard ones, called "third-party libr
 
 ### Case sensitivity
 
-C++ is said to be "case sensitive". This means `std::cout` and `sTd::COut` are not the same thing, and trying to use the latter will cause a compilation error.
+C++ is said to be "case sensitive". This means `std::cout` and `sTd::COut` are not the same thing, and trying to use the latter will not work.
 
 ### Whitespace and line breaks
 
@@ -204,3 +202,9 @@ Among others, `\\` is used to get the `\` character itself. E.g. printing `"Hell
 Another escape sequence is `\"`, which is used to get the `"` character. `"Hello\"world"` results in `Hello"world`, whereas `"Hello"world"` is again a compilation error, because here the string ends at the middle `"`, and the `world"` that follows is junk that the compiler can't understand.
 
 You can find the full list of escape sequences on [cppreference](https://en.cppreference.com/w/cpp/language/escape).
+
+## Exercise
+
+As explained in the introduction, this tutorial includes exercises. Do them if you want. Regardless, practice on your own too. The exercise for this chapter is:
+
+Write a program that displays the text of your choosing. Perhaps a favorite quote?
