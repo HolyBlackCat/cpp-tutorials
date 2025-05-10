@@ -28,11 +28,11 @@ Like in an `if`, in loops the `{...}` braces are optional if the body is a singl
 
 Any variables declared inside of the body are recreated on each iteration (meaning they lose their values). That's why we declared `x` outside of the loop.
 
-## Exercise 1
-
-Write a program that utilizes the `while` loop.
-
-Do this for the two other kinds of loops described below too, after reading about them.
+> ## Exercise 1
+>
+> Write a program that utilizes the `while` loop.
+>
+> Do this for the two other kinds of loops described below too, after reading about them.
 
 ## The `do`-`while` loop
 
@@ -223,6 +223,6 @@ This means that the earlier example of rewriting a `for` in terms of a `while` d
 
 Lastly, like `break;`, in nested loops `continue;` only affects a single loop (the most nested one), not all of them.
 
-## Exercise 2
-
-Write a program that utilizes `break;`. Then another one for `continue;`.
+> ## Exercise 2
+>
+> Write a program that utilizes `break;`. Then another one for `continue;`.

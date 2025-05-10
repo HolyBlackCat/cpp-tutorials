@@ -26,9 +26,9 @@ The left operand of an operator will often be called an **lhs** (left hand side)
 
 Experiment with printing different expressions. This already has some practical use.
 
-## Exercise 1
-
-Look up the number of days in each month, then add them together using C++. Confirm that they sum to 365.
+> ## Exercise 1
+>
+> Look up the number of days in each month, then add them together using C++. Confirm that they sum to 365.
 
 ## Expressions are composable
 
@@ -46,6 +46,6 @@ Expressions that are not parts of other expressions are called **full expression
 
 `std::cout << "The value is " << (10 + 20) / 2 << "\n"` is a full expression, and every other expression in it is a subexpression.
 
-## Exercise 2
-
-Write the first example from this chapter on a piece of paper. Circle every operand in it. Then cirlce (perhaps with a different color) eveyr expression in it.
+> ## Exercise 2
+>
+> Write the first example from this chapter on a piece of paper. Circle every operand in it. Then cirlce (perhaps with a different color) eveyr expression in it.

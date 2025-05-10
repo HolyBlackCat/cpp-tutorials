@@ -76,13 +76,13 @@ for (int i = 0; i < 5; i++)
 ```
 This reads 5 values, and then prints all of them.
 
-## Exercise 1
-
-Write a program that lets you input 10 numbers, and then prints their sum.
-
-Use an array of size 10, one loop to input, then another to sum.
-
-Now rewrite this program to not use an array, and do the summation in the same single loop as the input.
+> ## Exercise 1
+>
+> Write a program that lets you input 10 numbers, and then prints their sum.
+>
+> Use an array of size 10, one loop to input, then another to sum.
+>
+> Now rewrite this program to not use an array, and do the summation in the same single loop as the input.
 
 ## Array size
 
@@ -127,6 +127,8 @@ int arr[3][5] = {
 
 And to access the elements, you do `arr[1][2] = 42;`, as you would expect.
 
+Notice the comma after the last element. It does nothing, it's allowed but not required. It's always allowed, even in `int arr[] = {1, 2, 3,};`. It's a good idea to include the comma when you spell the initializers on multiple lines, as it makes it easier to add/remove them and move them around.
+
 ### Rows vs columns
 
 People naturally tend to ask which index is which, is it `arr[row][column]` or `arr[column][row]`.
@@ -135,15 +137,15 @@ The answer is: whatever you decide. The language itself doesn't give an inherent
 
 Though by convention people usually prefer `arr[row][column]`.
 
-## Exercise 2
-
-Write a program that uses nested loops to fill an array with those numbers:
-
-```
- 1  2  3  4  5
- 6  7  8  9 10
-11 12 13 14 15
-```
-Do not use an array initializer to achieve this (so not like in the last example).
-
-Then use another pair of nested loops to print the array.
+> ## Exercise 2
+>
+> Write a program that uses nested loops to fill an array with those numbers:
+>
+> ```
+>  1  2  3  4  5
+>  6  7  8  9 10
+> 11 12 13 14 15
+> ```
+> Do not use an array initializer to achieve this (so not like in the last example).
+>
+> Then use another pair of nested loops to print the array.

@@ -98,11 +98,11 @@ This is another case where variables in C++ are unlike those in math, as in math
 
 `x = x + 100`; can also be written as `x += 100;`. Similarly there are `-=`, `*=`, `/=`, etc.
 
-## Exercise 1
-
-Create a variable that holds your age, and print it. Name it appropriately.
-
-Make the program increase it a few times and print the updated values too.
+> ## Exercise 1
+>
+> Create a variable that holds your age, and print it. Name it appropriately.
+>
+> Make the program increase it a few times and print the updated values too.
 
 ## Valid variable names
 
@@ -130,6 +130,6 @@ Most often you can get away with using them, but *some* reserved identifiers wil
 
 Avoid using the reserved identifiers.
 
-## Exercise 2
-
-Experiment with different variable names. Confirm that you get a compilation error when trying to use a keyword as a variable name.
+> ## Exercise 2
+>
+> Experiment with different variable names. Confirm that you get a compilation error when trying to use a keyword as a variable name.

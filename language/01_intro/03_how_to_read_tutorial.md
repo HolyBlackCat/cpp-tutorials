@@ -10,7 +10,9 @@ Right after learning anything new, write a short program that uses the new thing
 
 If you binge-read this tutorial without practicing, you will not learn anything.
 
-I provide **exercises** in some chapters. Do them if you want, but practice on your own too regardless. If you want to do the exercises, do them immediately when you get them. Don't continue reading until you finish.
+I provide **exercises** in some chapters. Do them if you want, but practice on your own too regardless. If you want to do the exercises, do them immediately when you get them. Don't continue reading until you manage to do them.
+
+Don't feel the need to memorize everything you read. You'll naturally remember the parts that are useful by practicing.
 
 On a related note, consider **not copy-pasting the examples** from the tutorial. Instead type them by hand to get used to it. (But do paste the very first test program to make sure all tools you will have installed are working correctly.)
 

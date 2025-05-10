@@ -9,11 +9,12 @@ std::cin >> x;
 ```
 ...it immediately gets overwritten, so there's little point in setting the initial value.
 
-The good news is that it's optional. You can just do:
+Well, it is in fact optional. You can do:
 ```cpp
 int x;
 std::cin >> x;
 ```
+(Though this might not be the best idea, see below.)
 
 Setting the value when declaring a variable is called **initialization**, as in `int x = 42;`. And the value itself (`42` here) is called an **initializer**.
 
@@ -38,6 +39,8 @@ This can have some other adverse effects too, which will be explained in more de
 
 It's not a bad idea to always initialize your variables, to avoid subtle bugs. If you don't have a meaningful value to set them to, zero them.
 
+Uninitialized variables can cause hard-to-debug bugs (due to the randomness of their values), so it's best to avoid them.
+
 ## Nuances of the word "initialization"
 
 Note that the word "initialization" is often used loosely. In general in programming it has a meaning of "setting the initial (meaning "first") value", while in C++ for variables it has the narrow meaning of setting the value in the declaration. So there are two distinct meanings.
@@ -57,8 +60,8 @@ Another situation where this comes up is that we no longer call `x` uninitialize
 
 Another annoying nuance is that not initiailizing a variable is technically called "default-initializing" it. This is just a wording quirk, and a funny way to nitpick people.
 
-## Exercise
-
-Create a few uninitialized variables and print them. Hopefully you'll see a few random values.
-
-Now initialize them and print them again.
+> ## Exercise
+>
+> Create a few uninitialized variables and print them. Hopefully you'll see a few random values.
+>
+> Now initialize them and print them again.

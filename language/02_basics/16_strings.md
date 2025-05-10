@@ -9,7 +9,9 @@ To create a string variable, you `#include <string>` and then use the `std::stri
 std::string my_name = "Egor";
 ```
 
-For most purposes `std::string` acts like a `std::vector`. But of what element type?
+For most purposes `std::string` acts like a `std::vector` (it has `[]`, `.size()`, defaults to being empty rather than uninitialized, etc).
+
+But what's its element type?
 
 If you try printing `my_name[0]`, `my_name[1]`, etc, you'll see that it prints the individual characters.
 
@@ -19,6 +21,8 @@ std::string my_name = "Egor";
 char first_letter = my_name[0];
 std::cout << first_letter << "\n"; // Prints `E`.
 ```
+So `std::string` behaves similarly to `std::vector<char>`.
+
 There are `char` literals too, which use `'` instead of `"`:
 ```cpp
 char letter = 'A';
@@ -28,12 +32,12 @@ In comparison, `char letter = "A";` is a compilation error.
 
 Single quotes `'...'` should contain exactly **one** character. Empty `''` is a compilation error. Having multiple characters in it is technically allowed, but what value that produces depends on the compiler, so it should be avoided.
 
-Note that `'\n'` is allowed, because `\n` counts as one character. (So far all examples were using `"\n"` to postpone explaining what `char` is, but I'm going to switch to `'\n'` now, since at face value it's likely a bit faster to print.).
+Note that `'\n'` is allowed, because `\n` counts as one character. (So far all examples were using `"\n"` to postpone explaining what `char` is, but I'm going to switch to `'\n'` now, since it's likely a bit faster to print.).
 
 
 `char` acts very similar to `int`. It's also an integer, but with a smaller range of allowed values: typically -128...127 or 0...255 depending on the compiler and its settings, whereas `int` can typically hold numbers between around ±2000000000 (more on those limits will be explained in later chapters).
 
-Different letters/symbols are represented using different numbers:
+Different letters/symbols are represented using different numbers, and you can use conversions between `char` and `int` to inspect those numbers:
 
 ```cpp
 char letter = 'A';
@@ -46,35 +50,33 @@ std::cout << char(67) << '\n'; // C, note the cast from `int` to `char`.
 std::cout << int('C') << '\n'; // 67, note the cast from `char` to `int`.
 ```
 
-While the C++ itself doesn't guarantee which numbers correspond to which letters, it most often follows the **ASCII encoding** (encoding is a system that assigns numbers to specific characters) that is used almost everywhere today, in one form or another.
+While the C++ itself doesn't guarantee which numbers correspond to which letters, it most often follows the **ASCII encoding** ("encoding" being a system that assigns numbers to specific characters) that is used almost everywhere today, in one form or another.
 
 ASCII only describes English letters and basic punctuation. The situation with other languages is more difficult and is explained later in this chapter.
+
+## Comparing characters
+
+Operators like `<` and `>` do work on `char`s. And since, for example, digits (from 0 to 9) have consecutive codes (check the ASCII chart), `x >= '0' && x <= '9'` is a valid way to test if `x` is a digit character. Similarly, `x >= 'a' && x <= 'z'` for lowercase letters, and similarly for the uppercase ones.
 
 ## Inputting strings
 
 `std::cin >>` can be used to input `std::string`s, just like numbers.
 
-## Exercise 1
+But if you try using it, you'll quickly notice that `std::cin >>` stops at whitespace, so e.g. `Hello, world!` would be read as two separate strings, `Hello,` and `world!`.
 
-Make a program that asks the user for their name, and then prints `Hello` and that name.
-
-Try inputting a name with and without spaces and see what happens.
-
-## Inputting strings with spaces
-
-As you should've just noticed, `std::cin >>` stops at whitespace, so e.g. `Hello, world!` would be read as two separate strings, `Hello,` and `world!`.
-
-To thread the entire line (possibly with spaces), do this:
+To read the entire line (possibly with spaces), do this:
 ```cpp
 std::string s;
 std::getline(std::cin, s);
 ```
 
-## Exercise 2
+> ## Exercise 1
+>
+> Make a program that asks the user for their name, and then prints `Hello` and that name.
+>
+> Try doing that using both `>>` and using `getline`. Try inputting a name with and without spaces into both programs and see what happens.
 
-Modify your program to use `getline`.
-
-## More about inputting strings
+### Mixing `getline` and `>>`
 
 There is a common pitfall that occurs when mixing `getline` with `>>`:
 ```cpp
@@ -101,21 +103,19 @@ And the reason why multiple subsequent `>>`s are not affected by this issue is t
 
 A simple solution to this is to do `getline` twice. Or perhaps after doing it the first time, do it again if the string was empty.
 
-## Exercise 3
+> ## Exercise 2
+>
+> Make a program that asks you for your age, and then your name, and then prints both.
+>
+> Make sure spaces in the name are handled correctly.
+>
+> Make sure inputting the name works both on a separate line and on the same name as the age.
 
-Make a program that asks you for your age, and then your name, and then prints both.
+## Operations on strings
 
-Make sure spaces in the name are handled correctly.
+Here are some things you can do to strings:
 
-Make sure inputting the name works both on a separate line and on the same name as the age.
-
-## Manipulating strings
-
-`std::string`, in addition to `[]` and `.size()` (which is shares with `std::vector`) has some additional features.
-
-For example:
-
-### Substrings
+### Getting substrings
 
 ```cpp
 std::string s = "Hello!";
@@ -129,11 +129,62 @@ std::string s = "Hello!";
 std::string part = s.substr(2, 3);
 std::cout << part << '\n'; // Prints `llo`.
 ```
-`s.substr(n, m)` returns a part of the string, skipping the first `n` characters and taking only `m` characters starting from there.
+`s.substr(n, m)` returns a part of the string, skipping the first `n` characters and taking only `m` characters after that.e
 
-## Exercise 4
+### Combining strings
 
-Write a program that inputs the string, and then prints it with dashes between each letter. E.g. given `Hello`, print `H-e-l-l-o`.
+`+` can be used to combine ("concatenate") strings:
+
+```cpp
+std::string name;
+std::getline(std::cin, name);
+std::string message = "Hello " + name + ", nice to meet you!";
+std::cout << message << '\n';
+```
+
+### Converting numbers to strings
+
+You can't directly convert a number to a string. Instead, use `std::to_string`:
+```cpp
+int x = 42;
+std::string s = std::to_string(x);
+std::cout << s << '\n'; // 42
+```
+Notice that you can't use `<<` to produce complex strings. You can do:
+```cpp
+int health = 42;
+std::string message = "You have " + std::to_string(health) + " HP";
+```
+...but can't do:
+```cpp
+std::string message "You have " << health << "HP";
+```
+...because it's `std::cout` that makes `<<` work this way. It *is* possible to do this (using `std::ostringstream`, which is the equivalent of `std::cout` that "prints" to a string instead of to the screen), but I'm not going to explain it here.
+
+And if you forget `std::to_string`, you might observe some funny effects:
+```cpp
+std::cout << "The value is " + 5 << '\n';
+```
+This prints `lue is ` (trims the first 5 characters of the string). This of course shouldn't be done intentionally, and will be explained in a later chapter.
+
+### Coverting strings to numbers
+
+The opposite conversion, from a string to a number, can't be done directly too. There are many ways to do it, and `std::stoi` and `std::stod` (for `int` and `double` respectively):
+```cpp
+std::string s = "42";
+int n = std::stoi(s);
+std::cout << n << '\n'; // 42
+```
+Note that `std::stoi` and `std::stod` silently skip any whitespace at the beginning of the string, and also ignore any non-digits after the number. I'm not going to explain how to fix it here, look this up if you need it.
+
+> ## Exercise 3
+>
+> Write a program that inputs the string, finds every number in it, and for each number prints that many `*` characters on a separate string. For example, `You have 10 apples and 5 peaches` should result in:
+> ```console
+> **********
+> *****
+> ```
+> You could use a second `string` to collect the digits when looping over the first one, and then pass them to `std::stoi`. Or use some other approach.
 
 ## String literals
 
@@ -143,7 +194,9 @@ Since `42` is an `int`, you'd naturally assume that `"Hello"` is a `std::string`
 
 It is in fact a constant array of `char`, which is something C++ inherited from C.
 
-Since it is an array, `std::cout << "Hello"[0] << '\n';` is legal and prints `'H`'. Since it's constant, `"Hello"[0] = 'A';` is a compilation error.
+Since it's an array rather than a `std::string`, `"Hello".size()` is illegal. But `"Hello"[0]` is legal and produces `'H'`.
+
+Since the array is constant, `"Hello"[0] = 'A';` is a compilation error.
 
 ### Initializing arrays with string literals
 
@@ -187,9 +240,9 @@ They are used to loop over strings without knowing their size. For example:
 ```cpp
 char str[] = "Hello";
 for (int i = 0; str[i]; i++)
-    std::cout << str[i] << "\n";
+    std::cout << str[i] << '\n';
 ```
-This prints every character on a separate line. Notice `str[i]` being used as a condition, it tests that `str[i]` is not a null terminator, and stops the loop when encountering one. The `str[i]` condition is equivalent to `str[i] != 0` or `str[i] != '\0'`.
+This prints every character individually. Notice `str[i]` being used as a condition, it tests that `str[i]` is not a null terminator, and stops the loop when encountering one. The `str[i]` condition is equivalent to `str[i] != 0` or `str[i] != '\0'`.
 
 Now, you might be wondering how is this better than using `i < 5` or `i < std::size(str) - 1`, and the answer is that it is not better. It can be useful in some other situations where you don't know the array size, which will make sense in the later chapters, but in the cases you've already seen it is indeed useless.
 
@@ -210,9 +263,9 @@ Non-`char` arrays are also not null-terminated unless you do that manually.
 
 `std::string`s **are** always null-terminated, but unlike `char` arrays, the size they report doesn't include the terminator.
 
-E.g. for `std::string s = "Hello";`, `s.size()` is `5` (and so is `std::size(s)`, which is the same thing as `s.size()` for everything other than arrays, which don't have `.size()`), and `s[5]` is legal and produces `'\0'`.
+E.g. for `std::string s = "Hello";`, `s.size()` is `5` (and so is `std::size(s)`, which is the same thing as `s.size()` for everything other than arrays, which don't have `.size()`). And `s[5]` is legal and produces `'\0'`.
 
-Whereas arrays and vectors don't allow using their size as the index (the valid indices go up to the size minus 1). So, for `char s[] = "Hello";`, `std::size(s)` is `6`, `s[5]` is `'\0'`, and `s[6]` is illegal.
+Whereas arrays and vectors don't allow using their size as the index (the valid indices go up to the size minus 1). So, for `char s[] = "Hello";`, `std::size(s)` is `6`, `s[5]` is `'\0'`, and `s[6]` is illegal (causes UB).
 
 ### What requires null terminators?
 
@@ -221,17 +274,17 @@ If you're using `char` arrays instead of `std::string`s (there's little reason t
 For example:
 ```cpp
 char str[] = {'H','e','l','l','o'}; // Not null-terminated.
-std::cout << str << "\n"; // Causes UB!
+std::cout << str << '\n'; // Causes UB!
 ```
 First, notice that `std::cout` can print `char` arrays as a special case (it can't print whole arrays of most other types).
 
 This code causes undefined behavior, because `std::cout` wants `char` arrays to be null-terminated. If you have ASAN enabled, it will complain about this. If not, you'll likely see some garbage characters printed after your string.
 
-## Exercise 5
-
-Using a cast to `int` to print character codes, print the code of a null terminator and observe that it's 0.
-
-Make a non-null-terminated char array, try printing it with `cout` and try observing the breakage (which may or may not happen, since it's UB). Now fix it by adding the null terminator.
+> ## Exercise 4
+>
+> Using a cast to `int` to print character codes, print the code of a null terminator and observe that it's 0.
+>
+> Make a non-null-terminated char array, try printing it with `cout` and try observing the breakage (which may or may not happen, since it's UB). Now fix it by adding the null terminator.
 
 ## Languages other than English
 
@@ -297,10 +350,10 @@ I recommend embracing option (1). To do that:
 
 Doing steps 2,3,4 above should hopefully make the example above work correctly.
 
-## Exercise 6
-
-Skip this if you skipped the section above about non-English characters.
-
-Write a program that prints a non-English string. Compare how it works with and without the workaround provided in the previous section.
-
-Print the size of the string and confirm that it's larger than the number of characters that you see. Print the values of the individual `char`s by casting them to `int`, observe multiple integers per character.
+> ## Exercise 5
+>
+> Skip this if you skipped the section above about non-English characters.
+>
+> Write a program that prints a non-English string. Compare how it works with and without the workaround provided in the previous section.
+>
+> Print the size of the string and confirm that it's larger than the apparent number of characters in it. Print the values of the individual `char`s by casting them to `int`, observe multiple integers per character.

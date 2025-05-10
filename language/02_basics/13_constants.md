@@ -47,9 +47,15 @@ Constant variables can't be changed: `size = 42;` or `std::cin >> size;` would g
 
 Since the compiler can now clearly see that the array size is fixed, the example above compiles. You might be wondering why it can't see that with a non-constant variable. While this specific case looks simple, in more complex cases analyzing this would be impossible, so the compiler doesn't try at all.
 
-## Exercise 1
+> ## Exercise 1
+>
+> Take one of the examples from previous chapters that uses an array, and modify it to use a constant for the array size. Modify all loops over that array to use that constant for the size too.
 
-Take one of the examples from previous chapters that uses an array, and modify it to use a constant for the array size. Modify any loops over that array to use that constant for the size too.
+## Names of constants
+
+Some other languages traditionally name constants in `ALL_CAPS`. C++ doesn't have this tradition, we typically use caps for something else (macros, which will be discussed later).
+
+So we typically use the same naming convention for constants as for other variables.
 
 ## Other uses of constants
 
@@ -57,11 +63,11 @@ You don't always use constants purely to make the compiler happy.
 
 You can also use them to help yourself avoid mistakes (by accidentally modifying wrong variables).
 
-## Exercise 2
-
-One of previous exercises was to make a program to convert the number of days to the number of minutes.
-
-Modify it to make the number of minutes in one day a constant, and use the constant in the calculation. Name the constant appropriately.
+> ## Exercise 2
+>
+> One of previous exercises was to make a program to convert the number of days to the number of minutes.
+>
+> Modify it to make the number of minutes in one day a constant, and use the constant in the calculation. Name the constant appropriately.
 
 ## Compile-time constants
 
@@ -94,6 +100,6 @@ Like "expression", the word "literal" always refers to a piece of the source cod
 
 Strings in quotes are also literals. In `std::cout << "Hello!\n";`, the `"Hello!\n"` is a **string literal**.
 
-## Exercise 3
-
-Take one of the previous examples and find every literal in it.
+> ## Exercise 3
+>
+> Take one of the previous examples and find every literal in it.

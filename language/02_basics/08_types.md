@@ -66,6 +66,6 @@ std::cout << x << "\n"; // 5
 
 An `int` divided by an `int` always results in an `int`, which in this case is then converted to a `double`. It doesn't matter what the result of the division is used for, it doesn't affect how the division itself is performed.
 
-## Exercise
-
-Create a program that asks the user for a temperature in Celsius and converts it to Fahrenheit, and the reverse. Google the conversion formulas if needed.
+> ## Exercise
+>
+> Create a program that asks the user for a temperature in Celsius and converts it to Fahrenheit, and the reverse. Google the conversion formulas if needed.

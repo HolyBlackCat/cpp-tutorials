@@ -451,6 +451,6 @@ Different people use different number of spaces for each indentation level, 4 sp
 
 Indentation is usually performed by pressing the <kbd>Tab</kbd> key (instead of repeatedly hitting <kbd>Space</kbd>), but whether <kbd>Tab</kbd> inputs an actual Tab character or a bunch of spaces should be configurable in your IDE. It's matter of preference.
 
-## Exercise
-
-Create a program that lets you input the current temperature, and describes how hot or cold it feels. Include 3 or 4 different responses.
+> ## Exercise
+>
+> Create a program that lets you input the current temperature, and describes how hot or cold it feels. Include 3 or 4 different responses.

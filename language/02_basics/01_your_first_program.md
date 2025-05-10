@@ -203,8 +203,8 @@ Another escape sequence is `\"`, which is used to get the `"` character. `"Hello
 
 You can find the full list of escape sequences on [cppreference](https://en.cppreference.com/w/cpp/language/escape).
 
-## Exercise
-
-As explained in the introduction, this tutorial includes exercises. Do them if you want. Regardless, practice on your own too. The exercise for this chapter is:
-
-Write a program that displays the text of your choosing. Perhaps a favorite quote?
+> ## Exercise
+>
+> As explained in the introduction, this tutorial includes exercises. Do them if you want. Regardless, practice on your own too. The exercise for this chapter is:
+>
+> Write a program that displays the text of your choosing. Perhaps a favorite quote?

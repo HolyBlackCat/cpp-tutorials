@@ -111,6 +111,6 @@ When `std::cin` fails to read what you asked it to read, it should assign zero t
 
 It's possible to recover from this state (to e.g. to ask the user for new input), but I'm not going to explain this now.
 
-## Exercise
-
-Make a program that converts days to minutes. Ask the user for the number of days, and print the number of minutes in those.
+> ## Exercise
+>
+> Make a program that converts days to minutes. Ask the user for the number of days, and print the number of minutes in those.
