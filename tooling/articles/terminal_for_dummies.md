@@ -26,7 +26,7 @@ There are several different terminal programs, but there's very little differenc
 
   ![vscode terminal](/tooling/images/terminal_vscode.png)
 
-As you can see, they all do the same thing: draw text to the screen, and let you type things.
+As you can see, they all do pretty much the same thing: draw text to the screen, and let you type things.
 
 ## Different shells
 
@@ -38,7 +38,7 @@ The text (called "prompt", because it prompts you for a command) is different: `
 
 You'll also find that it doesn't accept some commands that MSYS2 terminal does (try using `clang++` and you might get `The term 'clang++' is not recognized as ...`). Why?
 
-That's because **by default it uses a different shell** ("powershell" instead of "bash", as VSCode helpfully displays above the terminal).
+That's because **by default it uses a different shell** ("powershell" instead of "bash", as VSCode helpfully displays above the terminal), that has different settings.
 
 ## What is a "shell"?
 
@@ -48,7 +48,7 @@ A terminal is a dumb program that displays text. A shell is what actually unders
 
 **A shell and a terminal are usually used together**: the terminal provides the UI and draws text, while the shell interprets the user commands.
 
-You can usually recognize a shell by its "prompt" (the text it prints when asking you for a command). **You have to know what shell you're using,** because as you noticed the difference can matter (`clang++` works in MSYS2 Bash but not in Powershell *by default*).
+You can usually recognize a shell by its "prompt" (the text it prints when asking you for a command). **You have to know what shell you're using,** because as you noticed the difference can matter (`clang++` works in MSYS2 Bash but not in Powershell by default).
 
 ## Ok, so how do I use Clang in Powershell?
 
@@ -62,7 +62,7 @@ How does it know to look in there? Because of a setting called PATH.
 
 PATH is a list of directories that a shell searches for a program when it needs to run it.
 
-To see it, run `echo $PATH` in the MSYS2 shell and `echo $env:PATH` in Powershell in VSCode (the commands are different because these are two different shells, Bash and Powershell). You should see this:
+To see it, run `echo $PATH` in the MSYS2 shell and `echo $env:PATH` in Powershell in VSCode (the commands are different because these are two different shells, Bash and Powershell). You should see something like this:
 
 [![default paths](/tooling/images/default_shell_paths.png)](/tooling/images/default_shell_paths.png)
 
