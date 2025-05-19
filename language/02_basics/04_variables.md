@@ -13,7 +13,7 @@ int main()
     std::cout << x << "\n";
 }
 ```
-This prints `70`. And printing `x + x` would obviously give you `140`.
+This prints `70`. And printing `x * x` would obviously give you `4900`.
 
 Here `x` is a variable. Simply speaking, variables are values that have names. (This is highly simplified. A more precise explanation is given in later chapters.)
 
