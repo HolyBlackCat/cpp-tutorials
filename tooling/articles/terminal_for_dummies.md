@@ -42,7 +42,7 @@ That's because **by default it uses a different shell** ("powershell" instead of
 
 ## What is a "shell"?
 
-A shell is a program that accepts commands from you (such as the `clang++ prog.cpp` command you've used before) and executes them (often by running other programs, in this case by running the Clang compiler).
+A shell is a program that accepts commands from you (commands such as the `clang++ prog.cpp` that you've used before) and executes them (often by running other programs, in this case by running the Clang compiler).
 
 A terminal is a dumb program that displays text. A shell is what actually understands the commands you type.
 

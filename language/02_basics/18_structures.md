@@ -277,3 +277,38 @@ boss = {"Wyrm", 200}; // Error, `boss` isn't assignable because `name` isn't.
 ```
 
 I recommend never using `const` members. We have more civilized ways of preventing individual members from being modifier, which will be discussed later.
+
+## Structs and references
+
+### References to entire structs
+
+In some other programming languages, struct variables automatically act as references. Not in C++ though:
+```cpp
+Monster boss = {"Dragon", 100}
+Monster target = boss;
+target.health = 50;
+std::cout << boss.health << '\n'; // Still 100
+```
+This makes sense, as this is consistent across variables of all types.
+
+Of course you can make references to structs:
+```cpp
+Monster boss = {"Dragon", 100}
+Monster &target = boss; // Note the `&`!
+target.health = 50;
+std::cout << boss.health << '\n'; // 50
+```
+
+### References to members
+
+```cpp
+Monster boss = {"Dragon", 100}
+
+int &hp = boss.health; // Or `ref.health`.
+hp = 42;
+```
+Not much to say here
+
+### References as members
+
+References can serve as struct *members* too, but they share all the same problems as const members (making the entire struct non-assignable). They are best avoided.
