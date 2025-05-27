@@ -1,12 +1,6 @@
-#### A word of caution
-
-Starting from this point, the amount of information increases a lot.
-
-As usual, don't feel the need to memorize everything. Practice by write small programs that use every new concept that you read about. Then feel free to return to this and previous chapters if you forget things and need to look them up.
-
 # Functions
 
-As was mentioned in the very beginning of this tutorial, functions are named blocks of code that you can execute. Here is a simple example:
+As was mentioned at the very beginning of this tutorial, functions are named blocks of code that you can execute. Here is a simple example:
 
 ```cpp
 #include <iostream>
@@ -29,6 +23,8 @@ This prints `Hello, world!` three times.
 First, notice that functions can only be declared outside of other functions. `void SayHello() {...}` is a **function declaration** (and simulaneously a **function definition**, like all other declarations you've seen so far, more on that later).
 
 And so is `int main() {...}`, if you remember from earlier chapters. `main` is the special function that's called when the program starts, while all other functions have to be called manually.
+
+Functions can call other functions, which themselves can call more functions, and so on. This is how large programs are composed.
 
 ## Function names
 
@@ -107,13 +103,13 @@ int main()
 ```
 There isn't much to say about those, how they work is fairly natural.
 
-Global variables exist for the entire duration of the program, rather than having a limited lifetime (they are said to inhabit the **global scope**). More formally, they are said to have "static storage duration", as opposed to "automatic storage duration" of local (automatic) variables.
+Global variables exist for (almost) the entire duration of the program, rather than having a limited lifetime (they are said to inhabit the **global scope**). More formally, they are said to have "static storage duration", as opposed to "automatic storage duration" of local (automatic) variables.
 
 Global variables are initialized before `main` runs, and are destroyed after it runs.
 
 They have the same name requirements as functions (regarding reseved names, see above). In general, anything declared outside of a function has those.
 
-Global mutable (that is, non-constant) variables are rightly considered a bad practice and should be avoided in most cases. (Because they make it hard to track what function modifies what variables.)
+Global non-constant variables may seem convenient, but they should be avoided in most cases, because they make it hard to track what function modifies what variables.
 
 We have more civilized and explicit ways of passing information between functions, which will be demonstrated in a moment.
 
@@ -152,7 +148,7 @@ int main()
 ```
 Here `int value` is a **parameter declaration**.
 
-It's essentially local variable in the function:
+It is essentially local variable in the function:
 ```cpp
 void IncreaseX()
 {
@@ -170,7 +166,7 @@ People often use the words "parameter" and "argument" loosely, saying one and me
 
 ### Multiple parameters
 
-You can have more than one parameter, which then requires the same number of arguments when calling the function. Not much to say about this, it's fairly straightforward.
+You can have more than one parameter, which then requires the matching number of arguments when calling the function. Not much to say about this, it's fairly straightforward.
 
 ```cpp
 void IncreaseX(int value, int multiplier)
@@ -208,7 +204,26 @@ int main()
 ```
 Newbies sometimes get confused by this. The two `value` variables (one in `main` and another in `IncreaseX`) are completely unrelated, and just happen to have the same name.
 
-There's nothing special about this. You could rename one of the variables and nothing would change.
+There's nothing special about this. You could rename one of the variables and nothing would change:
+
+```cpp
+#include <iostream>
+
+int x = 5;
+
+void IncreaseX(int value)
+{
+    x += value;
+}
+
+int main()
+{
+    std::cout << "x = " << x << '\n'; // x = 5
+    int y = 100;
+    IncreaseX(y);
+    std::cout << "x = " << x << '\n'; // x = 105
+}
+```
 
 > ## Exercise 2
 >
@@ -277,7 +292,7 @@ int main()
 ```
 The part in `main` is fairly verbose, and kinda weird given that `ComputeStuff` doesn't care about the original value of `out`, and only uses it to output the result.
 
-Would be nice to be able to write just `int value = ComputeStuff();`, and indeed we *can* do that!
+Would be nice to be able to write just `int value = ComputeStuff();`, and indeed we can do that!
 
 ```cpp
 int ComputeStuff()
@@ -306,19 +321,21 @@ Second, `ComputeStuff` now ends in `return ...;`. The value passed to `return` i
 
 Astute readers might be wondering: if the thing to the left of the function name is its return type, why have we been doing `int main` rather than `void main`? Or if we use `int`, why are we not returning anything from `main`?
 
-The C++ standard says that `main` must have the `int` return type. This `int` is used to indicate if the program has ran successfully (then you `return 0;`), or ended with an error (then you return some other number). Zero return code indicating success is universally agreed upon, but specific meaning of non-zero codes isn't universal.
+The C++ standard says that `main` must have the `int` return type (doing otherwise should cause a compilation error on a properly configured compiler).
+
+The `int` returned from `main` is used to indicate if the program has ran successfully (then you `return 0;`), or ended with an error (then you return some other number). Zero return code indicating success is universally agreed upon, but specific meaning of non-zero codes isn't universal.
 
 `main` defaults to `return 0;` if you don't `return` something else manually. Only `main` does this. **Forgetting to return from any non-void function (except `main`) causes undefined behavior.** Typically it crashes the program (terminates it with an error at runtime).
 
 #### Accessing the `main` exit code
 
-Ok, so the return value of `main` indicates success vs failure. But how do you access this value?
+Ok, so the return value of `main` indicates success vs failure. But how do you access this value when running the program?
 
 This code is primarily used when you run your program from another program, not manually, to tell if it ran successfully or not.
 
 If you run it manually, accessing the code isn't always simple. If you started the program just by double-clicking its executable, the exit code will typically be lost.
 
-If you started the program in the [terminal](/tooling/articles/terminal_for_dummies.md#what-is-a-terminal-or-a-console), then the exit code can be accessed in a way that depends on your [shell](/tooling/articles/terminal_for_dummies.md#different-shells): if you're using Powershell, as is typical on Windows, then running `$lastexitcode` will print the exit code from the program you just ran. If you're using Bash (e.g. either in MSYS2 on Windows, or by default on most Linuxes) or something compatible, then `echo $?` will have the same effect.
+If you started the program in the [terminal](/tooling/articles/terminal_for_dummies.md#what-is-a-terminal-or-a-console), then the exit code can be accessed in a way that depends on your [shell](/tooling/articles/terminal_for_dummies.md#different-shells): if you're using Powershell, as is typical on Windows, then running `$lastexitcode` will print the exit code from the program you just ran. If you're using Bash (e.g. either in MSYS2 on Windows, or by default on most Linuxes) or something compatible, then `echo $?` will do the same thing.
 
 ## Returning conditionally
 
@@ -380,7 +397,7 @@ int main()
 
 As a side note, you might be wondering how to check if the user entered something *other than* a number. That is achieved by using `std::cin` itself as a condition; it becomes false if something wrong is entered. E.g. `if (!std::cin || x < 0)` in the example above.
 
-> ## Exercise 7
+> ## Exercise 5
 >
 > Write a program that uses conditional `return` statements.
 
@@ -389,20 +406,6 @@ As a side note, you might be wondering how to check if the user entered somethin
 While you can have any number of parameters, you can return at most one value. There's no real technical reason for this limitation.
 
 Return a struct if you need more than one value.
-
-## Passing and returning arrays
-
-Arrays are a bit of a special case.
-
-They can't be returned functions (at least not directly). But putting it in a struct allows you to return the whole struct.
-
-They can serve as parameters, but when used as a parameter, the array size is ignored. E.g. you can do `void foo(int array[10])`, and then pass `int arr[5]` to it, and the array size mismatch isn't an error.
-
-In fact, you can omit the array size in the parameter entirely: `void foo(int array[])`. This is equivalent to the above.
-
-In all those cases, if you want to accept arrays of different sizes, you must manually pass the array size in a separate parameter. You may remember `std::size` from previous chapters, which can normally be used to determine the size of an array, but no, it doesn't work on array parameters.
-
-This will be explained in more details later, including the exact nature of those fake array parameters.
 
 ## Returning references
 
@@ -442,15 +445,13 @@ int main()
 ```
 This program lets the user input numbers until they input 0, and counts positive and negative numbers in the input.
 
-Notice that we can assign to `GetCounter(x)` because it returns a reference. If it didn't return a reference (in other words, if it "returned by value"), we couldn't assign to that.
-
-When a function returns by value, the result of the function call is an rvalue. When it returns by reference, it's an lvalue. That's why you can or can't assign to those.
+Notice `GetCounter(x) += 1;`. We can assign to `GetCounter(x)` because it returns a reference. If it didn't return a reference (in other words, if it "returned by value"), we couldn't assign to it.
 
 ### Dangling references
 
 I've already demonstrated dangling references in the chapter about references.
 
-But functions give you new exciting ways to create dangling references and the associated UB.
+But functions give you new exciting ways of creating dangling references and the associated UB.
 
 Let's say you return a reference to a local variable:
 
@@ -465,13 +466,13 @@ int &foo()
 
 int main()
 {
-    foo() = 42;
-    std::cout << foo() << '\n';
+    foo() = 42; // UB!
+    std::cout << foo() << '\n'; // UB again!
 }
 ```
 This may appear to work, but this is in fact undefined behavior. One of the more treacherous kinds of UB, because it tends to not crash and to silently appear to work, until it no longer does.
 
-Do you understand why this is UB? `int x;` only lives until the end of the function call, but the returned reference to `x` outlives `x`. This reference becomes **dangling**, meaning it no longer refers to a valid object.
+Do you understand why this is UB? `int x;` only lives until the end of this function call, but the returned reference to `x` outlives `x`. This reference becomes **dangling**, meaning it no longer refers to a valid object.
 
 Note that only **using** a dangling reference is UB. It merely existing doesn't cause UB by itself.
 
@@ -487,9 +488,3 @@ int main()
 }
 ```
 ...since the returned reference ends up referencing `y` in `main` directly, not the parameter `x`. (As was explained before, references never refer to other references, trying to do so makes them refer to the target object of that reference.)
-
-
-
-
-
-explain the declarations (probably between parameters and return); also explain returning const (after the rest about return)
