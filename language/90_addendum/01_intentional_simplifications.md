@@ -6,7 +6,7 @@ This is here to satisfy advanced readers, and to assure them those simplificatio
 
 Things we intentionally simplify at first:
 
-* The exact definitions and nature of "expression", "object", "variable", etc.
+* The exact definitions and nature of "expression", "object", "variable", etc. This includes saying that prvalues represent objects when first explaining what objects are.
 
 * All the numerious initialization syntaxes.
 
@@ -16,4 +16,4 @@ Things we intentionally simplify at first:
 
 * Avoiding the phrase "ill-formed" in the beginner chapters, for the same reason.
 
-* So instead of saying "ill-formed" or even "syntax error", I'm saying "compilation error" in the beginner chapters. Yes, I know that compilers are not required to emit errors, and any diagnostic is allowed.
+* So instead of saying "ill-formed" or even "syntax error", I'm saying "compilation error" in the beginner chapters. Yes, I know that compilers are not required to emit errors, and any diagnostic is allowed. I know that by default compilers will happily accept some ill-formed code, that is explained too.

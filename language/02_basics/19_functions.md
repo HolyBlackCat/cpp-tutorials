@@ -407,6 +407,59 @@ While you can have any number of parameters, you can return at most one value. T
 
 Return a struct if you need more than one value.
 
+## Returning from `void` functions
+
+You can `return;` nothing in a `void` function to stop the function early.
+
+For example:
+
+```cpp
+void foo(int x)
+{
+    if (x > 0)
+        std::cout << x << '\n';
+}
+```
+
+is equivalent to:
+
+```cpp
+void foo(int x)
+{
+    if (x <= 0)
+        return;
+
+    std::cout << x << '\n';
+}
+```
+
+Trying to use `return;` (with no argument) in a non-`void` function is a compilation error, and similarly using `return ...;` (with an argument) in a `void` function is also *usually* a compilation error (with a rare exception that expressions of type `void` are allowed, such as, for example, calls to other functions returning `void`).
+
+So:
+
+```cpp
+int a() {return 42;}
+void b() {}
+
+int c()
+{
+    return 42; // ok
+    return; // error
+    return a(); // ok
+    return b(); // error, since `b` returns void
+}
+
+void d()
+{
+    return 42; // error
+    return; // ok
+    return a(); // error
+    return b(); // ok
+}
+```
+
+Here `return b();` isn't very useful, it's just a funny way of spelling `b(); return;`.
+
 ## Returning references
 
 Just like with parameters, by default returning from a function creates a copy of the returned value.

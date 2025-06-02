@@ -29,7 +29,7 @@ std::cin >> a.x;
 foo(a.x);
 ```
 
-This compiles, but `arr[0]` is not a variable. Only the entire array is a variable, because that's what we explicitly *declare*. Its individual elements can't be called variables. The individual struct members like `a.x` can't really be called "variables" too, only the entire `a` is a variable.
+This compiles, but `arr[0]` is not a variable. Only the entire array is a variable, because that's what we explicitly *declare*. Its individual elements can't be called variables. The individual struct members like `a.x` also can't really be called "variables", as only the entire `a` is a variable.
 
 So what is the actual requirement?
 
@@ -37,7 +37,9 @@ I need to introduce some new concepts before I can explain this properly.
 
 ## Objects
 
-When a program manipulates values at runtime, those values are held in something called **objects**. Variables are just words/names in the source code that represent the objects existing at runtime:
+When a program manipulates values at runtime, those values are held in something called **objects**, which exist at runtime too. *Variables* are just words/names in the source code that represent those objects existing at runtime.
+
+For example:
 ```cpp
 int x = 10;
 x = 20;
@@ -50,15 +52,17 @@ But *of course*, we use the words loosely. Those are very high levels of pedantr
 
 And you don't have to be pedantic in your speech in this case, even this tutorial itself isn't in most cases. But please try to understand the difference between those concepts.
 
-In the source code, we use **expressions** to refer to objects. Expressions are parts of the source code that represent objects existing at runtime. After you declared a variable, its name acts as an expression.
+In the source code, we use **expressions** to refer to objects. Expressions are parts of the source code that represent objects existing at runtime. After you declare a variable, its name can act as an expression.
 
-Array elements and struct members are objects too, and `arr[i]` and `boss.health` are expressions referring to them.
+Array elements and struct members are objects too, and `arr[i]` and `boss.health` are expressions referring to them. And `arr` and `boss` are expressions as well, referring to the entire array/struct.
+
+And lastly, there are *some* expressions don't refer to any objects, for example the calls to `void` functions, which are expressions of type `void`.
 
 ## Temporary objects
 
 But literals like `42` are expressions too, they too represent objects. Same for expressions like `10 + 20` or `double(42)`, they also represent objects. (Again, I'm omitting some nuances here, that's for later.)
 
-Those are called **temporary objects**, or **temporaries**. Unlike (the objects associated with) variables which are created manually, temporaries are created automatically as needed to hold results of computations (or values of numeric literals), and then die off quickly. **Temporaries are normally destroyed at the end of the *full-expression* they were created in.** (Revisit the ["computations"](./03_computations.md) chapter if you forgot what a full-expression is. This is roughly equivalent to them being destroyed at the end of the line of code they were created in.)
+Those are called **temporary objects**, or **temporaries**. Unlike (the objects associated with) variables which are created manually (via a declaration), temporaries are created automatically as needed to hold the results of computations (or values of numeric literals, etc), and then die off quickly. **Temporaries are normally destroyed at the end of the *full-expression* they were created in.** (Revisit the ["computations"](./03_computations.md) chapter if you forgot what a full-expression is. This is roughly equivalent to them being destroyed at the end of the line of code they were created in.)
 
 ## Lvalues and rvalues
 
@@ -72,9 +76,9 @@ You'll also hear the words **lvalue** and **rvalue** a lot. Roughly, **an lvalue
 
 Of course there are nuances to this:
 
-* First of all, in some rare cases the value category will not match temporary-ness (you'll have rvalues referring to non-temporaries and lvalues referring temporaries). This is rare though, for now you don't have to think about it.
+* First of all, in some rare cases the value category will not match temporary-ness (you'll have rvalues referring to non-temporaries and lvalues referring to temporaries). This is rare though, for now you don't have to think about it.
 
-* Rvalues are further split into two different categories, so the total number of value categories is 3. This sepration rarely matters though, and can't be explained this early in the tutorial.
+* Rvalues are further split into two different categories, so the total number of categories is 3. This sepration rarely matters though, and can't be explained this early in the tutorial.
 
 ## Summary
 
