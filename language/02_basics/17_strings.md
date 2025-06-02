@@ -192,7 +192,7 @@ As was explained before, unnamed constants in the source code such as `42` or `"
 
 Since `42` is an `int`, you'd naturally assume that `"Hello"` is a `std::string`, but that's not the case.
 
-It is in fact a constant array of `char`, which is something C++ inherited from C.
+It is in fact a constant array of `char`. (Using `char` arrays as strings is a leftover from C, which doesn't have the convenience of `std::string`.)
 
 Since it's an array rather than a `std::string`, `"Hello".size()` is illegal. But `"Hello"[0]` is legal and produces `'H'`.
 
@@ -205,7 +205,7 @@ Normally you can't initialize one array with another, but string literals and `c
 ```cpp
 char str[] = "Hello";
 ```
-This is legal and is equivalent to `char str[] = {'H', 'e', 'l', ...};`
+This is legal and equivalent to `char str[] = {'H', 'e', 'l', ...};`
 
 ## Null terminators
 
