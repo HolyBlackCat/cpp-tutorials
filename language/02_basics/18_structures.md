@@ -54,7 +54,7 @@ Naturally, structures can serve as array/vector element types: `Monster monsters
 
 ## Struct names
 
-Struct names are typically capitalized as `HelloWorld`. Some prefer `helloWorld` or `hello_world`, but this is rare (notably the standard library uses the latter). Avoid naming structs in `ALL_CAPS`, though some old libraries do this (even some parts of the standard library inherited from C). All caps names are typically used for something else, which will be explained in later chapters.
+Struct names are typically capitalized as `HelloWorld`. Some prefer `helloWorld` or `hello_world`, but this is rare (but notably the standard library uses the latter). Avoid naming structs in `ALL_CAPS`, though some old libraries do this (even some parts of the standard library inherited from C). All caps names are typically used for something else, which will be explained in later chapters.
 
 Struct names have same requirements as variable names. Revisit the chapter on variables if necessary.
 
