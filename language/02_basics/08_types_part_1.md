@@ -1,4 +1,4 @@
-# More types
+# Types (part 1)
 
 Declaring variables as `int x = ...;` creates integer variables (of type `int`).
 
