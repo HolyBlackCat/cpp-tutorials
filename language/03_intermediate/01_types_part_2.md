@@ -357,3 +357,46 @@ Because there's almost zero difference, *both* are often collectively called "C-
 Here's something else you'll see often: `(unsigned int)(x)` (used when `x` is an expression that needs to be grouped together to get the precedence right). Is this a functional cast or a C-style cast, what do you think?
 
 It's a C-style one. Do you understand why? `(x)` is a valid expression, so `(unsigned int)(x)` follows the `(type)expression` pattern of the C-style cast. But `(unsigned int)` isn't a valid type (as e.g. `(unsigned int) x = 42;` isn't a valid variable declaration; you can't enclose types in parentheses like this), therefore `(unsigned int)(x)` doesn't fit the `type(expression)` pattern of the functional cast.
+
+## Signed and unsigned `char`
+
+`sizeof(char)` is always `1`. So if the byte is 8 bits wide, so is `char`.
+
+`int` is signed by default, but `char` may default to either signed or unsigned. If you're planning on storing *numbers* in it (as opposed to characters), you should explicitly mark it as either `signed` or `unsigned`:
+
+```cpp
+unsigned char a = 40;
+signed char b = -50;
+```
+If you try to print those, you'll notice that `std::cout` interpreters them as character codes by default, printing `( �` (there's no good reason for this, just `std::cout` being silly).
+
+To print the integer values, cast them to `int`:
+```cpp
+std::cout << int(a) << '\n'; // 40
+std::cout << int(b) << '\n'; // -50
+```
+The cast is only needed for `std::cout`. In all other aspects, `char`, `signed char` and `unsigned char` are just numbers, operators like `+` work on them directly.
+
+### Minimum and maximum value of `char`
+
+Do you understand how to calculate the min and max values of `signed char` and `unsigned char`?
+
+`signed char` can hold numbers between -2<sup>8-1</sup> and 2<sup>8-1</sup>-1 inclusive, so between `-128` and `127` inclusive. (That is assuming `CHAR_BIT == 8`.)
+
+`unsigned char` can hold numbers between 0 and 2<sup>8</sup>-1 inclusive, so between `0` and `255` inclusive.
+
+### `char` vs `signed`/`unsigned` `char`
+
+Lastly: whereas `int` and `signed int` are literally the same type, `char` and `signed char` are considered to be different types, even if `char` happens to be signed (similarly, `char` and `unsigned char` are different types even if `char` is unsigned).
+
+One practical consequence of that is:
+```cpp
+signed int a = 10;
+int &b = a; // Compiles.
+
+signed char c = 10;
+char &d = c; // Error, the type is different.
+
+unsigned char e = 10;
+char &f = e; // Error, the type is different.
+```
