@@ -1,6 +1,6 @@
-# Types (part 2)
+# Integral types
 
-You've already learned a few arithmetic types (those that hold numbers): `int`, `double`, `char`, and even `bool`.
+You've already learned a few integral types (those that hold integers): `int`, `char`, and even `bool`.
 
 This chapter provides a full list of those types, and explains how they work.
 
@@ -122,15 +122,15 @@ Naively that would be all 32× `1` bits, which is equal to 2<sup>32</sup>-1 = `4
 
 That's because one bit (called the **sign bit**) is reserved to indicate if this is a positive or negative number (remember that `int` can store negative numbers too). It is `1` for negative numbers and `0` for positive ones and for zero.
 
-With that knowledge, the maximum positive number ends up being `0111...111` (`0` bit, then 31× `1` bits), which is equal to 2<sup>32-1</sup>-1 = `2'147'483'647`, which is correct. You can observe that it fits, and that number plus 1 no longer fits.
+With that knowledge, the maximum positive number ends up being `0111...111` (`0` sign bit, then 31× `1` bits), which is equal to 2<sup>32-1</sup>-1 = `2'147'483'647`, which is correct. You can observe that it fits, and that number plus 1 no longer fits.
 
 ## Negative numbers in binary
 
 So how are the the negative numbers represented in binary?
 
-First of all, you can just do `int x = -0b1011;` and get `-11`, but that's obviously not how it's represented in memory, because the memory can only hold bits, not the magical `-` character.
+First of all, you *can* just do `int x = -0b1011;` and get `-11`, but that's obviously not how it's represented in memory, because the memory can only hold bits, not the magical `-` character.
 
-As explained before, the positive numbers go from `000...000` = 0 up to `0111...111`. The leftmost zero bit (the sign bit) indicates that the number isn't negative. The negative numbers would be `1???...???`.
+As explained before, the positive numbers go from `000...000` (which is zero) up to `0111...111`. The leftmost zero bit (the sign bit) indicates that the number isn't negative. The negative numbers would be `1???...???`.
 
 There are several methods to how negative numbers can be represented. Naively you could assume something like this: (This is called the "sign-magnitude" method.)
 ```
@@ -195,6 +195,16 @@ So how do you convert between a negative binary number and a decimal one by hand
 
   The reverse is done in the same way. Starting from `111...11101`, we flip the bits to get `000...00010`, then add 1 to get `000...00011`, which is decimal `3`.
 
+### What does "two's complement" mean?
+
+This is explained in [Wikipedia](https://en.wikipedia.org/wiki/Two's_complement#Theory).
+
+The "two" here is short for "the power of two", the 2<sup>N</sup> (where `N` is the number of bits in the type). Notice how this number used in the calculations above.
+
+"Complement" means that `-N` and `N` (for any N), after converting to binary, sum to 2<sup>N</sup> ("complement" each other to 2<sup>N</sup>).
+
+E.g. `3 + -3` = `0b000...00011 + 0b111...11101` = `4294967296` = 2<sup>32</sup>.
+
 ## Other numbering systems (octal and hexadecimal)
 
 C++ also supports octal numbers (aka base-8, using digits `01234567`) and hexadecimal numbers (aka base-16, using digits `0123456789ABCDEF`, where `A` is 10, `B` is 11, etc, and `F` is 16).
@@ -258,7 +268,7 @@ As explained above, `int` can typically hold numbers between `-2'147'483'648` an
 
 But what if we don't need negative numbers, and need to store larger positive numbers?
 
-For that we have the type `unsigned int`. It has the same `sizeof` as `int`. It can't hold negative numbers, and uses the 32th bit (which is the sign bit in `int`) to be able to hold larger positive numbers. It can hold numbers between `0` and `4'294'967'295` inclusive (between 0 and 2<sup>32</sup>-1 inclusive). So, about twice as large positive number compared to `int`.
+For that we have the type `unsigned int`. It has the same `sizeof` as `int`. It can't hold negative numbers, and uses the 32th bit (which is the sign bit in `int`) to be able to hold larger positive numbers. Typically it can hold numbers between `0` and `4'294'967'295` inclusive (between 0 and 2<sup>32</sup>-1 inclusive). So, about twice as large positive number compared to `int`.
 
 `unsigned int` can also be spelled as just `unsigned`, but people usually don't do this.
 
@@ -280,7 +290,7 @@ What do you think gets printed?
 
 `-x` still has type `unsigned int`, so it *can't* be a negative number. So it **wraps around** and produces -3 + 2<sup>32</sup> &nbsp; = &nbsp; 4294967293.
 
-A similar thing would happen if you did `x -= 10;` (if `x < 10` and the result would have to be negative).
+A similar thing would happen if you did `x -= 10;` (assuming `x < 10` before the subtraction).
 
 A similar wraparound happens to unsigned integers if you try to make them too large. In that case 2<sup>32</sup> is subtracted from the result to get them in range.
 
@@ -296,7 +306,7 @@ std::cout << (x > y) << '\n';
 
 What do you think this prints?
 
-Turns out that `>` (and `==` and other comparison operators) require the operands to be of the same type. And when one of them is unsigned and the other isn't, they are **both** made unsigned. As if by:
+Turns out that `>` (and `==` and other comparison operators, and most other operators) require the operands to be of the same type. And when one of them is unsigned and the other isn't, they are **both** made unsigned. As if by:
 
 ```cpp
 unsigned int y_unsigned = y;
@@ -350,11 +360,11 @@ Instead this has to be spelled as `(unsigned int)x`. This is a different form of
 
 `int(x)` is the **functional cast** (named like this because it looks like a function). This is the form that I taught before.
 
-There is almost zero difference between the two, except as I explained the functional cast is a bit more picky about what types it accepts (can't work with types spelled with more than one word, like `unsigned int`).
+There is almost zero difference between the two, except as I explained the functional cast is a bit more picky about what types it accepts (roughly, it can't work with types spelled with more than one word, like `unsigned int`).
 
 Because there's almost zero difference, *both* are often collectively called "C-style cast" (when comparing them with *other* forms of casts that will be explained in future chapters).
 
-Here's something else you'll see often: `(unsigned int)(x)` (used when `x` is an expression that needs to be grouped together to get the precedence right). Is this a functional cast or a C-style cast, what do you think?
+Here's something else you'll see often: `(unsigned int)(x)` (used when `x` is an expression that needs to be grouped together to get the operator precedence right). Is this a functional cast or a C-style cast, what do you think?
 
 It's a C-style one. Do you understand why? `(x)` is a valid expression, so `(unsigned int)(x)` follows the `(type)expression` pattern of the C-style cast. But `(unsigned int)` isn't a valid type (as e.g. `(unsigned int) x = 42;` isn't a valid variable declaration; you can't enclose types in parentheses like this), therefore `(unsigned int)(x)` doesn't fit the `type(expression)` pattern of the functional cast.
 
@@ -375,7 +385,7 @@ To print the integer values, cast them to `int`:
 std::cout << int(a) << '\n'; // 40
 std::cout << int(b) << '\n'; // -50
 ```
-The cast is only needed for `std::cout`. In all other aspects, `char`, `signed char` and `unsigned char` are just numbers, operators like `+` work on them directly.
+The cast is only needed for `std::cout`. In all other aspects, `char`, `signed char` and `unsigned char` are just numbers, operators like `+` and `<`> work on them directly.
 
 ### Minimum and maximum value of `char`
 
@@ -383,7 +393,7 @@ Do you understand how to calculate the min and max values of `signed char` and `
 
 `signed char` can hold numbers between -2<sup>8-1</sup> and 2<sup>8-1</sup>-1 inclusive, so between `-128` and `127` inclusive. (That is assuming `CHAR_BIT == 8`.)
 
-`unsigned char` can hold numbers between 0 and 2<sup>8</sup>-1 inclusive, so between `0` and `255` inclusive.
+`unsigned char` can hold numbers between 0 and 2<sup>8</sup>-1 inclusive, so between `0` and `255` inclusive. (Again assuming `CHAR_BIT == 8`.)
 
 ### `char` vs `signed`/`unsigned` `char`
 
@@ -400,3 +410,234 @@ char &d = c; // Error, the type is different.
 unsigned char e = 10;
 char &f = e; // Error, the type is different.
 ```
+
+## Other built-in integral types
+
+The full list of built-in integral types is as follows:
+
+Type | Required `sizeof` | `sizeof` in practice
+---|---|---
+`char` | exactly 1 | 1
+`short` | ≥ 2 | 2
+`int` | ≥ 2 | 4
+`long` | ≥ 4 | 4 on Windows, 8 elsewhere
+`long long` | ≥ 8 | 8
+
+As you can see, the `sizeof` of those types isn't set in stone. In theory it can vary. But in practice it's almost always the values above.
+
+In addition to the min `sizeof` requirement, each type in the list is required to be at least as large as the previous one. So it's impossible to have `sizeof(short) == 4 && sizeof(int) == 2`.
+
+`long` is the only type that hasn't settled on one common size everywhere, so it's rarely used because of that.
+
+Each of those types can be marked `signed` or `unsigned`. Each type except `char` is `signed` by default.
+
+### Choosing the right type
+
+Newbies often try to pick the smallest type that fits all their values. This isn't very useful. Operations on smaller types are not necessarily faster.
+
+Use `int` by default. Only use smaller types if you need to store *a lot* of values, and memory usage becomes a problem. Only use larger types if you need to store large values.
+
+## Fixed-width integral types
+
+If you don't feel like making assumptions about type sizes, we have fixed-width integral types.
+
+Include `<cstdint>` and you get access to the following types:
+
+`signed` | `unsigned`
+---|---
+`std::int8_t` | `std::uint8_t`
+`std::int16_t` | `std::uint16_t`
+`std::int32_t` | `std::uint32_t`
+`std::int64_t` | `std::uint64_t`
+
+Those are signed and unsigned integral types with as much bit width as it says on the tin.
+
+E.g. `std::int8_t` is usually `char`, `std::int32_t` is usually `int`, and so on.
+
+Those are usually alternative names for the built-in types listed above, so references *may* be compatible:
+```cpp
+std::uint8_t a = 10;
+unsigned char &b = a; // Usually compiles.
+```
+
+### When to use fixed-width types
+
+There's no single answer. Many people use `int` by default and those for everything else.
+
+Some don't ever use `int` and always use those.
+
+Some people almost always use built-in types, given how stable their sizes are. In most code this won't cause issues.
+
+## Other standard types: `std::size_t` and `std::ptrdiff_t`
+
+There are two more types you need to learn about. Those are defined in `#include <cstddef>`.
+
+`std::size_t` is a unsigned type used in many places in the language for various sizes:
+
+* The size of `std::vector`: `.size()` returns `std::size_t`, its `.resize(n)` takes `std::size_t`.
+* `sizeof` returns `std::size_t` too.
+* ...
+
+This means that:
+```cpp
+std::vector<int> v = {1, 2, 3};
+
+for (int i = 0; i < v.size(); i++)
+{
+    // ...
+}
+```
+
+...uses the wrong type for `i`. It should be `std::size_t i = 0`. Previous chapters used `int` in those loops to avoid teaching `std::size_t` too early.
+
+And `std::ptrdiff_t` is the signed version of this type. (Technically they are not *guaranteed* to be of the same size, but they always are in practice.)
+
+
+## Literals of different types
+
+```cpp
+std::cout << 2'000'000'000 + 2'000'000'000 << '\n';
+```
+
+This prints a garbage value. Those two numbers are `int`s, and `int` plus `int` is still an `int`, and `4'000'000'000` doesn't fit into an `int`.
+
+But this works:
+```cpp
+long long x = 2'000'000'000;
+std::cout << x + x << '\n';
+```
+
+This also works:
+```cpp
+std::cout << (long long)2'000'000'000 + (long long)2'000'000'000 << '\n';
+```
+(Notice that just like with `unsigned int`, we have to use a C-style cast because `long long` is spelled with more than one word).
+
+But there is a shorter way to spell this:
+```cpp
+std::cout << 2'000'000'000LL + 2'000'000'000LL << '\n';
+```
+`LL` marks the literals as `long long`.
+
+The full list of those suffixes is:
+
+Suffix | Type
+---|---
+none|`int`
+`U`|`unsigned int`
+`L`|`long`
+`UL` or `LU`|`unsigned long`
+`LL`|`long long`
+`ULL` or `LLU`|`unsigned long long`
+`Z`|`std::ptrdiff_t`
+`UZ` or `ZU`|`std::size_t`
+
+Those can be spelled in lowercase too.
+
+There are no suffixes for smaller types.
+
+### Automatically selecting larger types for literals
+
+Interstingly, `std::cout << 4'000'000'000 << '\n';` does print the right number, despite it not fitting into an `int`.
+
+A literal without a suffix isn't always an `int`. It's either `int`, `long`, or `long long` (the first type that fits).
+
+The rules are fairly obscure, this isn't something that should be used often. Don't feel the need to memorize them.
+
+Interestingly, for non-decimal literals the unsigned types are also checked: `int`, then `unsigned int`, `long`, `unsigned long`, `long long`, then `unsigned long long`. So `0xFFFFFFFF` is `unsigned int`, while `4294967295` is `long` or `long long`.
+
+All of this can happen even with a suffix. Here are the rules, straight from [the standard](https://eel.is/c++draft/tab:lex.icon.type):
+
+<details>
+<summary><b>Show table</b></summary>
+
+Suffix|Types of decimal literals|Types of all other literals
+---|---|---
+none|`int`<br/>`long`<br/>`long long`|`int`<br/>`unsigned int`<br/>`long`<br/>`unsigned long`<br/>`long long`<br/>`unsigned long long`
+`U`|`unsigned int`<br/>`unsigned long`<br/>`unsigned long long`|`unsigned int`<br/>`unsigned long`<br/>`unsigned long long`
+`L`|`long`<br/>`long long`|`long`<br/>`unsigned long`<br/>`long long`<br/>`unsigned long long`
+`UL`|`unsigned long`<br/>`unsigned long long`|`unsigned long`<br/>`unsigned long long`
+`LL`|`long long`|`long long`<br/>`unsigned long long`
+`ULL`|`unsigned long long`|`unsigned long long`
+`Z`|`std::ptrdiff_t`|`std::ptrdiff_t`<br/>`std::size_t`
+`ZU`|`std::size_t`|`std::size_t`
+
+</details>
+
+
+## Overflow and wraparound
+
+As explained above, if a number is too big or too small for an `unsigned` variable, it's increased or decreased by 2<sup>N</sup> to fit (where N is the bit width of the type, its `sizeof` times 8).
+
+The situation with signed types is more difficult.
+
+If the value doesn't fit **because of a conversion or a cast**, it similarly wraps around:
+```cpp
+long long a = 4'000'000'000;
+int b = a;
+std::cout << b << '\n'; // -294967296
+```
+Here `4'000'000'000` doesn't fit into an `int`, so 2<sup>32</sup> is subtracted from it and you get `-294967296`.
+
+But if the value doesn't fit **because of a computation**, you get undefined behavior.
+
+E.g. `2'000'000'000 + 2'000'000'000` is UB. This is called an **overflow** (or **underflow** if the resulting value would be too small rather than too large).
+
+You might observe it wrap around it practice in some cases, but it's actually undefined. (You can [enable the undefined behavior sanitizer](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors) and it'll catch this.)
+
+Here's a famous example of that:
+```cpp
+bool foo(int x)
+{
+    return x + 1 > x;
+}
+```
+Naively you'd think that it would return `false` if given the largest `int`, as `+ 1` would wrap around, as it often does in practice. But since this is UB, the compiler is allowes to optimize it to just `return true;`.
+
+## Types of expressions
+
+This is the last topic.
+
+```cpp
+unsigned int a = 10;
+short b = 20;
+std::cout << a + b << '\n';
+```
+What type does `a + b` have? What are the rules here?
+
+The rules are somewhat complex, so don't feel the need to remember them. Just know where to look.
+
+### Integral promotion
+
+First of all, all built-in operators don't accept types smaller than `int`. If given one, it's "promoted" to `int`.
+
+One consequence of that is that you can use `+` to print the character codes:
+```cpp
+char a = 'A';
+std::cout << a << '\n'; // A
+std::cout << +a << '\n'; // 65
+```
+`+` acts as a cast to `int` here because of the promotion.
+
+There isn't a good reason for this behavior, it's a leftover from C and older languages.
+
+### Selecting the common type
+
+Almost all built-in operators (exceptions are explained later) require both operands to be of the same type.
+
+If after promotion the operands have different types, then some type needs to be selected that both operands will be converted to, and the result will have that type.
+
+That type is the largest of the operand types (by `sizeof`). And if they are equally large, but one is signed and the other isn't, then the unsigned one is preferred.
+
+So:
+
+* `int` + `unsigned int` is `unsigned int` (unsigned wins)
+* `int` + `unsigned short` is `int` (because `unsigned short` gets promoted to `int` first)
+* `long long` + `unsigned int` is `long long` (as it is larger)
+* `unsigned long long` + `int` is `unsigned long long` (as it is larger)
+
+All this leads to some funky consequences:
+
+* As explained before, `-1 < 1u` is false, because `-1` is converted to `unsigned int` first.
+* `char a = (signed char)127 + (signed char)127;` **isn't** UB, because they are promoted to `int` first, added as `int`s (the result of course fits), and then the result is converted back to `char`, and conversions don't overflow (as explained above).
+* `unsigned short a = 65535, b = a * a;` **is** UB, because even though unsigned types don't overflow (they instead wrap around, as explained above, which isn't UB), those get promoted to `int` first, and then proceed to overflow.
