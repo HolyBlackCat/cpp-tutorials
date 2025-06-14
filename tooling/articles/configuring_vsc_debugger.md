@@ -46,9 +46,31 @@ Make sure you have a folder opened in VSC. Use `File`→`Open Folder...`.
 Open the `Run and Debug` tab by pressing the button on the left:<br/>
 ![run and debug icon](/tooling/images/vsc_debugging_icon.png)
 
-Click `create a launch.json file`, and select `LLDB DAP Adapter`. It will create a file called `launch.json` in the `.vscode` directory in the current directory. This file holds debugging configurations. You can create it manually once you get used to it.
+Click `create a launch.json file`, and select `LLDB DAP Debugger`. It will create a file called `launch.json` in the `.vscode` directory in the current directory. This file holds debugging configurations. You can create it manually once you get used to it.
 
 If you already have this file, delete it and try again.
+
+<details>
+
+<summary><i>If you don't see the option called <code>LLDB DAP Debugger</code>, click here.</i></summary>
+
+First, check that you didn't forget to install the extension as explained above.
+
+Currently there seems to be a [bug](https://github.com/llvm/llvm-project/issues/144239) that causes the `LLDB DAP Debugger` button to be hidden if the Microsoft's C/C++ extension is also installed. The easiest option is to just uninstall it, since Clangd and LLDB-DAP do all the same things it does.
+
+Alternatively, you can make it work by clicking `C++ (GDB/LLDB)` in that menu. Then you should see this:
+
+[![selecting debugger configuration](/tooling/images/vsc_debugger_config_selection_lldb.png)](/tooling/images/vsc_debugger_config_selection_lldb.png)
+
+Select `LLDB: Launch`. You might need to scroll down a bit.
+
+If you accidentally closed this list, click `Add Configuration...` in the bottom-right to reopen it.
+
+———
+
+</details>
+
+The resulting file should look like this:
 
 [![generated launch.json](/tooling/images/generated_launch_json.png)](/tooling/images/generated_launch_json.png)
 
