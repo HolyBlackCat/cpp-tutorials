@@ -114,6 +114,20 @@ This can be automated. After the `"cwd": ...` line in `tasks.json`, add `"preLau
 
 Now pressing <kbd>F5</kbd> or the green arrow will automatically recompile the program before starting the debugger.
 
+### Handling compilation errors
+
+You'll notice that if you press "Debug" while having errors in your code, VSC will show this:
+
+[![debug anyway?](/tooling/images/vsc_debug_anyway.png)](/tooling/images/vsc_debug_anyway.png)
+
+What you **shouldn't** do is pressing `Debug Anyway`. This will run the older version of your program, from the last time it compiled successfully.
+
+Instead you should press `Abort`, fix your errors and try again (and perhaps enable the `Remember my choice ...` checkbox too).
+
+Here `Show Errors` is is a bit misleading, since in our case it'll show Clangd errors, not compilation errors (which can be different in some cases). So I instead recommend pressing `Abort`.
+
+In any case, if you botched this choice and enabled the checkbox too (so the window never appears again), you can fix this by going in the settings and changing `Debug: On Task Errors` (preferably to `Abort`).
+
 ## Debugging programs that accept input
 
 As previously said [here](/tooling/articles/debugging_in_terminal.md#debugging-programs-that-accept-input), at the time of writing, LLDB seems to have issues with programs that accept input (via `std::cin` or similar) on Windows.
@@ -124,7 +138,11 @@ CodeLLDB seems to work fine with input. Switching to CodeLLDB is simple: install
 
 ## Improving LLDB experience
 
-LLDB-DAP has a few extra settings you can add to `launch.json`:
+### Not debugging on compilation errors
+
+### Extra settings
+
+LLDB-DAP also has a few extra settings you can add to `launch.json`:
 
 * **Open `Debug Console` automatically when starting the debugger:**
   ```json
