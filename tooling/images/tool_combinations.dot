@@ -1,0 +1,14 @@
+// Convert to PNG using:  dot tool_combinations.dot -Tsvg -o tool_combinations.svg
+
+graph
+{
+    rankdir="LR"
+
+    "MSVC" -- "MSVC STL" [color=red]
+    "Clang" -- "MSVC STL" [color=red]
+    "Clang" -- "libc++" [color=blue]
+    "Clang" -- "libc++" [color=red]
+    "Clang" -- "libstdc++" [color=blue]
+    "GCC" -- "libstdc++" [color=blue]
+    "GCC" -- "libc++" [color=blue]
+}

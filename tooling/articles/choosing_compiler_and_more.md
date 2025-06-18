@@ -1,36 +1,58 @@
 # Choosing a compiler and more
 
-This is a topic prone to holy wars. I tried to explain my reasoning below, but you can use whatever works best for you.
+This is a complicated topic prone to holy wars. Here I try to explain all the choices you have, so you can make an educated decision.
+
+But yltimately, any remotely popular compiler is going to work fine, and the differences will be minor, especially for a newbie.
 
 ## What choices you can make?
 
 ### Available compilers
 
-The three most popular compilers are:
+The three most popular compilers are: (in no particular order)
 
 * **MSVC** (stands for "**M**icro**s**oft **V**isual **C**++"), the compiler bundled with Visual Studio.
 * **GCC**, the compiler commonly used on Linux.
 
-  On Windows it's usually bundled with something called [**MinGW**](https://www.mingw-w64.org/) (a collection of tools and libraries used to compile Windows applications without Visual Studio).
+  On Windows it's usually bundled with something called [**MinGW**](https://www.mingw-w64.org/) (a collection of tools and libraries used to compile Windows applications without Visual Studio). So people tend to say "MinGW" to mean "GCC on Windows", and in general don't understand the [difference between the two](./why_msys2.md).
 
 * **Clang**, the most recent addition to the list ("recent" as in "first release was in this millenium").
 
-But wait, there's more. Clang can operate in different configurations:
+  On Windows can use MinGW, but doesn't have to.
+
+The pros and cons of each one are explained below.
+
+But wait, there's more. Yeach compiler has its own implementation of the **C++ standard library**:
+* **MSVC STL** from MSVC.
+* **libstdc++** from GCC.
+* **libc++** from Clang.
+
+Some compilers can be used with standard libraries from **other** compilers. This is a fairly common practice, and is in no way worse than using their native libraries. (Which combinations are valid is shown below.)
+
+So not only do you have to choose the compiler, but also separately the C++ standard library. The pros and cons of each one are explained below as well.
+
+And lastly, when using Clang+libc++ on Windows, it can be used in two modes, MinGW-compatible and MSVC-compatible.
+
+In the end, there seems to be 7 valid combinations:
+
+[![tool combinations](../images/tool_combinations.svg)](../images/tool_combinations.svg)
+
+Each colored line is one combination. Red ones are operating in MSVC-compatible mode, blue ones are operating in MinGW-compatible mode. (That is on Windows. Elsewhere there's no MSVC nor MSVC STL, so only the blue ones are avaialble.)
+
+Now the same thing in the form of a table:
 
 &nbsp;|[Compiler](#choosing-a-compiler)|[ABI and various standard libraries](#mingw-abi-vs-msvc-abi)|[C++ standard library](#choosing-c-standard-library)|Available sanitizers|How to install
 ---|---|---|---|---|---
 1|MSVC|MSVC|MSVC STL|ASAN|Comes with [Visual Studio](https://visualstudio.microsoft.com), or use the standalone ["build tools"](https://visualstudio.microsoft.com/downloads).
-2|Clang|MSVC|MSVC STL|ASAN**|[Official Clang installer](https://github.com/llvm/llvm-project/releases/tag/llvmorg-18.1.6) (look for `LLVM-...-win64.exe`), also must install MSVC.<br/><sup>(Or you could make MSYS2 Clang operate in MSVC-compatible mode with some command-line flags, but that's extra work.)</sup>
+2|Clang|MSVC|MSVC STL|ASAN**|[Official Clang installer](https://github.com/llvm/llvm-project/releases) (look for `LLVM-...-win64.exe`), also must install MSVC.<br/><sup>(Or you could make MSYS2 Clang operate in MSVC-compatible mode with some command-line flags, but that's extra work.)</sup>
 3|Clang|MSVC|Clang's libc++|ASAN, UBSAN|Same, but also [must compile libc++ manually.](https://libcxx.llvm.org/BuildingLibcxx.html)
 4|Clang|MinGW|Clang's libc++|ASAN, UBSAN|[MSYS2 CLANG64](/tooling/articles/msys2_environments.md) (other [MSYS2 environments](/tooling/articles/msys2_environments.md) have libc++ too, but without sanitizers).<br/><sup>(Also there are [alternative distributions](/tooling/articles/why_msys2.md).)</sup>
 5|Clang|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](/tooling/articles/msys2_environments.md).<br/><sup>(Could also use official Clang installer with any MinGW, but that requires some custom command-line flags. Also there are [alternative distributions](/tooling/articles/why_msys2.md).)</sup>
 6|GCC|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](/tooling/articles/msys2_environments.md).<br/><sup>(Also there are [alternative distributions](/tooling/articles/why_msys2.md).)</sup>
-
-As you can see, Clang on Windows can use either MinGW **OR** tools and libraries shipped with MSVC.
+7|GCC|MinGW|Clang's libc++|None* ?|A rather obscure combination. Same as above, but needs [some custom GCC flags](https://releases.llvm.org/19.1.0/projects/libcxx/docs/UsingLibcxx.html#using-a-custom-built-libc).
 
 You can use any IDE with any of those combinations, with more or less effort (e.g. using Visual Studio while compiling for MinGW might cause [intellisense](https://learn.microsoft.com/en-us/visualstudio/ide/using-intellisense?view=vs-2022) to misbehave).
 
-**"ABI"** stands for ["application binary interface"](https://en.wikipedia.org/wiki/Application_binary_interface). Loosely speaking, if two compilers use the same ABI, you can use any library compiled with one compiler with another. Some C (not C++) libraries might be compatible regardless.
+**"ABI"** stands for ["application binary interface"](https://en.wikipedia.org/wiki/Application_binary_interface). Loosely speaking, if two compilers use the same ABI, you can use any library compiled with one compiler with another. Some C (not C++) libraries might be compatible regardless. (In the explanation above I called those "MinGW-compatible mode" vs "MSVC-compatible mode".)
 
 **"Sanitizers"** are automatic tools that you can enable to help you catch bugs: ASAN ("Address Sanitizer") for pointer errors, UBSAN for some other undefined behavior. (Note that on Linux, both GCC and Clang support both ASAN and UBSAN, plus some sanitizers not available on Windows.)
 
@@ -108,6 +130,8 @@ I have a weak preference towards MinGW ABI (because of the quirks mentioned abov
 
 ## MSVC issues
 
+MSVC in general seems to be a rather wonky compiler. Still very popular, presumbly because it's a default choice in VS, but wonky.
+
 Elaborating on the [claims](#choosing-a-compiler) I made above:
 
 * "Issues with standard conformance" - They are getting better at this, but still have some sloppy behavior, such as:
@@ -117,7 +141,7 @@ Elaborating on the [claims](#choosing-a-compiler) I made above:
   * [Accepting incorrect `requires`-clauses.](https://stackoverflow.com/q/78155107/2752075)
   * ...
 
-* Not implementing C++23 and C++26 features. If you take a look at [cppreference](https://en.cppreference.com/w/cpp/compiler_support/23), at the time of writing, they didn't implement any core language features other than "deducing this" (and a few minor defect reports/tweaks). Note that I'm talking only about the core language features, not standard library features.
+* Being slow at implemeting C++23, and not starting C++26 at all. If you take a look at [cppreference](https://en.cppreference.com/w/cpp/compiler_support/23), at the time of writing, they implement less than half of C++23. Note that I'm talking only about the core language features, not standard library features.
 
   Historically, they were slow to adopt C++11, then slowly started to overtake GCC and Clang up to C++20, and now they are behind again.
 
