@@ -45,9 +45,9 @@ Search for `clangd` and install it:<br/>
 
 If you accidentally clicked `Install`, go to `File`→`Preferences`→`Settings`, search for `clangd path` (it will be set to `C:\Users\Username\AppData\...`), click the 'gear' icon to the left of it, then press `Reset Setting`.
 
-If you see this message in the first place, you didn't configure PATH correctly as [was explained here](/tooling/articles/working_in_vscode_terminal.md). (Alternatively, you can go to `File`→`Preferences`→`Settings`, search for `clangd path`, and put `C:\msys64\clang64\bin\clangd.exe` in there.)
+If you see this message in the first place, you didn't configure PATH correctly as [was explained here](/tooling/articles/working_in_vscode_terminal.md). (Alternatively, you can go to `File`→`Preferences`→`Settings`, search for `clangd path`, and put `C:\msys64\clang64\bin\clangd.exe` in there.) And if that doesn't help either, you likely forgot to run the `pacman -S ...` command mentioned earlier.
 
-If you change PATH, you'll need to restart VSC for it to take effect. And after changing Clangd settings, you might need to either restart VSC or press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`clangd: Restart language server` for them to take effect.
+Remember that if you change PATH, you'll need to restart VSC for it to take effect. And after changing Clangd settings, you might need to either restart VSC or press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`clangd: Restart language server` for them to take effect.
 
 ## Verifying that Clangd works
 
