@@ -110,3 +110,30 @@ If you don't like this and would prefer to get just `std::find_if()`, go to the 
 If you use `File`→`Open Folder...` and look at the `Explorer` tab, you will see that Clangd has created a `.cache` directory to store its internal data next to your source code.
 
 You can hide this directory from Explorer by going to the settings, searching for `files exclude`, pressing `Add Pattern` and adding `.cache/` to the list.
+
+### Fixing the broken sticky scroll
+
+VSC has a feature called Sticky Scroll. One way to see it in action is to have a long function that doesn't fit into one screen. E.g.:
+
+```cpp
+int main()
+{
+    // Add empty lines here to make the function longer than your screen.
+}
+```
+
+Now if you scroll down a bit, you should see `int main()` still being displayed at the top of your screen, even though you've scrolled past it:
+
+[![sticky scroll in action](/tooling/images/vsc_sticky_scroll.png)](/tooling/images/vsc_sticky_scroll.png)
+
+This is what the Sticky Scroll is supposed to do.
+
+But there is a bug ([1](https://github.com/clangd/clangd/issues/2221), [2](https://github.com/microsoft/vscode-cpptools/issues/13574)) that might cause a lone `{` to be displayed there instead (instead of `int main()`), which isn't useful. This happens if you have the Microsoft's C++ extension installed in addition to Clangd.
+
+To fix this, either uninstall the Microsoft's C++ extension (which isn't useful, as Clangd and other extensions I recommend do all the same things). Or if you want to keep it, press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`Preferences: Open User Settings (JSON)`, and add the following fragment into it: (as recommended by one of the links above)
+```json
+"[cpp]": {
+    "editor.stickyScroll.defaultModel": "outlineModel",
+},
+```
+This fixes Sticky Scroll for C++. Repeat the same thing with `[c]` and `[cuda-cpp]` to also fix it for C and Cuda respectively.
