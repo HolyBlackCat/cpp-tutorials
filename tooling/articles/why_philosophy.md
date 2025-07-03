@@ -1,8 +1,16 @@
 # Why do I recommend those specific tools?
 
-This tutorial recommends Clang, MSYS2, Visual Studio Code, Clangd, LLDB-DAP.
+This tutorial recommends Clang, MSYS2, Visual Studio Code, Clangd, LLDB and LLDB-DAP, as I consider them to be the best choice.
 
-This page explains my criteria for picking tools. For explanations on specific tools, see: [Choosing a compiler](/tooling/articles/choosing_compiler_and_more.md), [Why MSYS2?](/tooling/articles/why_msys2.md), [Why Clangd?](/tooling/articles/why_clangd.md), [Why LLDB-DAP?](/tooling/articles/why_lldb_dap.md) and others.
+This page explains my criteria for picking tools. For explanations on specific tools and choices, see:<br/>
+[Choosing a compiler](/tooling/articles/choosing_compiler_and_more.md) (also covers different C++ standard libraries)<br/>
+[Why MSYS2?](/tooling/articles/why_msys2.md) (also explains in detail what is MinGW)<br/>
+[Why Clangd?](/tooling/articles/why_clangd.md)<br/>
+[Why LLDB?](/tooling/articles/why_lldb.md)<br/>
+[Why LLDB-DAP?](/tooling/articles/why_lldb_dap.md)<br/>
+[Why not Visual Studio?](/tooling/articles/why_not_visual_studio.md)<br/>
+[Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md)<br/>
+[Why not WSL?](/tooling/articles/why_not_wsl.md)<br/>
 
 ## Open source
 
@@ -12,21 +20,23 @@ This means they will continue to exist as long as there's a big enough community
 
 If any questionable decisions are made by the developers, the community (or even you) can make patches or forks.
 
-Them being free makes them accessible to young children and students, so you don't have to use inferior tools for teaching.
+Them being free makes them accessible to young children and students, so you don't have to use inferior tools for teaching, nor resort to piracy.
 
 Additionally, nobody can take those tools away from you, if your government does something stupid and/or has a political breakdown with the country the developers live in.
 
 ## Cross-platform
 
-All tools recommended here are cross-platform (with the exception of MSYS2; though most tools installed *in* it are themselves cross-platform).
+All tools recommended here are cross-platform (with the exception of MSYS2; though most tools installed *in* it are themselves cross-platform, so it's not needed if you're not using Windows).
 
-If you decide to switch your OS (or your work requires you to), you'll be able to enjoy all the same tools.
+If you decide to switch your OS (or your work requires you to), you'll be able to enjoy all the same familiar tools.
 
 ## Modular
 
 All tools recommended here are *modular*.
 
 E.g. if you decide VSCode is not for you, nothing locks you into it. Clangd and LLDB-DAP work the same way on most popular IDEs.
+
+Similarly, VSCode can work with any compiler, debugger, and any build system.
 
 ## Non-goal: *Excessively* minimizing the entry barrier
 

@@ -1,10 +1,12 @@
 # Why I recommend LLDB-DAP in this tutorial?
 
-Not a strong preference. It seems to work best compared to other debugger extensions (apart from not having good errors on misconfiguration), but use whatever you like more.
+Not a strong preference. It seems to work best compared to other debugger extensions, but use whatever you like more.
 
 Notable alternatives include, in my order of preference:
 
 * [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) - Works somewhat well, but was very slow to update for Clang 18, and during those months couldn't be used with LLDB 18 (crashed), so I had to abandon it.
+
+  Otherwise this is a good fallback from LLDB-DAP, if something goes wrong with it.
 
 * [Native Debug](https://marketplace.visualstudio.com/items?itemName=webfreak.debug) - This can work with both LLDB and GDB. Works alright, but seems to have issues with displaying variable values. E.g. for `std::vector` it doesn't display the elements in the UI (at least by default).
 

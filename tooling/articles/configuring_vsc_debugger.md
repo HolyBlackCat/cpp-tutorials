@@ -20,7 +20,7 @@ There are several different extensions for debugging C/C++ in VSC:
 
 * [**Microsoft's C/C++ extension**](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
 
-We'll be using LLDB-DAP because it works better with MinGW than the Microsoft's extension in my experience, and because you can use it in most IDEs, not only in VSC.
+We'll be using LLDB-DAP. *([Why LLDB-DAP?](/tooling/articles/why_lldb_dap.md))*
 
 LLDB-DAP is relatively new, so if you get any issues with it, you can try CodeLLDB or any other extension in this list (I listed them roughly in my order of preference).
 
@@ -50,29 +50,15 @@ Click `create a launch.json file`, and select `LLDB DAP Debugger`. It will creat
 
 If you already have this file, delete it and try again.
 
-<details>
+If you see a window like this pop up, just close it by clicking anywhere or by pressing <kbd>Esc</kbd>:
 
-<summary><i>If you don't see the option called <code>LLDB DAP Debugger</code>, click here.</i></summary>
-
-First, check that you didn't forget to install the extension as explained above.
-
-Currently there seems to be a [bug](https://github.com/llvm/llvm-project/issues/144239) that causes the `LLDB DAP Debugger` button to be hidden if the Microsoft's C/C++ extension is also installed. The easiest option is to just uninstall it, since Clangd and LLDB-DAP do all the same things it does.
-
-Alternatively, you can make it work by clicking `C++ (GDB/LLDB)` in that menu. Then you should see this:
-
-[![selecting debugger configuration](/tooling/images/vsc_debugger_config_selection_lldb.png)](/tooling/images/vsc_debugger_config_selection_lldb.png)
-
-Select `LLDB: Launch`. You might need to scroll down a bit.
-
-If you accidentally closed this list, click `Add Configuration...` in the bottom-right to reopen it.
-
-———
-
-</details>
+![unwanted launch.json popup](/tooling/images/vsc_debugger_config_selection_unwanted.png)
 
 The resulting file should look like this:
 
 [![generated launch.json](/tooling/images/generated_launch_json.png)](/tooling/images/generated_launch_json.png)
+
+If it for some reason doesn't look like this (if `"configurations": []` is empty), try deleting the file, doing this again, and this time selecting `LLDB: Launch` in the window above instead of dismissing that window.
 
 Replace `<your program>` with the name of your program, e.g. `"program": "${workspaceRoot}/prog.exe"`. (Here `${workspaceRoot}` means the currently opened directory.)
 
