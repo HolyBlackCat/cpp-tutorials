@@ -11,3 +11,7 @@ Do the following during the tutorial:
 * Any time the tutorial mentions the `C:\msys64\clang64` directory, use `C:\msys64\ucrt64` instead.
 
 * Any time the tutorial mentions `mingw-w64-clang-x86_64-...` (in `pacman` commands), use `mingw-w64-ucrt-x86_64-...` instead.
+
+---
+
+[↲ Back to installing the toolchain.](/tooling/articles/installing_toolchain.md)

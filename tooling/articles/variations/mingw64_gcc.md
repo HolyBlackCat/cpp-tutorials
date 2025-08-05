@@ -19,3 +19,7 @@ Do the following during the tutorial:
 Let's test your understanding.
 
 If the tutorial tells you to type `pacman -S mingw-w64-clang-x86_64-clang`, what are you going to type instead? The correct answer is `pacman -S mingw-w64-x86_64-gcc`.
+
+---
+
+[↲ Back to installing the toolchain.](/tooling/articles/installing_toolchain.md)

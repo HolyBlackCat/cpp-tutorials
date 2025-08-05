@@ -9,9 +9,81 @@ There are two prominent toolchains on Windows:
 
 We'll be installing the later, with the Clang compiler. *([Why MinGW rather than MSVC? And why Clang rather than GCC?](/tooling/articles/choosing_compiler_and_more.md) and [Why not Visual Studio?](/tooling/articles/why_not_visual_studio.md))*
 
-**NOTE:** If you want GCC instead of Clang for some reason, [read this](/tooling/articles/variations/index.md).
+More specifically, we'll be installing it using MSYS2. *([Why is MSYS2? What's the difference between "MSYS2", "MinGW", etc?](/tooling/articles/why_msys2.md) and [Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md) and [Why not WSL?](/tooling/articles/why_not_wsl.md))*
 
-More specifically, we'll be installing it using MSYS2. *([What is MSYS2? Why MSYS2?](/tooling/articles/why_msys2.md) and [Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md) and [Why not WSL?](/tooling/articles/why_not_wsl.md))*
+## Alternative routes
+
+<details><summary><b>I want GCC instead of Clang!</b></summary>
+
+Are you sure?
+
+This tutorial recommends Clang for a reason. In addition to being a good compiler in general, it gives you access to some powerful tools that'll help you catch bugs: [Address Sanitizer and UB Sanitizer](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors). (GCC supports them on Linux and elsewhere, but not on Windows.)
+
+Clang is made to be compatible with GCC, so if you're a newbie, you'll hardly notice any difference.
+
+If you're sure: MSYS2 has several different versions of GCC available. A good one to choose by default is [MSYS2 UCRT64](/tooling/articles/variations/ucrt64_gcc.md). For the list of different GCC and Clang versions it provides, consult [this](/tooling/articles/variations//index.md) and [this](/tooling/articles/choosing_compiler_and_more.md).
+
+</details>
+
+<details><summary><b>I already have MSYS2 installed!</b></summary>
+
+MSYS2 provides several different compilers to choose from. If you already installed one, it may or may not be different from the one this tutorial uses.
+
+It's easier to follow this tutorial as is, especially if you don't know what you're doing. You can reinstall MSYS2 if you prefer to start from scratch, but you don't have to.
+
+But if you want to reuse the existing compiler you have installed, consult [this](/tooling/articles/variations/determining_msys2_env.md).
+
+</details>
+
+<details><summary><b>I already have a compiler installed! (not in MSYS2)</b></summary>
+
+If you're new, I recommend uninstalling it (or leaving it be), and following the tutorial as is. It'll be way easier, and there are specific reasons why I recommend this specific compiler distribution.
+
+But if you insist on reusing it, which one do you have?
+
+<details><summary><b>MSVC</b></summary>
+
+Not covered by this tutorial. Also I have to admit, I don't see why someone would willingly use it for any reason other than it being the default choice in Visual Studio (not Code). [My rant on MSVC.](/tooling/articles/choosing_compiler_and_more.md#msvc-issues)
+
+</details>
+
+<details><summary><b>Clang from the official installer</b></summary>
+
+Clang on Windows is not self-sufficient. It needs either a MinGW installation or a MSVC installation (the latter can come from Visual Studio (not Code)).
+
+When you install Clang from MSYS2, it operates in MinGW-compatible mode by default, and MinGW is automatically installed with it. This is what this tutorial recommends.
+
+When you install Clang from most other places, including from the official installer, it'll operate in MSVC-compatible mode by default, and will error if MSVC is not installed.
+
+Both modes are viable. MinGW has a [slightly saner but less popular ABI](/tooling/articles/choosing_compiler_and_more.md#mingw-abi-vs-msvc-abi).
+
+If you have MSVC installed, Clang should hopefully just work by default, but any non-trivial configuration of it in MSVC mode isn't covered by this tutorial.
+
+</details>
+
+<details><summary><b>MinGW / GCC / Clang from winlibs.com</b></summary>
+
+Should mostly work fine, I guess. It should include most of the necessary tooling, but since there's no package manager, installing third-party libraries will have to be done manually.
+
+</details>
+
+<details><summary><b>MinGW / GCC from elsewhere</b></summary>
+
+There are many bad outdated GCC distributions out there. If you don't know what you're doing, chances are, you got one of those. If you're curious, check your GCC version (run `gcc --version` to see it) and compare the number with the one at https://gcc.gnu.org/ (see the most recent version in `Supported Releases`).
+
+Even if you got a decent up-to-date distribution, your next problem will be having to install all the necessary tooling manually, *and then configuring it* (e.g. the official version of CMake uses MSVC by default on Windows, and you'll have to manually tell it to use your compiler every time; whereas in MSYS2 it'll default to their compiler).
+
+If that sounds ok, continue with the tutorial.
+
+</details>
+
+<details><summary><b>Something else / I don't know</b></summary>
+
+Oh well. I suggest uninstalling whatever you have to avoid interference, then continue with the tutorial normally.
+
+</details>
+
+</details>
 
 ## Installing MSYS2
 
