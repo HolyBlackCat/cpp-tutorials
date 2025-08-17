@@ -98,11 +98,11 @@ There's no single "C++ standard library". Rather, there are several implementati
 
   The golden standard. Most Linux distributions use it by default.
 
-If you're using GCC or MSVC, you're locked into their respective C++ standard libraries, but Clang can use any of the three.
+If you're using GCC or MSVC, you're locked into their respective C++ standard libraries (GCC can technically use libc++, but it's a rare combination), but Clang can use any of the three.
 
-libstdc++ has iterator validation ([`-D_GLIBCXX_DEBUG`](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors)), but on MinGW it doesn't work with the sanitizers (sanitizers only work in [CLANG64 environment](/tooling/articles/msys2_environments.md), which only has libc++ and not libstdc++).
+libstdc++ has iterator validation ([`-D_GLIBCXX_DEBUG`](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors)), but on Windows libstdc++ doesn't work with the sanitizers (sanitizers only work in [CLANG64 environment](/tooling/articles/msys2_environments.md), which only has libc++ and not libstdc++).
 
-All three big implementations are good. On Linux I personally would prefer libstdc++ for iterator validation, but this tutorial uses libc++ on Windows to [allow sanitizers](#available-compilers).
+All three big standard libraries are good. On Linux I personally would prefer libstdc++ for iterator validation (on Linux sanitizers do work with it), but this tutorial uses libc++ on Windows to [allow sanitizers](#available-compilers).
 
 ## MinGW ABI vs MSVC ABI
 
@@ -124,9 +124,9 @@ Clang be switched between MSVC mode and MinGW mode:
 
   * MSVC, in their C standard library headers, single-handedly "deprecating" some of the standard functions in favor of their non-cross-platform alternatives (e.g. `scanf` vs `scanf_s`; must define `_CRT_SECURE_NO_WARNINGS` to silence this). Strictly saying this isn't an "ABI" issue, but this is something you'll face when using MSVC or Clang in MSVC mode.
 
-MinGW is less popular/has less inertia behind it, which means in rare cases some libraries or applications may not support it. Sometimes you can patch the libraries, but sometimes not. Some libraries do the opposite and only support MinGW.
+MinGW is less popular/has less inertia behind it, which means in rare cases some libraries or applications may not support it. Sometimes you can patch them yourself, but sometimes not. Some projects do the opposite and only support MinGW.
 
-I have a weak preference towards MinGW ABI (because of the quirks mentioned above), but both are ok.
+I have a slight preference towards MinGW ABI (because of the quirks mentioned above, and cross-compilation being easier), but both are ok.
 
 ## MSVC issues
 
@@ -156,7 +156,7 @@ Elaborating on the [claims](#choosing-a-compiler) I made above:
   * Can only compile for Windows.
   * Can only be used on Windows (not counting weird setups using Wine), while GCC and Clang can cross-compile from other operating systems.
 
-* Not free and open-source:
+* Not free and not open-source:
 
   Most of time it's just a matter of ideology, but it means you can't fix bugs in it yourself.
 

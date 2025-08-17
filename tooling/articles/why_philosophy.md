@@ -42,7 +42,7 @@ Similarly, VSCode can work with any compiler, debugger, and any build system.
 
 I see e.g. Visual Studio being recommended a lot, because it just works and doesn't require any knowledge to configure. Which for some people trumps all criteria above, which I believe isn't a good thing.
 
-It's not like VSC requires any advanced knowledge to configure either, other than knowing what is a terminal and how to compile in the terminal.
+It's not like VSC requires any advanced knowledge to configure, other than knowing what is a terminal and how to compile in the terminal (which is all explained in this tutorial).
 
 ## Non-goal: Using "official" tools
 
