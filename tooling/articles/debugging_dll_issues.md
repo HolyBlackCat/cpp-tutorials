@@ -111,4 +111,4 @@ If you're [using third-party libraries](/tooling/articles/using_libraries.md), s
 
 Let's say you're using library A (via `-lA` flag), and A internally uses another library B. When linking dynamically, `-lA` is enough, but when linking A statically, you need **both** `-lA` and `-lB`. This is because static libraries normally don't embed other libraries they depend on.
 
-If you're using `pkgconf`, it automates this. Pass `--libs --static` instead of `--libs`, and it will print all the required `-l...` flags. (If it doesn't print anything extra, this library doesn't use any other libraries.)
+If you're using `pkg-config`, it automates this. Pass `--libs --static` instead of `--libs`, and it will print all the required `-l...` flags. (If it doesn't print anything extra, this library doesn't use any other libraries.)

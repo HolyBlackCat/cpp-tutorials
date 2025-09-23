@@ -74,7 +74,7 @@ In UCRT64 and MINGW64, Clang uses [libstdc++](/tooling/articles/msys2_environmen
 
 #### Linker
 
-In UCRT64 and MINGW64, both GCC and Clang use the LD linker by default, but Clang's LLD linker can be installed separately (`pacman -S ...-lld`) and enabled (in either compiler) using `-fuse-ld=lld` flag (when linking). Since LLD is way faster, it might be a good idea to always use it. Unlike LLD, LD is [sensitive to the order of the `-l` flags](/tooling/articles/using_libraries_pacman.md#determining-compiler-flags-using-pkgconf).
+In UCRT64 and MINGW64, both GCC and Clang use the LD linker by default, but Clang's LLD linker can be installed separately (`pacman -S ...-lld`) and enabled (in either compiler) using `-fuse-ld=lld` flag (when linking). Since LLD is way faster, it might be a good idea to always use it. Unlike LLD, LD is [sensitive to the order of the `-l` flags](/tooling/articles/using_libraries_pacman.md#determining-compiler-flags-using-pkg-config).
 
 ### MINGW64 vs UCRT64/CLANG64
 

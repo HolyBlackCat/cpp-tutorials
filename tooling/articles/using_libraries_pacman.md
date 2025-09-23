@@ -50,22 +50,22 @@ int main()
 ```
 If you just try to compile it using `clang++ prog.cpp`, you'll get errors. (Try it.) You need to add some compiler flags.
 
-### Determining compiler flags using `pkgconf`
+### Determining compiler flags using `pkg-config`
 
 **IF** the `.pc` file exists, we'll use it to figure out the correct compiler flags. For libraries that don't provide it, [see below](#guessing-the-compiler-flags).
 
-First, you need to install `pkgconf`, which is the program that reads those files:
+First, you need to install `pkg-config`, which is the program that reads those files:
 
 ```sh
 pacman -S mingw-w64-clang-x86_64-pkgconf
 ```
-(You also could've heard about `pkg-config`, which is a very similar program. You can use either one of them. `pkgconf` is a more modern alternative.)
+(There's also `mingw-w64-clang-x86_64-pkg-config`. Both install a program called `pkg-config`, but `...-pkgconf` is a more modern rewrite of the same thing.)
 
-Run it to get the flags: `pkgconf --libs --cflags openal`.
+Run it to get the flags: `pkg-config --libs --cflags openal`.
 
-**NOTE:** The library name (`openal` here) matches the name of the `.pc` file (`openal.pc`). You can also use `pkgconf --list-all` to list all libraries known to `pkgconf` (all installed `.pc` files).
+**NOTE:** The library name (`openal` here) matches the name of the `.pc` file (`openal.pc`). You can also use `pkg-config --list-all` to list all libraries known to `pkg-config` (all installed `.pc` files).
 
-(If you [compile and link separately](TODO_multifile), you can use `pkgconf --cflags openal` and `pkgconf --libs openal` to get compiler flags and linker flags separately.)
+(If you [compile and link separately](/tooling/articles/multifile_programs.md), you can use `pkg-config --cflags openal` and `pkg-config --libs openal` to get compiler flags and linker flags separately.)
 
 You should see output like this:
 ```sh

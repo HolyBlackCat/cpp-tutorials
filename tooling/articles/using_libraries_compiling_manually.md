@@ -48,12 +48,12 @@ As you can see, OpenAL uses CMake:
 
 ## Determine the compiler flags
 
-To use the resulting library, you can [follow the same procedure with `pkgconf` as before](/tooling/articles/using_libraries_pacman.md#determining-compiler-flags-using-pkgconf).
+To use the resulting library, you can [follow the same procedure with `pkg-config` as before](/tooling/articles/using_libraries_pacman.md#determining-compiler-flags-using-pkg-config).
 
-But since the library is installed to a custom location, you need to point `pkgconf` to it. Run following in your MSYS2 terminal:
+But since the library is installed to a custom location, you need to point `pkg-config` to it. Run following in your MSYS2 terminal:
 
 ```sh
-PKG_CONFIG_PATH=C:/code/openal_install/lib/pkgconfig PKG_CONFIG_LIBDIR=- pkgconf --libs --cflags openal
+PKG_CONFIG_PATH=C:/code/openal_install/lib/pkgconfig PKG_CONFIG_LIBDIR=- pkg-config --libs --cflags openal
 ```
 
 Replace `C:/code/openal_install` with your installation directory. Notice that there's always `.../lib/pkgconfig` at the end, since that's where `.pc` files are installed. We also set `PKG_CONFIG_LIBDIR` to a junk value to disable searching for libraries in the default directories (`C:\msys64\clang64`), but this is optional.

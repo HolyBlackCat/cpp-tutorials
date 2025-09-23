@@ -1,8 +1,8 @@
 # Choosing a compiler and more
 
-This is a complicated topic prone to holy wars. Here I try to explain all the choices you have, so you can make an educated decision.
+This is a complicated topic prone to holy wars. Here I try to explain all the choices you can make, so you can make an educated decision.
 
-But yltimately, any remotely popular compiler is going to work fine, and the differences will be minor, especially for a newbie.
+But ultimately, any remotely popular compiler is going to work fine, and the differences will be minor, especially for a newbie.
 
 ## What choices you can make?
 
