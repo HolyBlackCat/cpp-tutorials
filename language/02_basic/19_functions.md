@@ -105,9 +105,11 @@ There isn't much to say about those, how they work is fairly natural.
 
 Global variables exist for (almost) the entire duration of the program, rather than having a limited lifetime (they are said to inhabit the **global scope**). More formally, they are said to have "static storage duration", as opposed to "automatic storage duration" of local (automatic) variables.
 
-Global variables are initialized before `main` runs, and are destroyed after it runs.
+Global variables are initialized before the `main` runs, and are destroyed after it finishes running.
 
-They have the same name requirements as functions (regarding reseved names, see above). In general, anything declared outside of a function has those.
+Global variables can't be uninitialized, they are zeroed by default (unlike local variables).
+
+They have the same name requirements as functions (regarding reseved names, see above). In general, anything declared outside of a function follows those.
 
 Global non-constant variables may seem convenient, but they should be avoided in most cases, because they make it hard to track what function modifies what variables.
 
@@ -527,6 +529,15 @@ This may appear to work, but this is in fact undefined behavior. One of the more
 
 Do you understand why this is UB? `int x;` only lives until the end of this function call, but the returned reference to `x` outlives `x`. This reference becomes **dangling**, meaning it no longer refers to a valid object.
 
+Note that this specific example has stopped compiling in C++23 and newer, but you can fool the compiler and get the same UB using something like this:
+```cpp
+int &foo()
+{
+    std::vector<int> v = {1,2,3};
+    return v[0];
+}
+```
+
 Note that only **using** a dangling reference is UB. It merely existing doesn't cause UB by itself.
 
 Note that if you return a reference to a reference parameter, that is fine:
@@ -540,4 +551,8 @@ int main()
     std::cout << y << '\n'; // 42
 }
 ```
-...since the returned reference ends up referencing `y` in `main` directly, not the parameter `x`. (As was explained before, references never refer to other references, trying to do so makes them refer to the target object of that reference.)
+...since the returned reference ends up referencing the `y` in `main` directly, not the parameter `x`. (As was explained before, references never refer to other references, trying to do so makes them refer to the target object of that reference.)
+
+## Constant references
+
+If you [remember](./16_references_part_1.md#const-references), references can be const. Const references can

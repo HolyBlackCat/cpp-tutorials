@@ -132,7 +132,7 @@ In newer C++ you can perform what's called "designated initialization":
 ```cpp
 Monster boss = {.name = "Dragon", .health = 100};
 ```
-If this doesn't compile for you, you need to tell your compiler to use C++20 or a newer version. In Clang and GCC, this is done using `-std=c++20` (see [my tutorial on tooling](/README.md) for more details), and similarly with `/std:c++20` in MSVC.
+If this doesn't compile for you, you need to tell your compiler to use C++20 or a newer version. In Clang and GCC, this is done using `-std=c++20` (see [my tutorial on tooling](/tooling/README.md) for more details), and similarly with `/std:c++20` in MSVC.
 
 You can omit members in aggregate initialization, and the omitted members are once again zeroed: `Monster boss = {.health = 100}` leaves the name empty.
 

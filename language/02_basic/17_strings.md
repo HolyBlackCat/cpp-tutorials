@@ -222,11 +222,11 @@ int main()
     std::cout << std::size(str) << '\n'; // 6
 }
 ```
-...you'll see that `"Hello"` and `str` arrays both contains `6` elements, rather than `5` as you would expect.
+...you'll see that `"Hello"` and `str` arrays both contain `6` elements, rather than `5` as you would expect.
 
 The last element is a zero character, also called a **null terminator** (null = zero, terminator = it terminates (ends) the string). The null terminator is `0`, not `'0'`. Do you understand the difference?
 
-`'0'` is a character like any other (like e.g. `'A'`). If you print `int('0')`, you'll see that its ASCII code is `48`. Whereas the null terminator has ASCII code `0`.
+`'0'` is a character like any other (like e.g. `'A'`). If you print `int('0')`, you'll see that its ASCII code is `48`. Whereas the null terminator has the ASCII code `0`.
 
 The null terminator is a non-printable character, it doesn't correspond to some symbol that can be printed. If you try printing it (print `char(0)`), you'll likely see nothing.
 
@@ -259,7 +259,7 @@ But this is not null-terminated:
 ```cpp
 char str[] = {'H', 'e', 'l', 'l', 'o'};
 ```
-Non-`char` arrays are also not null-terminated unless you do that manually.
+Non-`char` arrays are not null-terminated unless you do that manually.
 
 `std::string`s **are** always null-terminated, but unlike `char` arrays, the size they report doesn't include the terminator.
 
@@ -278,7 +278,7 @@ std::cout << str << '\n'; // Causes UB!
 ```
 First, notice that `std::cout` can print `char` arrays as a special case (it can't print whole arrays of most other types).
 
-This code causes undefined behavior, because `std::cout` wants `char` arrays to be null-terminated. If you have ASAN enabled, it will complain about this. If not, you'll likely see some garbage characters printed after your string.
+This code causes undefined behavior, because `std::cout` wants `char` arrays to be null-terminated. If you have ASAN enabled, it will complain about this. If not, you'll likely see some garbage characters being printed after your string.
 
 > ## Exercise 4
 >
@@ -290,20 +290,20 @@ This code causes undefined behavior, because `std::cout` wants `char` arrays to 
 
 While English strings "just work", as soon as you start adding letters from other languages, or unusual characters such as emojis, you can get issues if you don't know what you're doing.
 
-You can skip this section if you don't care about those for now.
+You can skip this section if you don't care about those yet.
 
 As was mentioned above, `char` can only hold 256 different values (either -128...127 or 0...255). But there are clearly more different characters in all the languages combined, not to mention emojis and such. There are several solutions to this:
 
 1. You can represent the rare characters as sequences of **multiple** `char`s. This is what the civilized programming world is doing. The most popular system of doing so (encoding) is called **UTF-8**.
 
-2. You can continue using one `char` per character, but vary the encoding depending on the current system language. This works if you only need the letters from English and from your one language (if combined there are no more than 256 of them), but this easily breaks if you run your program on a machine that has a different language selected, unless you take special care to avoid that breakage. And most serious programs need to be able to handle more than one language at the same time anyway.
+2. You can continue using one `char` per character, but vary the encoding depending on the current system language. This only works if you limit yourself to English and one single other language at a time (if combined there are no more than 256 different symbols), but this easily breaks if you run your program on a machine that has a different language selected, unless you take special care to avoid that breakage. And most serious programs need to be able to handle symbols from any language without having to be manually switched to that language, which would be silly.
 
 3. You can abandon `char` altogether and use a larger type (with a bigger range), such as `wchar_t` ("wide" character) which on Windows has range 0...65535 (see UTF-16). This sounds good in theory, until you end up needing even more range, and suddenly have to use sequences of *several* `wchar_t`s per character (with the same problems as in (1)). Using an even wider type is possible (with range 0...4294967295, see UTF-32), but there are still certain characters that are represented with *several* of those values (not because we ran out of range, but this time simply by convention).
 
    So ultimately chasing larger types seems futile, because you still end up with multiple values per character, and have to handle sequences of values in a special manner.
 
 
-All of those are extensions of ASCII. The number 0...127 (which is what ASCII covers) have the same meaning in all three. Only the remaining values have different meanings.
+All of those are extensions of ASCII. The numbers 0...127 (which is what ASCII covers) have the same meaning in all three. Only the remaining values have different meanings.
 
 The civilized programming world uses (1), that is UTF-8. It is the default on Linux and Mac, and basically everywhere except Windows.
 

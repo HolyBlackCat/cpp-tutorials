@@ -88,13 +88,15 @@ Perhaps unintuitively, `const` references do exist:
 for (const int &elem : arr)
     std::cout << elem << "\n";
 ```
-Here `elem` is a const reference. Or more correctly, a "reference to `const` `int`".
+Here `elem` is a const reference. Or more correctly, a "reference to `const` `int`" (references can never actually be const, but the phrase "const reference" is commonly used to mean a reference to something const; this tutorial uses the phrase "const reference" a lot, and I don't see a point in being pedantic with this).
 
 Here `elem` can't be modified (because the reference is const), so you might ask what's the point, why not simply `int elem`?
 
 In this case it's indeed pointless, because `int` is so cheap to copy, but imagine that you have a `std::vector<std::vector<int>>`, where each inner vector has a few million elements.
 
 Trying to iterate over it using `for (std::vector<int> a : b)` would temporarily copy each inner vector, which is unnecessarily slow, and is a waste of memory. It would be much better to use `for (const std::vector<int> &a : b)` to avoid the copying.
+
+### Why not always use non-const references?
 
 Now, why `const std::vector<int> &a` instead of just `std::vector<int> &a`? First of all, if `b` is const, a non-const reference wouldn't compile, because otherwise that would be a loophole for modifying const variables:
 
@@ -104,7 +106,31 @@ int &y = x; // Compilation error!
 y = 43; // Because otherwise this would allow you to modify a const variable.
 ```
 
-And second of all, even if `b` is non-const, you might want to make the `a` reference const to prevent yourself from accidentally modifying it.
+And secondly, even if `b` is non-const, you might want to make the `a` reference const to prevent yourself from accidentally modifying the element.
+
+### Mixing constness
+
+As is hopefully clear by now, const references can refer to non-const variables, but attempting the opposite is a compilation error:
+
+```cpp
+int a = 10;
+const int b = 20;
+
+int &r1 = a; // ok
+int &r2 = b; // compilation error
+const int &r3 = a; // ok
+const int &r4 = b; // ok
+```
+Similarly:
+```cpp
+std::vector<int> a = {1, 2, 3};
+const std::vector<int> b = {1, 2, 3};
+
+for (int &r : a) {} // ok
+for (int &r : b) {} // compilation error
+for (const int &r : a) {} // ok
+for (const int &r : b) {} // ok
+```
 
 > ## Exercise 2
 >
@@ -112,7 +138,7 @@ And second of all, even if `b` is non-const, you might want to make the `a` refe
 
 ## What else can references refer to?
 
-Array and vector elements, for example.
+In case it's not clear, you can manually create references to array/vector elements.
 
 You'll often see things like this, if for some reason the ranged-for can't be used:
 ```cpp
@@ -150,6 +176,29 @@ The reasons for this will be explained later.
 > ## Exercise 3
 >
 > Try to observe breakage due to dangling references in those two cases.
+
+## References and arrays
+
+It is an error to create an array or vector of references:
+
+```cpp
+int x, y, z;
+
+int &arr[3] = {x, y, z}; // error
+std::vector<int &> vec = {x, y, z}; // error
+```
+
+But a references *to* arrays/vectors can exist:
+```cpp
+int arr[3] = {10,20,30};
+int (&r1)[3] = arr;
+std::cout << r1[1] << '\n'; // 20
+
+std::vector<int> vec = {10,20,30};
+std::vector<int> &r2 = vec;
+std::cout << r2[1] << '\n'; // 20
+```
+Notice `int &arr[3]` vs `int (&arr)[3]` - an array of references vs a reference to an array. This will be explained in more details in later chapters.
 
 ## More corner cases
 

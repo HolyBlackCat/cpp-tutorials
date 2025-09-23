@@ -35,7 +35,7 @@ Some popular IDEs are: Visual Studio Code, Visual Studio (two unrelated programs
 
 ### How to install?
 
-I have [**a separate tutorial**](/README.md) to guide you through the process. That tutorial explains how to install and configure Visual Studio Code with the Clang compiler (or GCC if you prefer). If you want to use something else, install it on your own and come back here.
+I have [**a separate tutorial**](/tooling/README.md) to guide you through the process. That tutorial explains how to install and configure Visual Studio Code with the Clang compiler (or GCC if you prefer). If you want to use something else, install it on your own and come back here.
 
 If you already installed Visual Studio Code, I still recommend reading that tutorial. Some people use VSC without really understand what's going on, and my tutorial aims to fix that.
 
