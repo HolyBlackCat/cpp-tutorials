@@ -16,6 +16,8 @@ We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why not Vis
 
 Then follow those steps in order:
 
+* ### [Disable AI tools in VSC](/tooling/articles/disabling_ai_in_vsc.md) (recommended but not strictly necessary)
+
 * ### [Learn how to work in the VSC terminal](/tooling/articles/working_in_vscode_terminal.md)
 
 * ### [Configure code completion](/tooling/articles/configuring_code_completion.md)
