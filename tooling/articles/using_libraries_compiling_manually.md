@@ -2,6 +2,15 @@
 
 You must already be familiar with [installing libraries via `pacman` and using them](/tooling/articles/using_libraries_pacman.md) (if not, read that page). This page builds upon that one.
 
+## Uninstall the library if you already have it
+
+If you've already installed the same library using `pacman`, I recommend uninstalling it first to avoid confusion. E.g. for OpenAL:
+
+```sh
+pacman -R mingw-w64-clang-x86_64-openal
+```
+Note that `-R` leaves behind the *dependencies* (other libraries that this one needs, that got installed along with it). This is usually undesired (so usually you'd use `-Rs` instead to uninstall them too), but is actually helpful in our case, as those dependencies might be needed to build the library yourself, [more on that below](#install-dependencies).
+
 ## Download the source code
 
 Find and download the source code for your library, normally for its latest release.
@@ -22,7 +31,9 @@ Some libraries depend on other libraries to function (properly or at all). Read 
 
 If you're can't find anything, or aren't sure, skip this step and see if it works out.
 
-If you do find something, install them using `pacman` or manually using this procedure. (Another option, if MSYS2 has a package for the library you're building, is to consult [the package information](https://packages.msys2.org/package/mingw-w64-clang-x86_64-openal) for the list of dependencies you need to install: `Dependencies` and `Build Dependencies`.)
+If you do find something, install them using `pacman` or manually using this procedure.
+
+The alternative to reading documentation is, if MSYS2 has a package for the library you're building, to consult [the package information](https://packages.msys2.org/package/mingw-w64-clang-x86_64-openal) for the list of dependencies you need to install: `Dependencies` and `Build Dependencies`. If you already had this library installed, and uninstalled it via `-R` without `s`, the `Dependencies` will already be installed. But some `Build Dependencies` could be missing, so there is no replacement for consuling the MSYS  package list.
 
 **We'll not be installing any dependencies for OpenAL.** Despite them not being mentioned in in the README, it does have some optional dependencies, but seems to work fine without them.
 
