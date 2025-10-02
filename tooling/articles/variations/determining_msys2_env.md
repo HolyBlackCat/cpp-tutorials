@@ -10,6 +10,8 @@ It'll list the things ("packages") you have installed in MSYS2.
 
 Depending on what you see, proceed to one of the following links. If there are several matches, you can pick one freely.
 
+* `mingw-w64-clang-x86_64-clang` → This is already what this tutorial recommends, you can follow it as is. [Go to the previous page.](/tooling/articles/installing_toolchain.md)
+
 * `mingw-w64-ucrt-x86_64-gcc` → [GCC in MSYS2 UCRT64](./ucrt64_gcc.md), the default choice for GCC.
 
 * `mingw-w64-x86_64-gcc` → [GCC in MSYS2 MINGW64](./mingw64_gcc.md), GCC with the older C standard library.
