@@ -11,9 +11,9 @@ int main()
 }
 ```
 
-It should display `Hello, world!` on the screen when ran. This is a tradition for the first programs in most programming books and tutorials.
+It should display `Hello, world!` on the screen when ran. Such "hello world" programs are traditionally used as the first examples in most programming books and tutorials.
 
-First, make sure you can actually run it, and after you do, then we'll discuss how it works and what it means.
+First, make sure you can actually run it, and after you do, we'll discuss how it works and what it means.
 
 To run C++ programs you'll need to install some tools...
 
@@ -37,7 +37,7 @@ Some popular IDEs are: Visual Studio Code, Visual Studio (two unrelated programs
 
 I have [**a separate tutorial**](/tooling/README.md) to guide you through the process. That tutorial explains how to install and configure Visual Studio Code with the Clang compiler (or GCC if you prefer). If you want to use something else, install it on your own and come back here.
 
-If you already installed Visual Studio Code, I still recommend reading that tutorial. Some people use VSC without really understand what's going on, and my tutorial aims to fix that.
+If you've already installed Visual Studio Code, I still recommend reading that tutorial. Some people use VSC without really understand what's going on, and the tutorial aims to fix that.
 
 If you decide to use that tutorial, **read the first few chapters only**. As soon as you're able to compile the simple program above, stop reading that tutorial and leave it for later. Continue learning C++ from here, and read that tutorial in parallel.
 
@@ -66,7 +66,7 @@ If you're typing it manually instead of copy-pasting, use the <kbd>Tab</kbd> key
 
 The main part of the program is between those `{` and `}`. It contains zero or more **statements** that are executed in order, starting from the first one.
 
-`std::cout << "Hello, world!\n";` is a statement, that prints `Hello, world!` when executed.
+`std::cout << "Hello, world!\n";` is a statement, it prints `Hello, world!` when executed.
 
 Let's try multiple statements:
 ```cpp
@@ -114,9 +114,9 @@ As already shown above, statements can only appear inside of functions, not outs
 
 The last unexplained part of the program is `#include <iostream>`. `#include` is often called "the include directive" (where "directive" is a word that means "an order" or "a command").
 
-In short, using certain features in a program requires adding certain `#include` directives at the top of the program. E.g using `std::cout` to print things requires adding `#include <iostream>`.
+Using certain features in a program requires using certain `#include` directives at the top. For example, using `std::cout` to print requires using `#include <iostream>`.
 
-`iostream` is a name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the file you give it in place of itself during compilation. The contents of `iostream` describe to the compiler what `std::cout` is and allow you to use it.
+`iostream` is the name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the file you give it in place of itself during compilation. The contents of `iostream` describe to the compiler what `std::cout` is and allow you to use it.
 
 There are many different files that you can include (those files are called **headers**), and the collection of them that comes with your compiler is called **the standard library**. Things that come from the standard library normally have `std::` in their names to indicate that.
 
@@ -134,11 +134,11 @@ People can make their own libraries (non-standard ones, called "third-party libr
 
 ### Case sensitivity
 
-C++ is said to be "case sensitive". This means `std::cout` and `sTd::COut` are not the same thing, and trying to use the latter will not work.
+C++ is said to be "case sensitive". This means `std::cout` and `sTd::COut` are not the same, and trying to use the latter won't work.
 
 ### Whitespace and line breaks
 
-C++ is mostly not sensitive to the amount of spaces you put between things, and to where you break the lines. (Unlike the Python language, for example.)
+C++ is mostly not sensitive to the number of spaces you put between things, and to where you break lines. (Unlike the Python language, for example.)
 
 For example, this program:
 ```cpp
@@ -180,26 +180,26 @@ You can freely insert additional whitespace too, e.g.:
 
    }
 ```
-But of course you shouldn't do this, because it looks ugly.
+But of course you shouldn't do this, as it makes the code ugly and difficult to read.
 
 Here we can't insert spaces between `::` and between `<<`, and of course we can't split `cout` into `co ut`, and so on.
 
 ### `\n` escape sequence
 
-You probably already guessed that `std::cout << ...` means "print `...`", but what does the `\n` mean?
+You've probably already guessed that `std::cout << ...` means "print `...`", but what does the `\n` mean?
 
-It inserts the "new line" symbol. For example, if you do instead print `"Hello,\nworld!\n"`, you will see
+It inserts the "new line" symbol. For example, if print `"Hello,\nworld!\n"`, you will see
 ```
 Hello,
 world!
 ```
 It's customary to add `\n` after the last line printed by your program. You might run into some minor issues otherwise.
 
-`\` followed by some characters is called an **escape sequence**. They are used to insert various special characters into strings.
+`\` followed by some characters is called an **escape sequence**. Escape sequences are used to insert various special characters into strings.
 
-Among others, `\\` is used to get the `\` character itself. E.g. printing `"Hello\\world"` would give you `Hello\world`, whereas printing `"Hello\world"` is a compilation error because the compiler tries to interpret `\w` as an escape sequence, and there's no such escape sequence.
+One of the escape sequences is `\\`, it's used to insert the `\` character itself. E.g. printing `"Hello\\world"` would give you `Hello\world`, whereas printing `"Hello\world"` is a compilation error because the compiler tries to interpret `\w` as an escape sequence, and there's no such escape sequence.
 
-Another escape sequence is `\"`, which is used to get the `"` character. `"Hello\"world"` results in `Hello"world`, whereas `"Hello"world"` is again a compilation error, because here the string ends at the middle `"`, and the `world"` that follows is junk that the compiler can't understand.
+Another escape sequence is `\"`, which is used to insert the `"` character. `"Hello\"world"` results in `Hello"world`, whereas `"Hello"world"` is again a compilation error, because here the string ends at the middle `"`, and the `world"` that follows is junk that the compiler can't understand.
 
 You can find the full list of escape sequences on [cppreference](https://en.cppreference.com/w/cpp/language/escape).
 

@@ -32,7 +32,7 @@ Experiment with printing different expressions. This already has some practical 
 
 ## Expressions are composable
 
-Expressions often have other expressions as their parts. In expression `(10 + 20) / 2`, the parts `(10 + 20)` and `2` are themselves expressions. And so are `10 + 20`, `10`, and `20`.
+Expressions often have other expressions as their parts. In the expression `(10 + 20) / 2`, the parts `(10 + 20)` and `2` are themselves expressions. And so are `10 + 20`, `10`, and `20`.
 
 [![expression decomposition](../images/subexpressions.svg)](../images/subexpressions.svg)
 

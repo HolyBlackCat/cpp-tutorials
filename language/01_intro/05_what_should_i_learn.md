@@ -1,6 +1,6 @@
 # Should I learn C++?
 
-What programming language to choose depends on what you want to create.
+Which programming language to choose depends on what you want to create.
 
 C++ is a good choice if you want to make games or other apps. It's a bad choice if you want to create websites.
 
