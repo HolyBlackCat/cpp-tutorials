@@ -10,18 +10,20 @@ Right after learning anything new, write a short program that uses the new thing
 
 If you binge-read this tutorial without practicing, you will not learn anything.
 
-I provide **exercises** in some chapters. Do them if you want, but practice on your own regardless. If you want to do the exercises, do them immediately when you get them. Don't continue reading until you've manage to do them.
+I provide **exercises** in some chapters. Do them if you want, but either way you need to practice on your own too. If you want to do the exercises, do them immediately when you get them. Don't continue reading until you've managed to do them.
 
 Don't feel the need to memorize everything you read. You'll naturally remember the parts that are useful by practicing.
 
-On a related note, consider **not copy-pasting the examples** from the tutorial. Instead, type them by hand to get used to it, but do paste the very first test program to make sure all tools you will have installed are working correctly.
+On a related note, consider **not copy-pasting the examples** from the tutorial. Instead, type them by hand to get used to it. (But do paste the very first test program to make sure all tools you will have installed are working correctly.)
 
 ## 3. Question everything
 
-There's a lot of misinformation out there. Question everything, no matter what authority figure says it, even if it's this very tutorial. Test the claims you read and form your own opinions.
+There's a lot of misinformation out there. Question everything, no matter what authority figure says it, even if it's this very tutorial. Test the claims you hear or read, and form your own opinions.
 
-In particular, if this tutorial says that a certain program does something, don't blindly trust what it says. Test it yourself.
+In particular, if this tutorial says that a certain program does something, don't blindly trust what I say. Go ahead and test it yourself.
 
 ## 4. Getting help
 
-I recommend **not** asking AI to solve problems for you. Prefer googling, talking with real people and, even when talking to others, don't accept solutions to exercises without any explanations. It's better if you're given hints and gradually arrive at the solution yourself.
+I recommend **not** asking AI to solve problems for you. Prefer googling and talking with real people.
+
+And even when talking to people, don't accept solutions to exercises without any explanations. It's better if you're given hints and gradually arrive at the solution yourself.

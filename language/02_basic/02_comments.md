@@ -1,6 +1,6 @@
 # Comments
 
-Large and complex programs can be hard to read, so programmers add explanations to help other programmers and themselves, called **comments**.
+Large and complex programs can be hard to read, so programmers tend to add explanations to them to help other programmers and future selves. Those explanations are called **comments**.
 
 Comments are ignored by the compiler and can contain any text. For example:
 
@@ -15,23 +15,24 @@ int main() // This is the main function!
     std::cout << "Hello, world!\n";
 }
 ```
-Anything from `//` to the end of the line is a (single-)line comment.
+Anything from `//` to the end of the line is a comment.
 
-Note that this example is a bit excessive. These comments don't explain anything that isn't already obvious. Use comments to explain code that might be confusing.
+Note that this example is a bit excessive. Don't explain the things that are obvious. Only explain things that might otherwise confuse your future self or others.
 
-We usually put line comments on the line *before*, or sometimes on the same line
-*after*, what we want to explain.
 
-There are also block comments: `/* ... */`. Block comments begin with `/*` and end with `*/`, even if it's not on the same line:
+It's customary to put a comment on the line *before* the thing it's explaining (or on the same line after it).
 
+There's also another style of comments: `/* ... */`. Those end not at the end of the line, but at the matching `*/`, and may or may not span multiple lines. For example:
 ```cpp
 #include <iostream>
 
 int main()
 {
-    /* A long comment explaining many important details about how some part of
-    the code works, what it does and why it does it. It can to be very long
-    if the code is very complex or very confusing. */
-    std::cout << /* An inline comment */ "Hello, world!\n";
+    /* This code prints
+    some text. */
+    std::cout << /*we print this string -> */ "Hello, world!\n";
 }
 ```
+This is once again an excessive example, you probably shouldn't write comments like this.
+
+It's customary to use `/* ... */` for long comments spanning many lines, and `//` for short comments consisting of one or a few lines at most.

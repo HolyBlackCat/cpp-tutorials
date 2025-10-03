@@ -1,11 +1,11 @@
 # Computations
 
-You can use C++ to perform computations.
+You can use C++ to perform simple (or more complex) computations.
 
 In addition to printing strings in quotes `std::cout << "Hello!";`,
 you can also print numbers without quotes: `std::cout << 42;`.
 
-But more generally you can print the values of **expressions**:
+But more generally you can print **expressions**:
 ```cpp
 #include <iostream>
 
@@ -14,17 +14,17 @@ int main()
     std::cout << "The value is " << (10 + 20) / 2 << "\n";
 }
 ```
-This prints `The value is 15`. Notice that we're using multiple `<<` in one statement, this is the same as using multiple individual print statements.
+This prints `The value is 15`. Notice that we're using multiple `<<` in one statement, this is fully equivalent to using multiple individual statements.
 
-`(10 + 20) / 2` is an expression. Informally, **expressions are sequences of operands and operators that produce a value**.
+`(10 + 20) / 2` is an expression. Informally, **expressions are sequences of operands of operators**.
 
-**Operators** are the symbols representing math operations, such as `+`, `-`, `*` (multiplication), `/` (division), as well as other kinds of operations we'll look at later.
+**Operators** are the symbols representing math operations, such as `+`, `-`, `*` (multiplication), `/` (division), and more.
 
-Operators are applied to **operands**. In `(10 + 20) / 2`, the operands of `+` are `10` and `20`, and the operands of `/` are `(10 + 20)` and `2`.
+**Operands** are what an operator applies to. In `(10 + 20) / 2`, the operands of `+` are `10` and `20`, and the operands of `/` are `(10 + 20)` and `2`.
 
-The operands of a binary operator like `+` will often be called the **left-hand** and **right-hand side** ("lhs" and "rhs").
+The left operand of an operator will often be called an **lhs** (left hand side) and the right one an **rhs** (right hand side).
 
-Experiment with printing the values of different expressions.
+Experiment with printing different expressions. This already has some practical use.
 
 > ## Exercise 1
 >
@@ -32,13 +32,13 @@ Experiment with printing the values of different expressions.
 
 ## Expressions are composable
 
-Expressions can be made up of other expressions. In the expression `(10 + 20) / 2`, `(10 + 20)` and `2` are themselves expressions, and so are `10 + 20`, `10` and `20`.
+Expressions often have other expressions as their parts. In the expression `(10 + 20) / 2`, the parts `(10 + 20)` and `2` are themselves expressions. And so are `10 + 20`, `10`, and `20`.
 
 [![expression decomposition](../images/subexpressions.svg)](../images/subexpressions.svg)
 
 Notice that individual numbers are also expressions.
 
-We said earlier that `std::cout << "Hello, world!";` is a statement. It is also an expression. `<<` is the "stream insertion operator". Strings are expressions. Expressions can be statements.
+The entire `std::cout << "The value is " << (10 + 20) / 2 << "\n"` (not counting the `;`) is also an expression. `<<`s are operators. Quoted strings are expressions.
 
 Expressions that are parts of other expressions are called **subexpressions**.
 
