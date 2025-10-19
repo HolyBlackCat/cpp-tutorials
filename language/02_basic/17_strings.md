@@ -11,7 +11,7 @@ std::string my_name = "Egor";
 
 For most purposes `std::string` acts like a `std::vector` (it has `[]`, `.size()`, defaults to being empty rather than uninitialized, etc).
 
-But what's its element type?
+But what is its element type?
 
 If you try printing `my_name[0]`, `my_name[1]`, etc, you'll see that it prints the individual characters.
 
@@ -32,7 +32,7 @@ In comparison, `char letter = "A";` is a compilation error.
 
 Single quotes `'...'` should contain exactly **one** character. Empty `''` is a compilation error. Having multiple characters in it is technically allowed, but what value that produces depends on the compiler, so it should be avoided.
 
-Note that `'\n'` is allowed, because `\n` counts as one character. (So far all examples were using `"\n"` to postpone explaining what `char` is, but I'm going to switch to `'\n'` now, since it's likely a bit faster to print.).
+Note that `'\n'` is allowed, because `\n` counts as one character. (So far I've used `"\n"` in all examples to postpone explaining what `char` is, but I'm going to switch to `'\n'` now, since it's likely a bit faster to print.)
 
 
 `char` acts very similar to `int`. It's also an integer, but with a smaller range of allowed values: typically -128...127 or 0...255 depending on the compiler and its settings, whereas `int` can typically hold numbers between around ±2000000000 (more on those limits will be explained in later chapters).
@@ -52,11 +52,13 @@ std::cout << int('C') << '\n'; // 67, note the cast from `char` to `int`.
 
 While the C++ itself doesn't guarantee which numbers correspond to which letters, it most often follows the **ASCII encoding** ("encoding" being a system that assigns numbers to specific characters) that is used almost everywhere today, in one form or another.
 
-ASCII only describes English letters and basic punctuation. The situation with other languages is more difficult and is explained later in this chapter.
+ASCII only covers the English letters and basic punctuation. The situation with other languages is more difficult and is explained later in this chapter.
 
 ## Comparing characters
 
-Operators like `<` and `>` do work on `char`s. And since, for example, digits (from 0 to 9) have consecutive codes (check the ASCII chart), `x >= '0' && x <= '9'` is a valid way to test if `x` is a digit character. Similarly, `x >= 'a' && x <= 'z'` for lowercase letters, and similarly for the uppercase ones.
+Operators like `<` and `>` do work on `char`s. And since, for example, digits (from `'0'` to `'9'`) have consecutive codes (check the ASCII chart), `x >= '0' && x <= '9'` is a valid way to test if `x` is a digit character. Similarly, `x >= 'a' && x <= 'z'` for lowercase letters, and similarly for the uppercase ones.
+
+Notice that `'3'` and `3` have different values (and similarly for other digits). `3` is literally the number 3, while `'3'` is the ASCII code of the symbol `'3'` (which happens to be `33`).
 
 ## Inputting strings
 
@@ -129,7 +131,7 @@ std::string s = "Hello!";
 std::string part = s.substr(2, 3);
 std::cout << part << '\n'; // Prints `llo`.
 ```
-`s.substr(n, m)` returns a part of the string, skipping the first `n` characters and taking only `m` characters after that.e
+`s.substr(n, m)` returns a part of the string, skipping the first `n` characters and taking only `m` characters after that.
 
 ### Combining strings
 
@@ -150,7 +152,7 @@ int x = 42;
 std::string s = std::to_string(x);
 std::cout << s << '\n'; // 42
 ```
-Notice that you can't use `<<` to produce complex strings. You can do:
+Notice that you can't use `<<` for this. You can do:
 ```cpp
 int health = 42;
 std::string message = "You have " + std::to_string(health) + " HP";
@@ -159,7 +161,9 @@ std::string message = "You have " + std::to_string(health) + " HP";
 ```cpp
 std::string message "You have " << health << "HP";
 ```
-...because it's `std::cout` that makes `<<` work this way. It *is* possible to do this (using `std::ostringstream`, which is the equivalent of `std::cout` that "prints" to a string instead of to the screen), but I'm not going to explain it here.
+...because it's `std::cout` that makes `<<` work this way, it doesn't work on its own.
+
+There are workarounds that let you do this (see `std::ostringstream`, which is the equivalent of `std::cout` that "prints" to a string rather than to the screen), but I'm not going to explain it here.
 
 And if you forget `std::to_string`, you might observe some funny effects:
 ```cpp
@@ -169,13 +173,13 @@ This prints `lue is ` (trims the first 5 characters of the string). This of cour
 
 ### Coverting strings to numbers
 
-The opposite conversion, from a string to a number, can't be done directly too. There are many ways to do it, and `std::stoi` and `std::stod` (for `int` and `double` respectively):
+The opposite conversion, from a string to a number, can't be done directly too. There are many ways to do it, and `std::stoi`/`std::stod`/etc is the easiest: (for `int` and `double` respectively)
 ```cpp
 std::string s = "42";
 int n = std::stoi(s);
 std::cout << n << '\n'; // 42
 ```
-Note that `std::stoi` and `std::stod` silently skip any whitespace at the beginning of the string, and also ignore any non-digits after the number. I'm not going to explain how to fix it here, look this up if you need it.
+Note that `std::stoi` and `std::stod` silently skip any whitespace at the beginning of the string, and also ignore any non-digits after the number. If you need a more strict validation, look up `std::from_chars`.
 
 > ## Exercise 3
 >
@@ -192,7 +196,7 @@ As was explained before, unnamed constants in the source code such as `42` or `"
 
 Since `42` is an `int`, you'd naturally assume that `"Hello"` is a `std::string`, but that's not the case.
 
-It is in fact a constant array of `char`. (Using `char` arrays as strings is a leftover from C, which doesn't have the convenience of `std::string`.)
+It is in fact a constant array of `char`, similar to `const char arr[] = {'H', 'e', 'l', ...};`. Using `char` arrays as strings is a leftover from C, which doesn't have the convenience of `std::string`.
 
 Since it's an array rather than a `std::string`, `"Hello".size()` is illegal. But `"Hello"[0]` is legal and produces `'H'`.
 
@@ -224,15 +228,15 @@ int main()
 ```
 ...you'll see that `"Hello"` and `str` arrays both contain `6` elements, rather than `5` as you would expect.
 
-The last element is a zero character, also called a **null terminator** (null = zero, terminator = it terminates (ends) the string). The null terminator is `0`, not `'0'`. Do you understand the difference?
+The last element is a zero character, also called a **null terminator** (null = zero, terminator = it terminates (ends) the string). The null terminator is `0`, not `'0'`. [Do you understand the difference?](#comparing-characters)
 
-`'0'` is a character like any other (like e.g. `'A'`). If you print `int('0')`, you'll see that its ASCII code is `48`. Whereas the null terminator has the ASCII code `0`.
+`'0'` is a character like any other (like e.g. `'A'`), and if you print `int('0')`, you'll see that its ASCII code is `48`. Whereas the null terminator has the ASCII code `0`.
 
 The null terminator is a non-printable character, it doesn't correspond to some symbol that can be printed. If you try printing it (print `char(0)`), you'll likely see nothing.
 
-The null terminator is often spelled as `'\0'`. That is equivalent to `char(0)`, and **not** equivalent to `'0'`, as was explained above.
+The null terminator is often spelled as `'\0'`. This is equivalent to `char(0)`, and **not** equivalent to `'0'`, as was explained above.
 
-Null-terminated strings are usually called **C-strings**, since the C language uses them a lot.
+Null-terminated strings are usually called the **C-strings**, since the C language uses them a lot.
 
 ### Why null terminators?
 
@@ -242,9 +246,9 @@ char str[] = "Hello";
 for (int i = 0; str[i]; i++)
     std::cout << str[i] << '\n';
 ```
-This prints every character individually. Notice `str[i]` being used as a condition, it tests that `str[i]` is not a null terminator, and stops the loop when encountering one. The `str[i]` condition is equivalent to `str[i] != 0` or `str[i] != '\0'`.
+This prints every character individually. Notice `str[i]` being used as a condition, it tests that `str[i]` is not a null terminator, and stops the loop when encountering one. The `str[i]` condition is equivalent to `str[i] != 0`, or `str[i] != '\0'`.
 
-Now, you might be wondering how is this better than using `i < 5` or `i < std::size(str) - 1`, and the answer is that it is not better. It can be useful in some other situations where you don't know the array size, which will make sense in the later chapters, but in the cases you've already seen it is indeed useless.
+Now, you might be wondering how is this better than using `i < 5` or `i < std::size(str) - 1`, and the answer is that it is not better in this case. It can be useful in some other situations where you don't know the array size, which will make sense in the later chapters, but in the cases you've already seen it is indeed useless.
 
 
 ### Null-terminators in different places
@@ -263,9 +267,9 @@ Non-`char` arrays are not null-terminated unless you do that manually.
 
 `std::string`s **are** always null-terminated, but unlike `char` arrays, the size they report doesn't include the terminator.
 
-E.g. for `std::string s = "Hello";`, `s.size()` is `5` (and so is `std::size(s)`, which is the same thing as `s.size()` for everything other than arrays, which don't have `.size()`). And `s[5]` is legal and produces `'\0'`.
+E.g. for `std::string s = "Hello";`, `s.size()` is `5` (and so is `std::size(s)`, which is the same thing as `s.size()` for everything other than arrays, which don't have the `.size()`). And `s[5]` is legal and produces `'\0'`. Compare to arrays and vectors, for which the valid indices go up to only `.size() - 1`.
 
-Whereas arrays and vectors don't allow using their size as the index (the valid indices go up to the size minus 1). So, for `char s[] = "Hello";`, `std::size(s)` is `6`, `s[5]` is `'\0'`, and `s[6]` is illegal (causes UB).
+So, for `char s[] = "Hello";`, `std::size(s)` is `6`, `s[5]` is `'\0'`, and `s[6]` is illegal (causes UB).
 
 ### What requires null terminators?
 
@@ -288,22 +292,28 @@ This code causes undefined behavior, because `std::cout` wants `char` arrays to 
 
 ## Languages other than English
 
-While English strings "just work", as soon as you start adding letters from other languages, or unusual characters such as emojis, you can get issues if you don't know what you're doing.
+While English strings "just work", as soon as you start adding symbols from other languages, or unusual characters such as emojis, you can get issues if you don't know what you're doing.
 
 You can skip this section if you don't care about those yet.
 
-As was mentioned above, `char` can only hold 256 different values (either -128...127 or 0...255). But there are clearly more different characters in all the languages combined, not to mention emojis and such. There are several solutions to this:
+As was mentioned above, `char` can only hold 256 different values (either -128...127 or 0...255). But there are clearly more different characters in all the languages combined, not to mention emojis and such.
 
-1. You can represent the rare characters as sequences of **multiple** `char`s. This is what the civilized programming world is doing. The most popular system of doing so (encoding) is called **UTF-8**.
+There are several different solutions to this, chosen by different operating systems and/or programming languages:
 
-2. You can continue using one `char` per character, but vary the encoding depending on the current system language. This only works if you limit yourself to English and one single other language at a time (if combined there are no more than 256 different symbols), but this easily breaks if you run your program on a machine that has a different language selected, unless you take special care to avoid that breakage. And most serious programs need to be able to handle symbols from any language without having to be manually switched to that language, which would be silly.
+1. You can represent the rare characters as sequences of **multiple** `char`s. This is what the civilized programming world is doing. The most popular way of doing so (encoding) is called **UTF-8**.
 
-3. You can abandon `char` altogether and use a larger type (with a bigger range), such as `wchar_t` ("wide" character) which on Windows has range 0...65535 (see UTF-16). This sounds good in theory, until you end up needing even more range, and suddenly have to use sequences of *several* `wchar_t`s per character (with the same problems as in (1)). Using an even wider type is possible (with range 0...4294967295, see UTF-32), but there are still certain characters that are represented with *several* of those values (not because we ran out of range, but this time simply by convention).
+2. You can continue using one `char` per character, and have several different encodings for different languages, choosing one based on the current language set in the OS settings.
 
-   So ultimately chasing larger types seems futile, because you still end up with multiple values per character, and have to handle sequences of values in a special manner.
+   This is clearly problematic, since it makes it difficult to work with several different languages at a time (typically those encodings fit at most English and one other language at a time, see e.g. [this](https://en.wikipedia.org/wiki/Windows_code_page#Windows-125x_series)).
+
+   This can also cause problems when running a program written for one language, on a system configured to use another, and so on.
+
+3. You can abandon `char` entirely and use a larger type (with a bigger range), such as `wchar_t` ("wide" character) which on Windows has range 0...65535 (see UTF-16). This sounds good in theory, until you end up needing even more range, and suddenly have to use sequences of *several* `wchar_t`s per character (with the same problems as in (1)). Using an even wider type is possible (e.g. with range 0...4294967295, see UTF-32), but there are still certain characters that are represented with *several* of those values (not because we ran out of range, but this time simply by convention).
+
+   So ultimately chasing larger types seems futile, because you still end up with multiple values per character, and at that point, you might as well go back to `char`s and approach (1).
 
 
-All of those are extensions of ASCII. The numbers 0...127 (which is what ASCII covers) have the same meaning in all three. Only the remaining values have different meanings.
+All of those approaches are usually implemented extensions of ASCII. The numbers 0...127 (which is what ASCII covers) can have the same meaning in all three, and only the remaining characters/values are handled differently.
 
 The civilized programming world uses (1), that is UTF-8. It is the default on Linux and Mac, and basically everywhere except Windows.
 
@@ -315,7 +325,7 @@ I recommend embracing option (1). To do that:
 
    If you're just inputting and printing strings, you don't need to worry about this, but if e.g. if you want to print one character per line from a given string, you can't use a simple loop like the earlier example in this chapter. You have to determine which groups of `char`s correspond to one character, and print one group per line.
 
-   This is a complicated topic, not for this tutorial. Some simple operations can be done by manually doing math on `char`s. More complex operations are easier to do with libraries (there's not much in the standard library for this, you'll have to install additional ones).
+   This is a complicated topic, not for this tutorial. Some simple operations can be done by manually doing math on the `char`s. More complex operations are easier to do with libraries (there's not much in the standard library for this, you'll have to install additional ones).
 
 2. On Windows, you need to explicitly enable UTF-8 (to get behavior (1) as opposed to (2)) by doing certain things at the beginning of `main`.
 
@@ -348,7 +358,7 @@ I recommend embracing option (1). To do that:
 
 4. If you're using the MSVC compiler, enable the `/utf-8` setting.
 
-Doing steps 2,3,4 above should hopefully make the example above work correctly.
+Doing steps 2,3,4 should hopefully make the example above work correctly.
 
 > ## Exercise 5
 >

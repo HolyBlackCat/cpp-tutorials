@@ -2,7 +2,9 @@
 
 All C++ programs you've written so far were doing computations.
 
-Let's try something else. Let's say you want to write a program that, given person's age, checks if they're legally allowed to drink. How would you do that?
+Let's try something else. How would you write a program that, for example, given a person's age, determines if they are legally allowed to drive or not?
+
+No amount of `+` `-` `*` `/` would let you choose one of two strings to print (e.g. `"Allowed"` vs `"Not allowed"`). This needs a language feature that you haven't learned yet, **the `if` statement**:
 
 ```cpp
 #include <iostream>
@@ -15,7 +17,7 @@ int main()
 
     if (age < 18) // Note! No `;` here, more on that later.
     {
-        std::cout << "Too young!\n";
+        std::cout << "Not allowed!\n";
     }
 
     if (age >= 18)
@@ -25,7 +27,7 @@ int main()
 }
 ```
 
-The **`if` statement** takes a condition in `(...)`, and then a list of statements in `{...}` (its **"body"**). The statements in the body are executed only if the condition is true.
+The `if` statement takes a condition in `(...)`, and then a list of statements in `{...}` (its **"body"**). The statements in the body are executed only if the condition is true.
 
 Some of the operators that can be used in the conditions are: `==` (equal), `!=` (not equal), `<`,`<=`,`>`,`>=` (less, less-or-equal, greater, greater-or-equal).
 
@@ -37,7 +39,7 @@ In situations like the above, when the second condition is the opposite of the f
 ```cpp
 if (age < 18)
 {
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 }
 else
 {
@@ -64,10 +66,12 @@ Of course you can nest `if` and `else`:
 ```cpp
 if (age < 18)
 {
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 
     if (age < 10)
-        std::cout << "Wtf?\n";
+    {
+        std::cout << "You're way too young!\n";
+    }
 }
 ```
 
@@ -81,20 +85,20 @@ And of course you can group those with `(...)`:
 ```cpp
 if (x > 10 && (x < 20 || x == 100))
 ```
-Can you tell for which values of `x` this is true? Experiment with it for a bit.
+Can you tell for which values of `x` this is true? Experiment with this for a bit.
 
-`||` is an **"inclusive or"**, meaning it checks if **one or both** conditions are true, rather than exactly one condition (which would be "exclusive or", which C++ doesn't support directly).
+`||` is an **"inclusive or"**, meaning it checks if **one or both** conditions are true, rather than exactly one condition (which would be "exclusive or", which C++ doesn't have an operator for).
 
-`&&` and `||` in C and C++ are said to be **"short-circuiting"**, meaning that the first operand is checked first, and then if that's enough to determine the final result (if the first operand is false for `&&`, or true for `||`), then the second operand is not computed. This probably isn't very useful to you right now, because you have no way of observing what is or isn't computed, but this will be useful later.
+`&&` and `||` in C and C++ are said to be **"short-circuiting"**, meaning that the first operand is checked first, and then if that's enough to determine the final result (if the first operand is false for `&&`, or true for `||`), then the second operand is not computed. This probably isn't very useful to you right now, because you have no way of observing what is or isn't computed, but it will be useful later.
 
 
 ## Negating conditions
 
 Use **`!`** ("not") to negate conditions.
 
-For example, `!(a > b)` ("a isn't larger than b") is (in most cases) equivalent to `a <= b`.
+For example, `!(a > b)` ("a isn't larger than b") is in most cases equivalent to `a <= b`.
 
-In this simple case you should just use `<=` directly, but it can be helpful in the more complex cases.
+In this simple case you should just use `<=` directly, but `!` can be helpful in the more complex cases.
 
 Another example:
 
@@ -106,17 +110,17 @@ Do you understand what this does? Experiment with it a bit.
 
 ## Conditions are expressions
 
-Conditions are also expressions, like any other expression. For example, `if (10 + 20)` isn't a compilation error, and `int x = 10 < 20;` is also legal. Let me explain...
+Conditions are also expressions, like any other expressions. For example, `if (10 + 20)` isn't a compilation error, and `int x = 10 < 20;` is also legal.
 
 Comparison operators listed above (`==`,`!=`,`<`,`<=`,`>`,`>=`) result in 1 if the condition true and 0 if it's false.
 
 To confirm this, try running `std::cout << (10 < 20) << "\n";` and observe that it prints `1` (meaning `10` is indeed less than `20`).
 
-Here, notice the `(...)` which is necessary to avoid a compilation error, because otherwise this expression would be understood by the compiler as `(std::cout << 10) < (20 << "\n");` (which is meaningless), because `<<` has higher ["precedence"](https://en.cppreference.com/w/cpp/language/operator_precedence) (priority) than `<` (just like `*` has higher precedence than `+`, and `(1 + 2) * 3` needs the `(...)` to prevent `*` from being executed first).
+In this example, notice the `(...)`, which is necessary to avoid a compilation error, because otherwise this expression would be understood by the compiler as `(std::cout << 10) < (20 << "\n");` (which is meaningless), because `<<` has higher ["precedence"](https://en.cppreference.com/w/cpp/language/operator_precedence) (priority) than `<`. Just like `*` has higher precedence than `+`, and `(1 + 2) * 3` needs the `(...)` to prevent `*` from being executed first.
 
 ### The `bool` type
 
-But the type of that `1` or `0` (the result of a comparison) isn't `int`. It's a new type that you need to learn, **`bool`** (a "boolean", named after matematician [George Boole](https://en.wikipedia.org/wiki/George_Boole) and his "boolean algebra", which deals only with two values, 0 and 1).
+But the type of that `1` or `0` (the result of a comparison) isn't an `int`. It's a new type that you haven't learned yet, **`bool`** (a "boolean", named after a matematician [George Boole](https://en.wikipedia.org/wiki/George_Boole) and his "boolean algebra", which deals only with two values, 0 and 1).
 
 A `bool` can only hold two values, 1 or 0. The correct way to spell them is `true` and `false` respectively. Just like `0` and `0.0` are different (`int` zero and `double` zero), `false` is also different (the `bool` zero). Same for `true`.
 
@@ -146,11 +150,11 @@ Intuitively, converting `bool` to a number (`int` or `double`) results in `1` fo
 
 The reverse, converting a number to `bool`, results in `false` if the number is zero and `true` if it's not zero.
 
-So, given `int x;`, `if (x)` means the same thing as `if (x != 0)`, because the condition of an `if` is converted to a `bool`.
+So, given `int x = ...;`, `if (x)` means the same thing as `if (x != 0)`, because the condition of an `if` is converted to a `bool`.
 
-You can cast to `bool` too, `if (bool(x))` has the same effect as the above.
+You can cast to/from `bool` too, `if (bool(x))` has the same effect as the above.
 
-## Variables in braces
+## Variables in the `if` bodies
 
 Variables can be declared in the `{...}` braces, in the bodies of `if` and `else`:
 ```cpp
@@ -172,7 +176,7 @@ if (age < 18)
 //   as if it was never declared at all.
 std::cout << "You must be " << difference << " years older.\n";
 ```
-In this context the `{...}` are often referred to as the **scope** of the variable. As long as a variable exists, it's said to be **in scope**.
+In this context the `{...}` is often referred to as the **scope** of the variable. As long as a variable exists, it's said to be **in scope**.
 
 The period of time for which a variable exists is called its **lifetime**. When we leave the scope of a variable, its lifetime ends.
 
@@ -210,13 +214,13 @@ The braces `{...}` can be omitted if they only contain one statement.
 For example:
 ```cpp
 if (age < 18)
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 ```
 ...is the same as:
 ```cpp
 if (age < 18)
 {
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 }
 ```
 
@@ -225,7 +229,7 @@ Note that the rules of variable scopes work the same way regardless. If you do `
 You can omit the `{...}` only for **one** statement. If you now try to do this:
 ```cpp
 if (age < 18)
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
     std::cout << "Go away!\n";
 ```
 Only the first of the two statements will be guarded by the `if`. And the the second one will always run regardless of whether the condition is true.
@@ -235,7 +239,7 @@ As was already explained in the first chapter, in C++ the amount of whitespace (
 So it would be more correct to write the last example as
 ```cpp
 if (age < 18)
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 
 std::cout << "Go away!\n";
 ```
@@ -245,7 +249,7 @@ Everything above is also true for `else`. You can do this:
 
 ```cpp
 if (age < 18)
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 else
     std::cout << "Allowed!\n";
 ```
@@ -254,14 +258,14 @@ You can also have braces in one branch (`if` or `else`) and not another, though 
 ```cpp
 if (age < 18)
 {
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 }
 else
     std::cout << "Allowed!\n";
 ```
 ```cpp
 if (age < 18)
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 else
 {
     std::cout << "Allowed!\n";
@@ -271,18 +275,18 @@ else
 Now, can you guess what happens here:
 ```cpp
 if (age < 18)
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
     std::cout << "Go away!\n";
 else
     std::cout << "Allowed!\n";
 ```
-This is again a compilation error, because since the second `std::cout << ...`, isn't a part of `if`, this `else` is now dangling (not attached to any `if`), which as shown above is a compilation error.
+This is again a compilation error, because since the second `std::cout << ...` isn't a part of `if`, this `else` is now dangling (not attached to any `if`), which as shown above is a compilation error.
 
 And this should be obvious now, hopefully:
 
 ```cpp
 if (age < 18)
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 else
     std::cout << "Allowed!\n";
     std::cout << "Go on.\n";
@@ -291,7 +295,7 @@ else
 This is equivalent to:
 ```cpp
 if (age < 18)
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 else
     std::cout << "Allowed!\n";
 
@@ -332,7 +336,7 @@ else
 }
 ```
 
-This (`else if`) isn't some special language feature, we're just omitting some braces here. After adding the braces back, you should see that it's entirely equivalent to:
+This (`else if`) isn't some special language feature, we're just omitting some braces here. After adding the braces back, you should see that it is entirely equivalent to:
 ```cpp
 if (age < 10)
 {
@@ -364,7 +368,7 @@ A common trap that newbies fall into is this:
 ```cpp
 if (age < 18); // Note the `;`!
 {
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 }
 ```
 Adding `;` here makes `if` seemingly ignore the condition and always execute the body. Why?
@@ -377,7 +381,7 @@ if (age < 18)
     ;
 
 {
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 }
 ```
 Which is in turn equivalent to:
@@ -388,14 +392,14 @@ if (age < 18)
 }
 
 {
-    std::cout << "Too young!\n";
+    std::cout << "Not allowed!\n";
 }
 ```
-As you can see, adding `;` after `if (...)` gives it an empty body, same as `{}`.
+As you can see, adding `;` after `if (...)` gives it an empty body, same as `{}` with nothing in it.
 
 Now the only question is what are those lone `{...}` braces after the `if`?
 
-They do nothing, the contents are always executed. The only effect they have is acting as a scope for variables (variables declared inside still stop existing when exiting the braces).
+They do nothing, the contents are always executed. The only effect they have is acting as a scope for variables (variables declared inside will stop existing when exiting the braces).
 
 Braces are rarely used like this intentionally (more often this is a typo). But in rare cases this can be useful to limit the scope of variables. Here's a small made-up example:
 ```cpp

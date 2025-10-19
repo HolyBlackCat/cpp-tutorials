@@ -53,7 +53,7 @@ Roughly speaking, a reference is a special kind of variable that act as an "alte
 
 It has to be initialized when created, and then can't be modified to refer to something else (because assigning to it modifies the thing it refers too, instead of making it refer to something else):
 ```cpp
-int &a; // Error, references must be initialized.
+int &a; // Compilation error, references must be initialized.
 ```
 ```cpp
 int a = 10;
@@ -64,6 +64,7 @@ b = 42; // This modifies `a`
 std::cout << a << "\n"; // 42
 std::cout << c << "\n"; // 11
 ```
+Notice that `=` has different effect when assigning to a reference vs when initializing it (modifies the target obejct vs chooses the target).
 
 > ## Exercise 1
 >
@@ -78,7 +79,7 @@ int &z = y;
 ```
 Here `int &z = y;` is entirely equivalent to `int &z = x;`.
 
-In other words, a reference can't actually refer to another reference. Instead, trying to do so makes it refer to whatever that reference refers to.
+In other words, a reference can't actually refer to another reference. Instead, trying to do so makes it refer directly to whatever that reference refers to.
 
 ## Const references
 
@@ -88,7 +89,7 @@ Perhaps unintuitively, `const` references do exist:
 for (const int &elem : arr)
     std::cout << elem << "\n";
 ```
-Here `elem` is a const reference. Or more correctly, a "reference to `const` `int`" (references can never actually be const, but the phrase "const reference" is commonly used to mean a reference to something const; this tutorial uses the phrase "const reference" a lot, and I don't see a point in being pedantic with this).
+Here `elem` is a const reference. Or more correctly, a "reference to `const` `int`" (references can never be actually const themselves, but the phrase "const reference" is commonly used to mean a reference to something const; this tutorial uses the phrase "const reference" a lot, and I don't see a point in being pedantic with this).
 
 Here `elem` can't be modified (because the reference is const), so you might ask what's the point, why not simply `int elem`?
 
@@ -132,6 +133,29 @@ for (const int &r : a) {} // ok
 for (const int &r : b) {} // ok
 ```
 
+Notice also that you can't initialize a non-const reference with a const **reference**, even if that points to a non-const variable:
+
+```cpp
+int a = 10;
+const int &b = a;
+int &c = b; // Compilation error.
+```
+Firstly, if this wasn't the case, this would be a loophole to remove constness from a reference. And secondly, whether or not this compiles is determined at compile-time (obviously), while whether or not `a` points to a `const` variable can't be known until runtime.
+
+### Modifying the target of a const reference
+
+```cpp
+int a = 10;
+const int &b = a;
+// b = 20; // Compilation error.
+a = 20; // ok
+std::cout << a << "\n"; // 20
+std::cout << b << "\n"; // 20
+```
+While you can't assign to a const reference, you can modify it's target directly, without using the reference.
+
+This is legal, and accessing the reference after that will correctly give the updated value.
+
 > ## Exercise 2
 >
 > Create a large vector of vectors and try to observe the difference in performance between references and copies.
@@ -171,7 +195,7 @@ vec.push_back(4);
 ref = 42; // This is UB too!
 std::cout << ref << '\n'; // Also UB!
 ```
-The reasons for this will be explained later.
+Growing a vector can invalidate (make dangling) the references to its elements. The reasons for this will be explained later.
 
 > ## Exercise 3
 >
@@ -188,14 +212,14 @@ int &arr[3] = {x, y, z}; // error
 std::vector<int &> vec = {x, y, z}; // error
 ```
 
-But a references *to* arrays/vectors can exist:
+But references to entire arrays/vectors can exist:
 ```cpp
 int arr[3] = {10,20,30};
-int (&r1)[3] = arr;
+int (&r1)[3] = arr; // Reference to array.
 std::cout << r1[1] << '\n'; // 20
 
 std::vector<int> vec = {10,20,30};
-std::vector<int> &r2 = vec;
+std::vector<int> &r2 = vec; // reference to vector.
 std::cout << r2[1] << '\n'; // 20
 ```
 Notice `int &arr[3]` vs `int (&arr)[3]` - an array of references vs a reference to an array. This will be explained in more details in later chapters.

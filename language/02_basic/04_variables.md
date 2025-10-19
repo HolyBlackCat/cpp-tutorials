@@ -118,7 +118,7 @@ Spaces are not allowed in identifiers, so to separate words people usually spell
 
 Additionally, you can't use words like `int` as variable names (`int int = 42;` is illegal), hopefully for obvious reasons. (As `int` has a special meaning, allowing it as a variable name would be too confusing.) Those words with special meaning are called **keywords**, and there's [almost a hundred](https://en.cppreference.com/w/cpp/keyword) of them. You of course don't need to remember all of them (at least not yet), but you should know where to look. And your IDE should highlight them in a different color than other text, so they should be easy to notice.
 
-Additionally, modern compilers accept identifiers in languages other than English too (`int μεταβλητός = 42;`) but you should avoid them to not confuse non-english-speaking readers of your code.
+Additionally, modern compilers accept identifiers in languages other than English too (`int μεταβλητός = 42;`) but you should avoid this to not confuse non-english-speaking readers of your code.
 
 ### Reserved identifiers
 

@@ -71,9 +71,9 @@ You can observe this better by doing this:
 
 int main()
 {
-    int x;
-    int y;
-    int z;
+    int x = 0;
+    int y = 0;
+    int z = 0;
     std::cout << "Input x: ";
     std::cin >> x;
     std::cout << "Input y: ";

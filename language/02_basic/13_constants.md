@@ -53,7 +53,7 @@ Since the compiler can now clearly see that the array size is fixed, the example
 
 ## Names of constants
 
-Some other languages traditionally name constants in `ALL_CAPS`. C++ doesn't have this tradition, we typically use caps for something else (macros, which will be discussed later).
+Some other languages traditionally name constants in `ALL_CAPS`. C++ doesn't have this tradition, we typically use caps for something else ("macros", which will be discussed later).
 
 So we typically use the same naming convention for constants as for other variables.
 

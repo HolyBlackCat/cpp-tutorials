@@ -17,6 +17,19 @@ std::cout << b << "\n"; // 5.7
 
 There are many more other types, which will also be explained later.
 
+## Static typing
+
+The C++ language is said to be **statically typed**, meaning that the types of all variables are fixed during compilation, and can't be changed after the variables are declared.
+
+The following is a compilation error:
+```cpp
+int x = 42;
+double x = 5.7; // Error, `x` is already declared (with a different type).
+```
+Some languages (such as Python) don't have this restriction. This isn't necessarily a good thing, as static typing tends to make programs easier to read and write.
+
+C++ has workarounds for when you need to choose the type at runtime, which will be explained in the later chapters.
+
 ## Types of expressions
 
 Not only variables have types, expressions do to. A lone `5` is an `int`. A lone `5.7` is a `double`. Notably `5.0` is also a `double`, because of the `.`.

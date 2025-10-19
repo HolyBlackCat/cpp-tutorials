@@ -36,9 +36,9 @@ struct Monster
     int health;
 };
 ```
-...is the **struct declaration** (and also a **struct definition**, this is another case where a thing is a declaration and a definition at the same time; the difference will be explained later).
+...is a **struct declaration** (and also a **struct definition**, this is another case where a thing is a declaration and a definition at the same time; the difference will be explained later).
 
-Notice how it doesn't immediately create those two variables. You can't directly refer to `name` and `health`.
+Notice how this doesn't immediately create those two variables. You can't directly refer to `name` and `health`.
 
 Instead, this makes `Monster` available as a type. You can then create variables of this type (`Monster boss;` and `Monster henchman;` above).
 
@@ -46,7 +46,7 @@ Each variable of the struct type then stores multiple values: one `name` string 
 
 `std::string name;` and `int health;` in this example are called the **data members** of the struct (or sometimes informally its "fields"). Structs can have other kinds of members, but this is for later.
 
-Naturally, structures can serve as array/vector element types: `Monster monsters[4];`, `std::vector<Monster> monsters;`, etc. You can then use e.g. `monsters[0].name` to access a field of an element, and so on.
+Naturally, structures can serve as array/vector element types: `Monster monsters[4];`, `std::vector<Monster> monsters;`, etc. You can then use e.g. `monsters[0].name` to access a field of an element, and so on. Structures can also serve as field types in other structures.
 
 > ## Exercise 1
 >
@@ -54,13 +54,13 @@ Naturally, structures can serve as array/vector element types: `Monster monsters
 
 ## Struct names
 
-Struct names are typically capitalized as `HelloWorld`. Some prefer `helloWorld` or `hello_world`, but this is rare (but notably the standard library uses the latter). Avoid naming structs in `ALL_CAPS`, though some old libraries do this (even some parts of the standard library inherited from C). All caps names are typically used for something else, which will be explained in later chapters.
+Struct names are typically capitalized as `HelloWorld`. Some prefer `helloWorld` or `hello_world`, but this is rare (but notably the standard library uses the latter). Avoid naming structs in `ALL_CAPS`, though some old libraries do this (including some parts of the standard library inherited from C). All-caps names are typically used for something else, which will be explained in later chapters.
 
 Struct names have same requirements as variable names. Revisit the chapter on variables if necessary.
 
 ## Differences with other languages
 
-In some other programming languages (like Python), struct variables act in a funny way, where copying a struct and modifying the copy changes the original. C++ doesn't have such weird inconsistencies:
+In some other programming languages (like Python), struct variables always act similar to references, where copying a struct and modifying the copy changes the original. C++ doesn't have such inconsistencies:
 ```cpp
 Monster a;
 a.name = "A";
@@ -113,13 +113,13 @@ struct Monster
 
 Monster boss = {"Dragon", 100};
 ```
-You might also see this being spelled without `=`, which is legal, and works for arrays and vectors too. I do think omitting `=` looks better for structs, but it can lead to subtle bugs when done to vectors, so omitting it always isn't the brightest idea, despite what some people say. I hope to discuss this in later chapters. For now I'll use `=` everywhere for simplicity.
+You might also see this being spelled without `=`, which is legal, and works for arrays and vectors too. I do think omitting `=` looks better for structs, but it can lead to subtle bugs when done with vectors, so always omitting it isn't the brightest idea, despite what some people say. I hope to discuss this in later chapters. For now I'll use `=` everywhere for simplicity.
 
 Like with arrays, if you skip some members, they will be zeroed: `Monster boss = {"Dragon"};` sets the `health` to zero, whereas in `Monster boss;` it would be initialized.
 
 `Monster boss = {};` zeroes all the fields. Notice that for strings and vectors, "zeroing" doesn't do anything, as they are never uninitialized and are always empty by default.
 
-Like vectors, but unlike arrays, the entire struct can be assigned to:
+Like vectors, but unlike arrays, the entire struct can be assigned:
 ```cpp
 Monster boss = {"Dragon", 100};
 boss = {"Dragon (phase two)", 300};
@@ -134,9 +134,9 @@ Monster boss = {.name = "Dragon", .health = 100};
 ```
 If this doesn't compile for you, you need to tell your compiler to use C++20 or a newer version. In Clang and GCC, this is done using `-std=c++20` (see [my tutorial on tooling](/tooling/README.md) for more details), and similarly with `/std:c++20` in MSVC.
 
-You can omit members in aggregate initialization, and the omitted members are once again zeroed: `Monster boss = {.health = 100}` leaves the name empty.
+You can omit members in designated initialization too, and the omitted members are once again zeroed: `Monster boss = {.health = 100}` leaves the name empty.
 
-Designated initializers must be in the same order as the members, e.g. `{.health = 100, .name = "Dragon"}` is a compilation error. But you can of course have "gaps" between members, e.g. given `struct A {int x, y, z;};`, you can do `A a = {.x = 10, .z = 20};`, but can't do `.z = 20, .x = 10`, because in the struct `x` is declared before `z`.
+Designated initializers must be in the same order as the members, e.g. `{.health = 100, .name = "Dragon"}` is a compilation error. But you can have "gaps" between members, e.g. given `struct A {int x, y, z;};`, you can do `A a = {.x = 10, .z = 20};`, but can't do `.z = 20, .x = 10`, because in the struct `x` is declared before `z`.
 
 ### In arrays and vectors
 
@@ -152,7 +152,7 @@ Monster monsters[] = {
     {.name = "Gremlin", .health = 20},
 };
 ```
-Mixing the two forms is allowed too:
+Mixing the two forms (for different array elements) is allowed too:
 ```cpp
 Monster monsters[] = {
     {.name = "Dragon", .health = 100},
@@ -181,6 +181,8 @@ Monster c = {"Dragon", 100}; // .name = "Dragon", .health = 100
 Monster d = {"Dragon"};      // .name = "Dragon", .health = 5
 Monster e = {.health = 50};  // .name = "Enemy",  .health = 50
 ```
+
+It is a good idea to always specify the default values for the field types that can be uninitialized (e.g. for `int`s, but it wouldn't change anything for `std::string`s).
 
 ## Nested structs
 
@@ -222,6 +224,7 @@ struct Monster
 This *is* legal, but all this achieves is changing the name of the inner struct (when used outside of the outer struct) from `Health` to `Monster::Health`, which isn't very useful (but can sometimes improve clarity).
 
 ```cpp
+// When outside of `struct Monster {...};`:
 Health h; // Error, no such struct.
 Monster::Health h; // ok
 ```
@@ -252,6 +255,8 @@ struct Monster
 };
 
 const Monster boss = {"Dragon", 100};
+const Monster henchman; // Compilation error, must be initialized because it's constant.
+const Monster henchman2 = {}; // ok, zeroes both fields.
 boss.health = 50; // Error, `boss` is constant.
 ```
 
@@ -275,6 +280,7 @@ While this looks useful at face value, this is in fact highly annoying, because 
 const Monster boss = {"Dragon", 100};
 boss = {"Wyrm", 200}; // Error, `boss` isn't assignable because `name` isn't.
 ```
+...because in C++, unlike in some other languages, assigning to a struct is normally the same thing as assigning every field separately.
 
 I recommend never using `const` members. We have more civilized ways of preventing individual members from being modifier, which will be discussed later.
 
@@ -311,4 +317,4 @@ Not much to say here
 
 ### References as members
 
-References can serve as struct *members* too, but they share all the same problems as const members (making the entire struct non-assignable). They are best avoided.
+References can serve as struct *members* too, but they share all the same problems as const members (making the entire struct non-assignable). They are best avoided. There are better alternatives ("pointers"), which will be explained later.

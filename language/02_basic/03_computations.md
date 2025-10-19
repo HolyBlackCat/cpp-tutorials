@@ -18,7 +18,7 @@ This prints `The value is 15`. Notice that we're using multiple `<<` in one stat
 
 `(10 + 20) / 2` is an expression. Informally, **expressions are sequences of operands of operators**.
 
-**Operators** are the symbols representing math operations, such as `+`, `-`, `*` (multiplication), `/` (division), and more.
+**Operators** are the symbols representing mathematical operations, such as `+`, `-`, `*` (multiplication), `/` (division), and more.
 
 **Operands** are what an operator applies to. In `(10 + 20) / 2`, the operands of `+` are `10` and `20`, and the operands of `/` are `(10 + 20)` and `2`.
 
@@ -48,4 +48,4 @@ Expressions that are not parts of other expressions are called **full expression
 
 > ## Exercise 2
 >
-> Write the first example from this chapter on a piece of paper. Circle every operand in it. Then cirlce (perhaps with a different color) eveyr expression in it.
+> Write the first example from this chapter on a piece of paper. Circle every operand in it. Then circle (perhaps with a different color) every expression in it.
