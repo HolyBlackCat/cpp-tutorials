@@ -14,9 +14,11 @@ int main()
 }
 ```
 
-It will print `Hello!` when ran. Your C++ book will explain what this code means.
+This will `Hello!` when ran, but first you need to learn **how** to run it.
 
-Press `File` → `Save As` or <kbd>Ctrl</kbd><kbd>S</kbd> to save the file.
+For now, press `File` → `Save As` or <kbd>Ctrl</kbd><kbd>S</kbd> to save the file.
+
+**Note to VSC users:** Don't try to "run" the file using the VSC itself yet; for now we're just using it to create the file. Don't be alarmed by any red squiggles that VSC displays, we'll fix them later.
 
 ## Saving the file
 

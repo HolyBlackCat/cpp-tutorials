@@ -89,6 +89,8 @@ Oh well. I suggest uninstalling whatever you have to avoid interference, then co
 
 1. **Download the installer** from https://www.msys2.org/ and run it.
 
+   There are two installers on that website, `msys2-x86_64-...` and `msys2-arm64-...`. You want the first one (unless your computer has an ARM processor, but those are rare, and you'd know if you had one).
+
    (⚠ If you choose to install into a non-default location, make sure the path **doesn't contain any spaces or non-latin characters**. This tutorial assumes you installed to the default location `C:\msys64`. I recommend not changing the location for simplicity.)
 
    Uncheck `Run MSYS2 now.` at the end of installation, or close the window that it opens.
