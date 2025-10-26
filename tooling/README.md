@@ -20,7 +20,7 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 
 * ### [Installing a toolchain](/tooling/articles/installing_toolchain.md)
 
-* ### [How to compile and run programs in the terminal](/tooling/articles/installing_toolchain.md)
+* ### [How to compile and run programs in the terminal](/tooling/articles/compiling_in_terminal.md)
 
 * ### [Installing and configuring VSC](/tooling/articles/installing_vsc.md)
 
