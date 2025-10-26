@@ -1,8 +1,10 @@
 # Why I don't suggest using Visual Studio in this tutorial?
 
-Visual Studio (not to be confused with Visual Studio Code) is very popular, including in the industry.
+**TL;DR:** VS is easier to set up than VSC, so it often gets recommended to newbies for this reason. But VSC isn't *that* hard to set up either. It requires some minimal knowledge, such as how to use a terminal, and this tutorial covers all of it, without going into too much detail. This has to be learned sooner or later anyway. If a person is unable to do this with a tutorial, they'll going to have a hard time with programming even if they switch to an easier IDE.
 
-There's nothing wrong with using it, but I don't consider it to be the best choice, especially not for personal projects, and in this tutorial I recommend Visual Studio Code over it. Why?
+---
+
+Visual Studio (not to be confused with Visual Studio Code) is popular, and there's nothing wrong with using it. But I think there are better option, especially not for personal projects, so in this tutorial I recommend Visual Studio Code over it. Why?
 
 ## Good things about VS
 
