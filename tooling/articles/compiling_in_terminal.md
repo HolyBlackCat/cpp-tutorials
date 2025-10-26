@@ -28,7 +28,7 @@ Save it to any directory. Make sure both the directory name and the file name do
 
 Open your directory:
 
-[![Windows file explorer](/tooling/images/file_explorer.png)]((/tooling/images/file_explorer.png))
+[![Windows file explorer](/tooling/images/file_explorer.png)](/tooling/images/file_explorer.png)
 
 ⚠ Make sure `View` → `Show` → `File name extensions` is **enabled**.
 
@@ -38,7 +38,7 @@ With it enabled, take a look at the file name again. It must end with `.cpp`, no
 
 Copy the path to this directory by right-clicking the address bar and pressing `Copy Address`:
 
-[![Windows file explorer](/tooling/images/file_explorer_address.png)]((/tooling/images/file_explorer_address.png))
+[![Windows file explorer](/tooling/images/file_explorer_address.png)](/tooling/images/file_explorer_address.png)
 
 Open MSYS2 terminal as described [here](/tooling/articles/installing_toolchain_msys2.md#installing-msys2) by clicking `MSYS2 CLANG64` in the Start menu. (Make sure it says `CLANG64` in purple text. If not, you clicked the wrong thing.)
 

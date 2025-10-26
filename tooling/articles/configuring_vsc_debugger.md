@@ -29,9 +29,9 @@ Like [Clangd](/tooling/articles/configuring_code_completion.md#installing-clangd
 * A plugin for your IDE (for VSC in this case).
 
   Search for `lldb-dap` in the extension marketplace and install it:<br/>
-  [![lldb-dap extension icon](/tooling/images/lldb_dap_extension_icon.png)]((/tooling/images/lldb_dap_extension_icon.png))
+  [![lldb-dap extension icon](/tooling/images/lldb_dap_extension_icon.png)](/tooling/images/lldb_dap_extension_icon.png)
 
-* A program called `lldb-dap` that the extension interacts with. You already have it installed because you [installed LLDB](/tooling/articles/debugging_in_terminal.md). But you need to tell the extension where to find it.
+* A program called `lldb-dap` that the extension interacts with. You should already have it, assuming you've read the previous chapter and [installed LLDB](/tooling/articles/debugging_in_terminal.md#installing-lldb) as explained there. But you still need to tell the extension where to find it.
 
   **Open the settings (`File`→`Preferences`→`Settings`), search for `lldb dap executable` and type `C:\msys64\clang64\bin\lldb-dap.exe` in there.**
 
@@ -43,12 +43,12 @@ Make your compiler flags (in `tasks.json`) include `-g`, [as was explained befor
 
 Make sure you have a folder opened in VSC. Use `File`→`Open Folder...`.
 
-Open the `Run and Debug` tab by pressing the button on the left:<br/>
+Open the `Run and Debug` tab by pressing the button on the left side of the screen:<br/>
 ![run and debug icon](/tooling/images/vsc_debugging_icon.png)
 
 Click `create a launch.json file`, and select `LLDB DAP Debugger`. It will create a file called `launch.json` in the `.vscode` directory in the current directory. This file holds debugging configurations. You can create it manually once you get used to it.
 
-If you already have this file, delete it and try again.
+If you don't see the button called `create a launch.json file`, it means you've already created a `launch.json` before, I recommend deleting it to start from scratch.
 
 If you see a window like this pop up, just close it by clicking anywhere or by pressing <kbd>Esc</kbd>:
 
@@ -65,6 +65,8 @@ Replace `<your program>` with the name of your program, e.g. `"program": "${work
 Now pressing <kbd>F5</kbd> or the green 'play' button to start the debugger. [Like before](/tooling/articles/debugging_in_terminal.md), you should see your application window flash for a moment, and close immediately.
 
 If nothing happens, you likely didn't configure LLDB-DAP [as was explained above](#installing-lldb-dap).
+
+If you see an error saying `Debug adapter path "..." is not a valid file.`, this likely means you didn't install LLDB itself, [as was explained above as well](/tooling/articles/debugging_in_terminal.md#installing-lldb). This also means you've skipped the previous chapter, which isn't a good thing.
 
 The output of your program should be visible in the `Debug Console` at the bottom of the screen (enable it in `View`→`Debug Console` if it's hidden).
 
