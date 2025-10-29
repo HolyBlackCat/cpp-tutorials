@@ -45,7 +45,7 @@ Now the same thing in the form of a table:
 &nbsp;|[Compiler](#choosing-a-compiler)|[ABI and various standard libraries](#mingw-abi-vs-msvc-abi)|[C++ standard library](#choosing-c-standard-library)|Available sanitizers|How to install
 ---|---|---|---|---|---
 1|MSVC|MSVC|MSVC STL|ASAN|Comes with [Visual Studio](https://visualstudio.microsoft.com), or use the standalone ["build tools"](https://visualstudio.microsoft.com/downloads).
-2|Clang|MSVC|MSVC STL|ASAN**|[Official Clang installer](https://github.com/llvm/llvm-project/releases) (look for `LLVM-...-win64.exe`), also must install MSVC.<br/><sup>(Or you could make MSYS2 Clang operate in MSVC-compatible mode with some command-line flags, but that's extra work.)</sup>
+2|Clang|MSVC|MSVC STL|ASAN|[Official Clang installer](https://github.com/llvm/llvm-project/releases) (look for `LLVM-...-win64.exe`), also must install MSVC.<br/><sup>(Or you could make MSYS2 Clang operate in MSVC-compatible mode with some command-line flags, but that's extra work.)</sup>
 3|Clang|MSVC|Clang's libc++|ASAN, UBSAN|Same, but also [must compile libc++ manually.](https://libcxx.llvm.org/BuildingLibcxx.html)
 4|Clang|MinGW|Clang's libc++|ASAN, UBSAN|[MSYS2 CLANG64](/tooling/articles/msys2_environments.md) (other [MSYS2 environments](/tooling/articles/msys2_environments.md) have libc++ too, but without sanitizers).<br/><sup>(Also there are [alternative distributions](/tooling/articles/why_msys2.md).)</sup>
 5|Clang|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](/tooling/articles/msys2_environments.md).<br/><sup>(Could also use official Clang installer with any MinGW, but that requires some custom command-line flags. Also there are [alternative distributions](/tooling/articles/why_msys2.md).)</sup>
@@ -59,7 +59,6 @@ You can use any IDE with any of those combinations, with more or less effort (e.
 **"Sanitizers"** are automatic tools that you can enable to help you catch bugs: ASAN ("Address Sanitizer") for pointer errors, UBSAN for some other undefined behavior. (Note that on Linux, both GCC and Clang support both ASAN and UBSAN, plus some sanitizers not available on Windows.)
 
 <sup>* - You can use UBSAN, but [in a weird mode](https://stackoverflow.com/a/59083808/2752075) that doesn't display errors and just crashes when a violation is detected.</sup><br/>
-<sup>** - Should work, but didn't immediately work out of the box for me.</sup>
 
 ## Choosing a compiler
 
