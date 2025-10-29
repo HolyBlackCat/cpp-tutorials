@@ -20,9 +20,9 @@ Then follow those steps in order:
 
 * ### [Learn how to work in the VSC terminal](/tooling/articles/working_in_vscode_terminal.md)
 
-* ### [Configure code completion](/tooling/articles/configuring_code_completion.md)
+* ### [Configure code completion](/tooling/articles/configuring_code_completion.md) (Clangd)
 
-* ### [Configure hotkeys for compilation](/tooling/articles/configuring_vsc_tasks.md)
+* ### [Automate compilation](/tooling/articles/configuring_vsc_tasks.md) (tasks)
 
 When you're done, go read your C++ book and practice for some time!
 

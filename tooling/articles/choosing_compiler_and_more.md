@@ -4,6 +4,8 @@ This is a complicated topic prone to holy wars. Here I try to explain all the ch
 
 But ultimately, any remotely popular compiler is going to work fine, and the differences will be minor, especially for a newbie.
 
+Advanced readers can check out [Why MinGW?](./why_mingw.md) for a short explanation of my viewpoint.
+
 ## What choices you can make?
 
 ### Available compilers

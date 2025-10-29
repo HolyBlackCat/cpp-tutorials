@@ -67,6 +67,8 @@ Process 9804 exited with status = 0 (0x00000000)
 ```
 `0` means the program ran and finished successfully.
 
+At the time of writing this, LLDB has a [bug](https://github.com/msys2/MINGW-packages/issues/26030) that causes `r` to fail with `error: The parameter is incorrect.`. If you run into this problem, install `winpty` using `pacman -S winpty`, and then use `winpty lldb ...` instead of `lldb ...`.
+
 ### Breakpoints
 
 Now, to execute it step by step, you need to create a "breakpoint", i.e. tell the debugger on what line of the code to pause.
