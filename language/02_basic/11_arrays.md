@@ -19,6 +19,14 @@ Note that accessing `arr[3]` (same index as the array size) and larger indices i
 
 While in this example the array doesn't look very useful compared to `int arr0, arr1, arr2;`, things change when you start using loops. This is explained later in this chapter.
 
+## The meaning of `[N]`
+
+Notice that the meaning of `[N]` depends on where it is used:
+
+* When used in a declaration, it sets the array **size**.
+
+* When used used outside of a declaration, it refers to **one of the array elements**.
+
 ## Initialization
 
 Like other variables, arrays are uninitialized by default.
@@ -149,3 +157,22 @@ Though by convention people usually prefer `arr[row][column]`.
 > Do not use an array initializer to achieve this (so not like in the last example).
 >
 > Then use another pair of nested loops to print the array.
+
+## Declaring several arrays in one declaration
+
+You might've guessed this by now, but to declare multiple arrays in one declaration, the size has to be repeated for each of the arrays:
+
+```cpp
+int a[3], b[4]; // ok, both are arrays
+int a, b[4]; // ok, only `b` is an array
+int a[3], b; // ok, only `a` is an array
+int[3] a, b; // compilation error, `[...]` must be after the variable name
+int[3] a; // compilation error, `[...]` must be after the variable name
+```
+
+The proper terminology for this is relatively little-known:
+
+* The part of a declaration shared between all variables is called the **decl-specifier-seq**.
+* The individual variable names with `[...]` if any are the **declarators**.
+
+E.g. in `int a[3], b;`, `int` is the decl-specifier seq, and `a[3]` and `b` are the declarators.

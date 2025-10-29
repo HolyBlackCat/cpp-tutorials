@@ -1,4 +1,4 @@
-# References (part 1)
+# References
 
 If you experiment with the ranged-for a bit, you'll quickly realize that any changes you make to the elements are seemingly not reflected in the original array or vector (at least by default).
 
@@ -41,7 +41,7 @@ for (int elem : arr)
     std::cout << elem << "\n"; // 110 120 130
 ```
 
-References can be created outside of loops too:
+Or a simple example without loops:
 ```cpp
 int a = 10;
 int &b = a;
@@ -51,7 +51,7 @@ std::cout << a << "\n"; // 20
 
 Roughly speaking, a reference is a special kind of variable that act as an "alternative name" or "alias" for another thing.
 
-It has to be initialized when created, and then can't be modified to refer to something else (because assigning to it modifies the thing it refers too, instead of making it refer to something else):
+It has to be initialized (when declared), and then can't be modified to refer to something else (because assigning to it modifies the thing it refers too, instead of making it refer to something else):
 ```cpp
 int &a; // Compilation error, references must be initialized.
 ```
@@ -64,11 +64,35 @@ b = 42; // This modifies `a`
 std::cout << a << "\n"; // 42
 std::cout << c << "\n"; // 11
 ```
-Notice that `=` has different effect when assigning to a reference vs when initializing it (modifies the target obejct vs chooses the target).
+
+## The meaning of `=` and `&`
+
+Notice that `=` has different effect in a reference declaratation vs when assigning to a reference (which is what happens outside of declarations):
+```cpp
+int x = 42;
+int &a = x; // `=` sets the target for the reference
+a = 43; // `=` changes the value of the target
+```
+
+Similarly, `&` creates a reference only when used in declarations. Elsewhere it has an entirely different meaning, which we'll cover later.
 
 > ## Exercise 1
 >
 > Experiment with references. Write a program that modifies the array elements in ranged-for, observe that it doesn't work correctly without references, and does work correctly with them.
+
+## Declaring several references in one declaration
+
+If you declare several variables in one declaration, `&` will only affect one of them at a time. This is the same situation [as with arrays](./11_arrays.md#declaring-several-arrays-in-one-declaration).
+
+E.g. given `int x = 42;`...
+
+```cpp
+int &a = x, &b = x; // both are references
+int a = x, &b = x; // only `b` is a reference
+int &a = x, b = x; // only `a` is a reference
+int& a = x, b = x; // only `a` is a reference
+```
+Notice how the whitespace around `&` doesn't affect to what it applies, since [C++ in general isn't sensitive to whitespace](./01_your_first_program.md#whitespace-and-line-breaks).
 
 ## References to other references
 

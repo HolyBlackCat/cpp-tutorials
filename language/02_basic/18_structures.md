@@ -317,4 +317,4 @@ Not much to say here
 
 ### References as members
 
-References can serve as struct *members* too, but they share all the same problems as const members (making the entire struct non-assignable). They are best avoided. There are better alternatives ("pointers"), which will be explained later.
+References can serve as struct *members* too, but they share all the same problems as const members (making the entire struct non-assignable). They are best avoided. There are better alternatives, which will be explained later.

@@ -117,6 +117,25 @@ A simple solution to this is to do `getline` twice. Or perhaps after doing it th
 
 Here are some things you can do to strings:
 
+### Combining strings
+
+`+` can be used to combine ("concatenate") strings:
+
+```cpp
+std::string name;
+std::getline(std::cin, name);
+std::string message = "Hello " + name + ", nice to meet you!";
+std::cout << message << '\n';
+```
+
+Similarly, `+=` can be used to append to a string:
+```cpp
+std::string s = "Hello, ";
+s += "world!";
+std::cout << s << '\n';
+```
+`a += b;` has the same effect as `a = a + b;`, just like when `a` and `b` are numbers. But it can be slightly more efficient for strings, for reasons that will become clear in future chapters.
+
 ### Getting substrings
 
 ```cpp
@@ -132,17 +151,6 @@ std::string part = s.substr(2, 3);
 std::cout << part << '\n'; // Prints `llo`.
 ```
 `s.substr(n, m)` returns a part of the string, skipping the first `n` characters and taking only `m` characters after that.
-
-### Combining strings
-
-`+` can be used to combine ("concatenate") strings:
-
-```cpp
-std::string name;
-std::getline(std::cin, name);
-std::string message = "Hello " + name + ", nice to meet you!";
-std::cout << message << '\n';
-```
 
 ### Converting numbers to strings
 

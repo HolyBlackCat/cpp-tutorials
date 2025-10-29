@@ -28,7 +28,7 @@ Functions can call other functions, which themselves can call more functions, an
 
 ## Function names
 
-Typically, functions are named as `SayHello` or `sayHello`. `say_hello` is rarely used, primarily only in the standard library. Hopefully no one names their functions in all caps.
+Typically, functions are named as `SayHello` or `sayHello`. `say_hello` is rarely used, primarily only in the standard library. And hopefully no one names their functions in all caps.
 
 Function names have the same restrictions on them as the variable names (revisit the chapter on variables if needed).
 
@@ -76,7 +76,7 @@ int main()
 
 And this isn't just because `x` is declared lower in the source code. If you reorder those two functions, you'll get the same error (in addition to the error about `foo()` not being declared yet, how to work around this is explained later).
 
-In general, what variable is visible where is fixed at compile-time, it doesn't depend on what happens at runtime (what functions get or don't get called).
+In general, what variable is visible where is fixed at compile-time, it doesn't depend on what happens at runtime (what functions do or don't get called).
 
 ## Global variables
 
@@ -160,7 +160,7 @@ void IncreaseX()
 ```
 Except that you can and must specify its value when calling the function. Notice `IncreaseX(100);` and `IncreaseX(2000);` in the example above.
 
-Here `100` and `2000` are called **arguments** of the function. They are said to be **"passed"** to the function or to that parameter.
+Here `100` and `2000` are called **arguments** of the function. They are said to be **"passed"** to the function, or to that parameter.
 
 Some people call parameters **"formal parameters"**, and arguments **"actual parameters"**. This is relatively rare though.
 
@@ -254,7 +254,7 @@ int main()
     std::cout << "x = " << x << '\n'; // x = 5 ?!
 }
 ```
-Sounds good in theory, but this doesn't work. `x` in `main` remains as `5`. But if you try to print `target` in `Increase` after changing it, you'll see that it's indeed `105`. What's going on?
+Sounds good in theory, but this doesn't work. `x` in `main` remains equal to `5`. But if you try to print `target` in `Increase` after changing it, you'll see that it's indeed `105`. What's going on?
 
 You might have guessed already. `target` is a copy of `x`, so any changes to it don't affect the original. References to the rescue:
 ```cpp
@@ -292,7 +292,7 @@ int main()
     std::cout << value << '\n';
 }
 ```
-The part in `main` is fairly verbose, and kinda weird given that `ComputeStuff` doesn't care about the original value of `out`, and only uses it to output the result.
+The part in `main` is fairly verbose, and kinda weird given that `ComputeStuff` doesn't care about the original value of `out`, and only uses `out` to output the result.
 
 Would be nice to be able to write just `int value = ComputeStuff();`, and indeed we can do that!
 
@@ -302,7 +302,7 @@ int ComputeStuff()
     int out = 1 + 2 + 3;
     return out;
 
-    // Or just `return 1 + 2 + 3;`.
+    // Or just `return 1 + 2 + 3;` without introducing a variable.
 }
 
 int main()
@@ -321,13 +321,13 @@ Second, `ComputeStuff` now ends in `return ...;`. The value passed to `return` i
 
 ## What about `int main` then?
 
-Astute readers might be wondering: if the thing to the left of the function name is its return type, why have we been doing `int main` rather than `void main`? Or if we use `int`, why are we not returning anything from `main`?
+Astute readers might be wondering: if the thing to the left of the function name is its return type, why have we been doing `int main` rather than `void main`? Or since we use `int`, why are we not returning anything from `main`?
 
 The C++ standard says that `main` must have the `int` return type (doing otherwise should cause a compilation error on a properly configured compiler).
 
-The `int` returned from `main` is used to indicate if the program has ran successfully (then you `return 0;`), or ended with an error (then you return some other number). Zero return code indicating success is universally agreed upon, but specific meaning of non-zero codes isn't universal.
+The `int` returned from `main` is used to indicate if the program has ran successfully (then you `return 0;`), or ended with an error (then you return some other number). Zero return code indicating success is universally agreed upon, but the specific meaning of non-zero codes isn't universal.
 
-`main` defaults to `return 0;` if you don't `return` something else manually. Only `main` does this. **Forgetting to return from any non-void function (except `main`) causes undefined behavior.** Typically it crashes the program (terminates it with an error at runtime).
+`main` defaults to `return 0;` if you don't `return` something else manually. Only `main` does this. **Forgetting to return from any non-void function (other than `main`) causes undefined behavior.** Typically it crashes the program (terminates it with an error at runtime).
 
 #### Accessing the `main` exit code
 
@@ -386,7 +386,7 @@ int main()
 
     if (x < 0)
     {
-        std::cout << "This is not a non-negative number!\n";
+        std::cout << "This number is negative!\n";
         return 1; // Non-zero exit code means an error.
     }
 
@@ -500,7 +500,7 @@ int main()
 ```
 This program lets the user input numbers until they input 0, and counts positive and negative numbers in the input.
 
-Notice `GetCounter(x) += 1;`. We can assign to `GetCounter(x)` because it returns a reference. If it didn't return a reference (in other words, if it "returned by value"), we couldn't assign to it.
+Notice `GetCounter(x) += 1;`. We can assign to `GetCounter(x)` because it returns a reference. If it didn't return a reference (in other words, if it "returned by value"), this would be a compilation error.
 
 ### Dangling references
 
@@ -510,6 +510,27 @@ But functions give you new exciting ways of creating dangling references and the
 
 Let's say you return a reference to a local variable:
 
+```cpp
+#include <iostream>
+
+int &foo()
+{
+    int arr[3];
+    return arr[0];
+}
+
+int main()
+{
+    foo() = 42; // UB!
+    std::cout << foo() << '\n'; // UB again!
+}
+```
+
+This may appear to work, but this is in fact undefined behavior. One of the more treacherous kinds of UB, because it tends to not crash and to silently appear to work, until it no longer does.
+
+Do you understand why this is UB? `int arr[3];` only lives until the end of this function call, but the returned reference to `arr[0]` outlives `arr`. This reference becomes **dangling**, meaning it no longer refers to a valid object.
+
+This example can be further simplified:
 ```cpp
 #include <iostream>
 
@@ -525,9 +546,7 @@ int main()
     std::cout << foo() << '\n'; // UB again!
 }
 ```
-This may appear to work, but this is in fact undefined behavior. One of the more treacherous kinds of UB, because it tends to not crash and to silently appear to work, until it no longer does.
-
-Do you understand why this is UB? `int x;` only lives until the end of this function call, but the returned reference to `x` outlives `x`. This reference becomes **dangling**, meaning it no longer refers to a valid object.
+This has the exact same problem, but with one exception: this example no longer compiles in C++23 and newer. The compilers are now requires to provide basic protections against those mistakes. They are only *required* to in those basic cases, but still compilers typically try to warn about even the more complex cases.
 
 Note that this specific example has stopped compiling in C++23 and newer, but you can fool the compiler and get the same UB using something like this:
 ```cpp
@@ -551,8 +570,88 @@ int main()
     std::cout << y << '\n'; // 42
 }
 ```
-...since the returned reference ends up referencing the `y` in `main` directly, not the parameter `x`. (As was explained before, references never refer to other references, trying to do so makes them refer to the target object of that reference.)
+...since the returned reference ends up referencing `y` in `main` directly, not the parameter `x`. (As was explained before, references never refer to other references, trying to do so makes them refer to the target object of that reference.)
 
-## Constant references
+## Const references
 
-If you [remember](./16_references_part_1.md#const-references), references can be const. Const references can
+If you [remember](./16_references_part_1.md#const-references), references can be const. Const references can serve as parameter types and return types types too.
+
+### Const references as parameters
+
+Those have a different purpose compared to non-const references parameters. They are primarily used to avoid expensive copying:
+
+
+```cpp
+void PrintVector(const std::vector<int> &v)
+{
+    for (int x : v)
+        std::cout << x << '\n';
+}
+
+int main()
+{
+    std::vector<int> v(1000000); // Some large vector.
+    // v[i] = ...
+    PrintVector(v);
+}
+```
+
+Here, `PrintVector()` takes the vector by a const reference, which means it's not copied when the function is called (copying a million `int`s just to print them would be unnecessarily slow), unlike if `PrintVector` had a non-reference parameter.
+
+Passing by a const reference only makes sense for types that are expensive to copy. Something like `void PrintInt(const int &x)` doesn't usually make sense, something as small as an `int` should be passed by value.
+
+Single numbers in general should be passed by value, and so are structs with just a few numbers in them. Vectors, strings, and structs of those should be passed by const references. (There are better ways to pass some of those, but those will be explained later. For now, a simple const reference is at least better that passing by value.)
+
+### Const references as return types
+
+Similarly, a const reference can be used as a return type if you need to avoid copying, and want to prevent the caller from modifying the result (which would be possible with a non-const reference).
+
+```cpp
+std::vector<int> a = {/*....*/};
+std::vector<int> b = {/*....*/};
+
+const std::vector<int> &GetVector(bool second)
+{
+    if (second)
+        return b;
+    else
+        return a;
+}
+
+int main()
+{
+    std::cout << GetVector(true).size() << '\n'; // b.size()
+    std::cout << GetVector(false)[42] << '\n'; // a[42]
+
+    GetVector(false)[42] = 43; // Compilation error, because the reference is const.
+}
+```
+
+Also notice that here you can make `a` and `b` `const`. But if `GetVector` returned a non-const reference, then trying to do so would cause a compilation error in `GetVector()` (can't bind non-const references to const variables).
+
+## Arrays
+
+Functions have a special relationship with arrays, for no particular reason other than C legacy. This only applies to arrays, and not to e.g. `std::vector`.
+
+Arrays can't be returned from functions at all (specifying one as a return type is a compilation error).
+
+When used as function parameters, arrays lose the size information:
+```cpp
+void foo(int arr[3]) // This `3` is ignored.
+{
+    // This is legal if the actual array passed into the function is large enough.
+    // It doesn't matter that this is larger than `[3]` specified in the parameter list.
+    std::cout << arr[4] << '\n';
+}
+
+int main()
+{
+    int blah[5] = {1,2,3,4,5}
+    foo(blah); // Ok, despite the size mismatch in the function declaration.
+}
+```
+For this reason, the array parameters are often spelled as `int arr[]` without the size, since it's ignored anyway. The only reason to specify the size there is as a hint to the programmer (if the function expects an array of a specific size).
+
+There is no way for the function to know the true array size (if you remember `std::size(arr)` from earlier, it doesn't work on array parameters). But you can pass it manually in a separate parameter, e.g. `void foo(int arr[], int size)`.
+
+You'll learn more about this in later chapters.
