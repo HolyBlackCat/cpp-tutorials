@@ -8,7 +8,7 @@ Don't install any extensions VSC suggests you yet, we'll get to that later.
 
 Create a .cpp file in VSC and try to compile it in the VSC terminal, [like you did before in the MSYS2 terminal](/tooling/articles/compiling_in_terminal.md).
 
-Running the compiler (`clang++ prog.cpp -o prog`) will likely result in an error:
+Running the compiler (`clang++ prog.cpp -o prog`) should result in this error:
 ```powershell
 PS C:\code> clang++ prog.cpp -o prog
 clang++ : The term 'clang++' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is
@@ -20,9 +20,9 @@ At line:1 char:1
     + FullyQualifiedErrorId : CommandNotFoundException
 ```
 
-This is to be expected. Read [Terminal for Dummies](/tooling/articles/terminal_for_dummies.md) and do what it says.
+This is to be expected. If you got this error, read [Terminal for Dummies](/tooling/articles/terminal_for_dummies.md) and do what it says. After following all the steps, `clang++` should work.
 
-After following all the steps, `clang++` should work.
+If you **didn't** get the error, confirm that the correct Clang installation is being used by typing `gcm clang++`. It should report `C:\msys64\clang64\bin\clang++.exe`, then you're good. If not, it's using some other version of Clang, not the one you installed in MSYS2. Read the link above and fix your settings to use the Clang from MSYS2.
 
 If you see error `undefined reference to WinMain`, you didn't save your file and are compiling an empty file. Hit <kbd>Ctrl</kbd><kbd>S</kbd> and try again.
 

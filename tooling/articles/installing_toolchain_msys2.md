@@ -107,7 +107,9 @@ Oh well. I suggest uninstalling whatever you have to avoid interference, then co
 
    **Make sure it says `CLANG64` in purple text.** If it says something else, you used the wrong shortcut (see above). Close it and restart using the correct one. (There are no lasting effects of typing commands in the wrong window. )
 
-   All commands below should be typed into the MSYS2 terminal.
+   If you instead see an error message in red, it's likely your antivirus acting up. Add `C:\msys64` to its exceptions and reinstall MSYS2.
+
+   **All commands below should be typed into the MSYS2 terminal.**
 
 3. **Update MSYS2.**
 

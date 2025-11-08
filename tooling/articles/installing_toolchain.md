@@ -24,5 +24,6 @@ We will make the first steps without an IDE, then install one later.
 
 The process depends on your operating system:
 
-* ### [I'm using Windows](/tooling/articles/installing_toolchain_msys2.md)
-* ...
+* ### [I'm using Windows](./installing_toolchain_msys2.md)
+* ### [I'm using Linux](./installing_toolchain_linux.md)
+  WSL counts as Linux too, but [I recommend compiling directly on Windows instead](./why_not_wsl.md).
