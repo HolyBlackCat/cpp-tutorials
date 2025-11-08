@@ -1,6 +1,6 @@
 # Why MinGW?
 
-This is a TL;DR of [Choosing a compiler and more](./choosing_compiler_and_more.md), see that for more details. Also see [Why not visual studio?](./why_not_visual_studio.md).
+This is a TL;DR of [Choosing a compiler and more](./choosing_compiler_and_more.md), see that for more details. Also see [Why Visual Studio Code rather than Visual Studio?](/tooling/articles/why_vsc_over_vs.md).
 
 I don't recommend MSVC due to it being [wonky and buggy in general](./choosing_compiler_and_more.md#msvc-issues), which leaves GCC and Clang. Clang then wins because of numerous [quality-of-life features](./choosing_compiler_and_more.md#choosing-a-compiler) (sanitizers on Windows, easier cross-compilation, Clangd existing, etc).
 

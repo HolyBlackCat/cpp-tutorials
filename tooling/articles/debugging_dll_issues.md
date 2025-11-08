@@ -6,11 +6,9 @@ This article explains how to fix following errors:
 
 * `procedure entry point __ could not be located in the dynamic link library __`
 
-* Application simply doesn't start. (This will happen when launching it in a terminal or in an IDE. Double-click it in the file explorer* and you *should* see one of the above error messages.)
+* Application simply doesn't start. (This will happen when launching it in a terminal or in an IDE. Double-click it in the explorer (in the Files app) and you *should* see one of the above error messages.)
 
 * Some other mysterious errors.
-
-<sup>* Of course I mean the Windows "Files" application, not a tab in Visual Studio Code with the same name.</sup>
 
 ## A simple fix
 
@@ -63,7 +61,7 @@ You don't care about the libraries that come with the system (i.e. the first one
 
 **This isn't the full list though,** because those DLLs can load more DLLs themselves. To see all of them, run **`ntldd -R my_program.exe`** and you should see several dozens of them.
 
-Most of those are irrelevant, because most of them are in `C:\Windows` (see above). You can use e.g. `grep` (a text filtering program) to filter the output. Run **`ntldd -R a.exe | grep clang64`** to only print the lines that mention `clang64`, and you should see something just this:
+Most of those are irrelevant, because most of them are in `C:\Windows` (see above). You can use e.g. `grep` (a text filtering program) to filter the output. Run **`ntldd -R a.exe | grep clang64`** to only print the lines that mention `clang64`, and you should see just this:
 ```
 libc++.dll => C:\msys64\clang64\bin\libc++.dll (0x000002b7136c0000)
 ```
@@ -73,7 +71,7 @@ Even though in this case `-R` didn't add any relevant libraries, in general it m
 
 As you might've noticed from the NTLDD output ([see above](#what-dlls-my-application-uses)), your application loads DLLs from several different directories: `C:\msys64\clang64\bin`, `C:\Windows\System32`, etc.
 
-Your application only knows the DLL file names it wants, not in which directories they are located.
+Your application only knows the DLL **filenames** it wants, not in which **directories** they are located.
 
 It searches through several predefined directories. This is explained in the [Microsoft's manual](https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-search-order), but in short it searches those directories **in this order**:
 
@@ -87,15 +85,15 @@ It searches through several predefined directories. This is explained in the [Mi
 
 ## The solution
 
-Therefore, the solution is to either copy the DLLs into the same directory as the .exe, or add their locations to PATH.
+Therefore, the solution is to either copy the DLLs into the same directory as the `.exe`, or add their locations to PATH.
 
-Copy the DLLs [that NTLDD prints](#what-dlls-my-application-uses) (ignoring those in `C:\Windows` and subdirectories, and only copying those installed by MSYS2 or by you manually) into the directory where you have your .exe.
+Copy the DLLs [that NTLDD prints](#what-dlls-my-application-uses) (ignoring those in `C:\Windows` and subdirectories, and only copying those installed by MSYS2 or by you manually) into the directory where you have your `.exe`.
 
 While modifying PATH is ok for development purposes, you still must copy the DLLs when distributing your application to other people (and ship them with the application).
 
 ## Static linking
 
-So-called "static linking" is an alternative solution. It refers to embedding some libraries into an .exe, meaning it no longer needs the respective DLLs. It can be enabled with the `-static` compiler flag. Confirm the result by running `ntldd -R my_program.exe` and observing that it loads absolutely nothing from `C:\msys64\clang64\bin`.
+So-called "static linking" is an alternative solution. It refers to embedding some libraries into an `.exe`, meaning it no longer needs the respective DLLs. It can be enabled with the `-static` compiler flag. Confirm the result by running `ntldd -R my_program.exe` and observing that it loads absolutely nothing from `C:\msys64\clang64\bin`.
 
 ### Problems with static linking
 
@@ -105,7 +103,7 @@ While static linking is good for tiny portable applications (don't need to unzip
 
 * Some libraries have licenses that penalize static linking. E.g any library licensed under [LGPL](https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License) (e.g. [OpenAL-soft](https://openal-soft.org/)), roughly speaking, forces you to either link dynamically or open-source your application.
 
-### Static linking libraries
+### Statically linking libraries
 
 If you're [using third-party libraries](/tooling/articles/using_libraries.md), statically linking them will often require an extra step.
 

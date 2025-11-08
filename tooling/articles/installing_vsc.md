@@ -6,7 +6,7 @@
 
 Some of the popular IDEs are: Visual Studio Code, Visual Studio (don't confuse the two!), CLion, Xcode, etc.
 
-We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why not Visual Studio?](/tooling/articles/why_not_visual_studio.md))*
+We will be installing Visual Studio Code (aka "VSC" or "VSCode"). *([Why Visual Studio Code rather than Visual Studio?](/tooling/articles/why_vsc_over_vs.md))*
 
 ## Installing and configuring Visual Studio Code
 

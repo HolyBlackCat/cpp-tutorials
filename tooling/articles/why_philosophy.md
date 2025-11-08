@@ -5,11 +5,11 @@ This tutorial recommends Clang, MSYS2, Visual Studio Code, Clangd, LLDB and LLDB
 This page explains my criteria for picking tools. For explanations on specific tools and choices, see:<br/>
 [Why MinGW?](/tooling/articles/why_mingw.md) (also covers different C++ standard libraries)<br/>
 [Choosing a compiler](/tooling/articles/choosing_compiler_and_more.md) (also covers different C++ standard libraries)<br/>
+[Why Visual Studio Code rather than Visual Studio?](/tooling/articles/why_vsc_over_vs.md)<br/>
 [Why MSYS2?](/tooling/articles/why_msys2.md) (also explains in detail what is MinGW)<br/>
 [Why Clangd?](/tooling/articles/why_clangd.md)<br/>
 [Why LLDB?](/tooling/articles/why_lldb.md)<br/>
 [Why LLDB-DAP?](/tooling/articles/why_lldb_dap.md)<br/>
-[Why not Visual Studio?](/tooling/articles/why_not_visual_studio.md)<br/>
 [Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md)<br/>
 [Why not WSL?](/tooling/articles/why_not_wsl.md)<br/>
 
