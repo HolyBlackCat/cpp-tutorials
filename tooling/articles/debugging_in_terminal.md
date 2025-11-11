@@ -24,6 +24,8 @@ Most debuggers (except for the Visual Studio one, from what I know) can be used 
 
 Most of the time you won't be debugging in a terminal (though sometimes this is the only option). The goal of this chapter is to give a minimal first-hand experience of doing so, before teaching more convenient methods.
 
+Don't feel the need to *remember* all the commands. Just play around with the debugger as explained below a bit.
+
 ## Installing the debugger
 
 Install LLDB in MSYS2: `pacman -S mingw-w64-clang-x86_64-lldb`. *([Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md))*
@@ -79,7 +81,7 @@ At the time of writing this, LLDB has a [bug](https://github.com/msys2/MINGW-pac
 
 Now, to execute it step by step, you need to create a "breakpoint", i.e. tell the debugger on what line of the code to pause.
 
-Type **`b 5`** to put a breakpoint on line 5 (which should be `int x = 10;`). When more than one file is involved, you will need to a file name, e.g. `b main.cpp:5`.
+Type **`b 5`** to put a breakpoint on line 5 (which should be `int x = 10;`). When more than one file is involved, you will need to a file name, e.g. `b main.cpp:5`. You can also target functions, e.g. `b main` to break when entering `main()`.
 
 Now if you type **`r`** again, you should see following:
 
@@ -91,7 +93,9 @@ Print the values of variables using **`p`** (short for `print`). E.g. try `p x` 
 
 Or use **`fr v`** (short for `frame variable`) to print all variables. (This is for LLDB; GDB users need `i lo` or `info locals`.)
 
-Another useful command is "continue executing until a specific line", **`th u 10`** (shoft for `thread until 10`), which can be used to quickly break out of loops. (This is for LLDB, GDB users need just `u 10` or `until 10`.)
+Another useful command is "continue executing until a specific line", **`th u 10`** (short for `thread until 10`), which can be used to quickly break out of loops. (This is for LLDB, GDB users need just `u 10` or `until 10`.)
+
+If you forgot on what line the program is paused, you can type **`f`** (short for `frame`) to get a reminder. (In GDB this only prints a single line, use `l .` or `list .` to get more context.)
 
 Lastly, when you want to unpause your program, type **`c`** (short for `continue`).
 
