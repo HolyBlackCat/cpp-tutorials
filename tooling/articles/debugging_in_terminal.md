@@ -16,6 +16,19 @@ We will be using LLDB *([Why LLDB?](/tooling/articles/why_lldb.md))*, but the ot
 
 LLDB and GDB are similar on the surface level. This article is written primarily for LLDB, but can be used for GDB as well.
 
+## Installing the debugger
+
+Install LLDB in MSYS2: `pacman -S mingw-w64-clang-x86_64-lldb`. *([Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md))*
+
+Confirm that it works by running `lldb --version`.
+
+Or if you prefer GDB, install it using `pacman -S mingw-w64-clang-x86_64-gdb` and check it with `gdb --version`.
+
+(⚠ Those installation commands assume you've been following the previous chapters of the tutorial as is. If you instead configured MSYS2 in some other manner, you might need to pick a different version of LLDB/GDB, since MSYS2 provides multiple. Consult [this page](./variations/determining_msys2_env.md) for more details, or follow the tutorial from the beginning, reinstalling everything exactly as recommended.)
+
+## Debugging in a terminal
+
+
 ## Debugging in a terminal
 
 Go read [Terminal for Dummies](/tooling/articles/terminal_for_dummies.md) if you haven't already.
@@ -25,16 +38,6 @@ Most debuggers (except for the Visual Studio one, from what I know) can be used 
 Most of the time you won't be debugging in a terminal (though sometimes this is the only option). The goal of this chapter is to give a minimal first-hand experience of doing so, before teaching more convenient methods.
 
 Don't feel the need to *remember* all the commands. Just play around with the debugger as explained below a bit.
-
-## Installing the debugger
-
-Install LLDB in MSYS2: `pacman -S mingw-w64-clang-x86_64-lldb`. *([Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md))*
-
-Confirm that it works by running `lldb --version`.
-
-Or if you prefer GDB, install it using `pacman -S mingw-w64-clang-x86_64-gdb` and check it with `gdb --version`.
-
-(⚠ Those installation commands assume you've been following the previous chapters of the tutorial as is. If you've configured MSYS2 in some other manner, you might need to pick a different version of LLDB/GDB, since MSYS2 provides multiple. Consult [this page](./variations/determining_msys2_env.md) for more details, or follow the tutorial from the beginning, reinstalling everything exactly as recommended.)
 
 ## Using the debugger
 

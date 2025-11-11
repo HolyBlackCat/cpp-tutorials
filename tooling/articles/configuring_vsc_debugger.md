@@ -1,10 +1,8 @@
 # How to use a debugger in VSC?
 
-[You should already know how to use a debugger in a terminal.](/tooling/articles/debugging_in_terminal.md)
+This article assumes you have some experience using a debugger (not necessarily in C++). If you don't, read [Debugging in a terminal](./debugging_in_terminal.md) first.
 
-This isn't very convenient, but there's a nicer way of using it in VSC.
-
-## Checking PATH settings
+## Checking that the debugger is installed
 
 Make sure you can run `lldb --version` in the VSC terminal. If you see `lldb : The term 'lldb' is not recognized...`, make sure you [have LLDB installed](/tooling/articles/debugging_in_terminal.md), and [have PATH configured correctly](/tooling/articles/working_in_vscode_terminal.md).
 
@@ -22,7 +20,7 @@ There are several different extensions for debugging C/C++ in VSC:
 
 We'll be using LLDB-DAP. *([Why LLDB-DAP?](/tooling/articles/why_lldb_dap.md))*
 
-LLDB-DAP is relatively new, so if you get any issues with it, you can try CodeLLDB or any other extension in this list (I listed them roughly in my order of preference).
+LLDB-DAP is relatively new, so if you get any issues with it, you can try CodeLLDB or any other extension in this list (I listed them roughly in my order of preference). The first two extensions only support LLDB, so if you have to use GDB instead, try the other two.
 
 Like [Clangd](/tooling/articles/configuring_code_completion.md#installing-clangd), LLDB-DAP consists of two parts:
 
@@ -31,7 +29,7 @@ Like [Clangd](/tooling/articles/configuring_code_completion.md#installing-clangd
   Search for `lldb-dap` in the extension marketplace and install it:<br/>
   [![lldb-dap extension icon](/tooling/images/lldb_dap_extension_icon.png)](/tooling/images/lldb_dap_extension_icon.png)
 
-* A program called `lldb-dap` that the extension interacts with. You should already have it, assuming you've read the previous chapter and [installed LLDB](/tooling/articles/debugging_in_terminal.md#installing-lldb) as explained there. But you still need to tell the extension where to find it.
+* A program called `lldb-dap` that the extension interacts with. You should already have it, assuming you've read the previous chapter and [installed LLDB](/tooling/articles/debugging_in_terminal.md#installing-the-debugger) as explained there. But you still need to tell the extension where to find it.
 
   **Open the settings (`File`→`Preferences`→`Settings`), search for `lldb dap executable` and type `C:\msys64\clang64\bin\lldb-dap.exe` in there.**
 
@@ -66,7 +64,7 @@ Now pressing <kbd>F5</kbd> or the green 'play' button to start the debugger. [Li
 
 If nothing happens, you likely didn't configure LLDB-DAP [as was explained above](#installing-lldb-dap).
 
-If you see an error saying `Debug adapter path "..." is not a valid file.`, this likely means you didn't install LLDB itself, [as was explained above as well](/tooling/articles/debugging_in_terminal.md#installing-lldb). This also means you've skipped the previous chapter, which isn't a good thing.
+If you see an error saying `Debug adapter path "..." is not a valid file.`, this likely means you didn't install LLDB itself, [as was explained above as well](/tooling/articles/debugging_in_terminal.md#installing-the-debugger). This also means you've skipped the previous chapter, which isn't a good thing.
 
 The output of your program should be visible in the `Debug Console` at the bottom of the screen (enable it in `View`→`Debug Console` if it's hidden).
 

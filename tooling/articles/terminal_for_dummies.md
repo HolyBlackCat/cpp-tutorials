@@ -6,7 +6,7 @@ A "terminal" or a "console" is a program that looks like this:
 
 [![MSYS2 terminal](/tooling/images/terminal.png)](/tooling/images/terminal.png)
 
-It lets you type in commands, and shows their results as text.
+A terminal doesn't do anything on its own. It's a simple program that just displays text given to it by other programs. On the screenshot above, all this text is produced by `pacman` and the terminal simply shows it to you.
 
 **Many programs (including compilers) don't have their own graphical interface, and the terminal is the only way to interact with them.**
 
@@ -36,7 +36,7 @@ But if you open the VSCode terminal yourself, by default you'll see something su
 
 The text (called "prompt", because it prompts you for a command) is different: `PS C:\...>` vs `user@computer CLANG64 ~` `$`. Why is that?
 
-You'll also find that it doesn't accept some commands that MSYS2 terminal does (try using `clang++` and you might get `The term 'clang++' is not recognized as ...`). Why?
+You'll also find that it doesn't accept some commands that the MSYS2 terminal does. Try running your compiler `clang++` (or `g++` if that's what you use), and you might get `The term 'clang++' is not recognized as ...`. Why?
 
 That's because **by default it uses a different shell** ("powershell" instead of "bash", as VSCode helpfully displays above the terminal), that has different settings.
 
@@ -58,6 +58,8 @@ When you run `clang++` in MSYS2 shell, it runs a program `clang++.exe` located a
 
 How does it know to look in there? Because of a setting called PATH.
 
+(⚠ This specific directory is used if you followed the previous chapters of this tutorial as is. If you instead come here with an existing compiler installation, your compiler could be in a different directory. If you installed it from MSYS2, consult [this page](variations/determining_msys2_env.md), it willll tell you what path to use.)
+
 ## What is PATH?
 
 PATH is a list of directories that a shell searches for a program when it needs to run it.
@@ -70,9 +72,11 @@ You get two different lists of directories.
 
 In MSYS2, the first one is `/clang64/bin` (`/` at the beginning refers to the MSYS2 installation directory, so this is actually `C:\msys64\clang64\bin`), which is what we need. In Powershell, this directory isn't there.
 
+You can further confirm this by typing `which clang++` in the MSYS2 terminal, which will tell you where it thinks `clang++` is located. It should print `/clang64/bin/clang++`. (The equivialent command in Powershell is `gcm clang++`, but will not find anything right now.)
+
 ## Modifying PATH
 
-As you might've guessed, you have to modify Powershell's PATH to include `C:\msys64\clang64\bin`.
+As you might've guessed, you have to modify Powershell's PATH to include `C:\msys64\clang64\bin`. (Or a different path if you haven't been following this tutorial, [see above](#ok-so-how-do-i-use-clang-in-powershell).)
 
 Open the Windows settings, type `env` in the search box, choose `Edit the system environment variables` then `Environment Variables...`.
 
@@ -87,3 +91,5 @@ Now, in the VSC terminal try using `clang++` again (e.g. `clang++ --version`), a
 If you print PATH now, you should see your directory in there, at the very beginning:
 
 [![updated path](/tooling/images/updated_path.png)](/tooling/images/updated_path.png)
+
+And if you run `gcm clang++` now, it should tell you that Clang is located at `C:\msys64\clang64\bin\clang++.exe`.

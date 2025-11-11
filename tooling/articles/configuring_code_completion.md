@@ -29,6 +29,8 @@ Clangd needs two parts to work:
 
 Install the latter in MSYS2 using `pacman -S mingw-w64-clang-x86_64-clang-tools-extra`. *([Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md))*
 
+(⚠ This installation command assumes you've been following the previous chapters of the tutorial as is. If you instead configured MSYS2 in some other manner, you might need a different version of Clangd, since MSYS2 provides multiple. Consult [this page](./variations/determining_msys2_env.md) for more details, or follow the tutorial from the beginning, reinstalling everything exactly as recommended.)
+
 Install the former in VSC. Open the extension marketplace by pressing the 'boxes' button on the left:<br/>
 ![extensions marketplace icon](/tooling/images/vsc_extensions_icon.png)
 
@@ -54,6 +56,8 @@ Remember that if you change PATH, you'll need to restart VSC for it to take effe
 Create a new file and save it with the `.cpp` extension (e.g. name it `prog.cpp`). You should see `clangd: idle` appear at the bottom-left corner.
 
 When you start typing, you should see red squiggles for invalid code, and code completion suggestions.
+
+If you see no squiggles and no suggestions, it means you didn't install something correctly [as was explained above](#installing-clangd).
 
 ## Useful hotkeys
 
@@ -104,6 +108,14 @@ Sometimes accepting a function name completion will insert placeholders for its 
 [![function argument placeholders demo](/tooling/images/clangd_arg_placeholders.png)](/tooling/images/clangd_arg_placeholders.png)
 
 If you don't like this and would prefer to get just `std::find_if()`, go to the settings, search `clangd arguments`, press `Add item`, type **`--function-arg-placeholders=false`** and press `OK`. Hit <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`clangd: Restart language server` to apply changes.
+
+### Disabling snippet suggestions
+
+By default Clangd will suggest you certain common code patterns, or "snippets". E.g. starting to type `typedef` or `#include` will produce something like this:
+
+[![code completion snippets](/tooling/images/clangd_snippet_suggestions.png)](/tooling/images/clangd_snippet_suggestions.png)
+
+If you find them annoying like myself, go to the settings, search for *`snippet suggestions`* and disable them.
 
 ### Hiding the `.cache` directory
 
