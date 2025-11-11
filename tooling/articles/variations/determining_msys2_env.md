@@ -1,6 +1,6 @@
 # Determining what you have installed in MSYS2
 
-Ok, so you already have **a** compiler installed in MSYS2. But since it provides multiple different compiler options, we need to determine what exactly you have.
+Ok, so you already have **a** compiler installed in MSYS2. But since it provides multiple different kinds compilers (different versions of GCC and Clang, read [this](/tooling/articles/msys2_environments.md) for more details), we need to determine what exactly you have.
 
 Open MSYS2 terminal (any of them, doesn't matter) and type:
 ```sh

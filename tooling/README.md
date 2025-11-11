@@ -32,7 +32,7 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 
 ### Additional information:
 
-(You can read those in any order.)
+(You can read those in any order, but read the Basics above first.)
 
 * ### [Recommended compiler settings](/tooling/articles/recommended_compiler_flags.md)
 

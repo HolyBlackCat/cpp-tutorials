@@ -14,7 +14,7 @@ There are several popular debuggers: LLDB, GDB, and the Visual Studio debugger. 
 
 We will be using LLDB *([Why LLDB?](/tooling/articles/why_lldb.md))*, but the other debuggers should work fine too.
 
-LLDB and GDB are similar on the surface level, most things explained on this page should work with GDB as well.
+LLDB and GDB are similar on the surface level. This article is written primarily for LLDB, but can be used for GDB as well.
 
 ## Debugging in a terminal
 
@@ -24,13 +24,17 @@ Most debuggers (except for the Visual Studio one, from what I know) can be used 
 
 Most of the time you won't be debugging in a terminal (though sometimes this is the only option). The goal of this chapter is to give a minimal first-hand experience of doing so, before teaching more convenient methods.
 
-## Installing LLDB
+## Installing the debugger
 
 Install LLDB in MSYS2: `pacman -S mingw-w64-clang-x86_64-lldb`. *([Why not the official Clang installer?](/tooling/articles/why_not_official_clang_installer.md))*
 
 Confirm that it works by running `lldb --version`.
 
-## Using LLDB
+Or if you prefer GDB, install it using `pacman -S mingw-w64-clang-x86_64-gdb` and check it with `gdb --version`.
+
+(⚠ Those installation commands assume you've been following the previous chapters of the tutorial as is. If you've configured MSYS2 in some other manner, you might need to pick a different version of LLDB/GDB, since MSYS2 provides multiple. Consult [this page](./variations/determining_msys2_env.md) for more details, or follow the tutorial from the beginning, reinstalling everything exactly as recommended.)
+
+## Using the debugger
 
 Let's start with the following test program.
 
@@ -52,22 +56,24 @@ int main()
 
 First, you need to compile it with the **`-g`** flag, e.g. `clang++ prog.cpp -o prog -g`. This adds debugging information to it, allowing the debugger to interact with it in a meaningful way.
 
-### Running a program in LLDB
+### Running a program in the debugger
 
-Start LLDB on your program using **`lldb prog`**. You should see something like this:
+Start LLDB on your program using **`lldb prog`** (or `gdb prog` for GDB).
+
+In LLDB you'll see something like this: (GDB prints a slightly different message)
 ```
 (lldb) target create "prog.exe"
 (rrent executable set to 'C:\code\a\prog.exe' (x86_64).
 (lldb)
 ```
 
-Typing **`r`** (or `run`) will run your application. You'll see its window flash for a moment, and close immediately. You'll see the following message:
+Now typing **`r`** (or `run`) will run your application. You'll see its window flash for a moment, and close immediately. You'll see a message similar to this:
 ```
 Process 9804 exited with status = 0 (0x00000000)
 ```
 `0` means the program ran and finished successfully.
 
-At the time of writing this, LLDB has a [bug](https://github.com/msys2/MINGW-packages/issues/26030) that causes `r` to fail with `error: The parameter is incorrect.`. If you run into this problem, install `winpty` using `pacman -S winpty`, and then use `winpty lldb ...` instead of `lldb ...`.
+At the time of writing this, LLDB has a [bug](https://github.com/msys2/MINGW-packages/issues/26030) on Windows that causes `r` to fail with `error: The parameter is incorrect.`. If you run into this problem, install `winpty` using `pacman -S winpty`, and then use `winpty lldb ...` instead of `lldb ...`.
 
 ### Breakpoints
 
@@ -83,9 +89,9 @@ The program is paused on line `5`. You can use **`n`** (short for `next`) to exe
 
 Print the values of variables using **`p`** (short for `print`). E.g. try `p x` and `p i`.
 
-Or use **`fr v`** (short for `frame variable`) to print all variables.
+Or use **`fr v`** (short for `frame variable`) to print all variables. (This is for LLDB; GDB users need `i lo` or `info locals`.)
 
-Another useful command is "continue executing until a specific line", **`th u 10`** (shoft for `thread until 10`), which can be used to quickly break out of loops.
+Another useful command is "continue executing until a specific line", **`th u 10`** (shoft for `thread until 10`), which can be used to quickly break out of loops. (This is for LLDB, GDB users need just `u 10` or `until 10`.)
 
 Lastly, when you want to unpause your program, type **`c`** (short for `continue`).
 
@@ -220,7 +226,9 @@ This endlessly prints numbers.
 
 If you know what loop is being executed, you can place a breakpoint there. But if you don't, you might want to just pause the program, doesn't matter where.
 
-This is achieved by pressing <kbd>**Ctrl**</kbd><kbd>**C**</kbd>, or alternatively by typing **`pro i`** (short for `process interrupt`). Then you can use `bt` as was explained above, to figure out where you are. To get meaningful results, you might need to first run **`t 1`** first to switch to the *main thread*. (Threads are parts of a program that run in parallel, at the same time as one another. In addition to your `main()` function which is run by the main thread, there might be other code executing in parallel, in other threads, either started by the standard library or by you.)
+This is achieved by pressing <kbd>**Ctrl**</kbd><kbd>**C**</kbd>, or alternatively by typing **`pro i`** (short for `process interrupt`) (this is for LLDB; GDB has just `interrupt`, but it doesn't let you type commands while the program is running by default).
+
+Then you can use `bt` as was explained above, to figure out where you are. To get meaningful results, you might need to first run **`t 1`** first to switch to the *main thread*. (Threads are parts of a program that run in parallel, at the same time as one another. In addition to your `main()` function which is run by the main thread, there might be other code executing in parallel, in other threads, either started by the standard library or by you.)
 
 Try it.
 
