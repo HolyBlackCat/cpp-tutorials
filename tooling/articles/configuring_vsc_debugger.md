@@ -1,6 +1,6 @@
 # How to use a debugger in VSC?
 
-This article assumes you have some experience using a debugger (not necessarily in C++). If you don't, read [Debugging in a terminal](./debugging_in_terminal.md) first.
+This article assumes you have some experience using a debugger (not necessarily in C++). If you don't, read [Debugging in the terminal](./debugging_in_terminal.md) first.
 
 ## Checking that the debugger is installed
 

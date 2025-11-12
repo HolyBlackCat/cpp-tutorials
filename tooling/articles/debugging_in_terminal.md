@@ -1,4 +1,4 @@
-# How to use a debugger in a terminal?
+# How to use a debugger in the terminal?
 
 I assume you have some minimal C++ knowledge: already tried compiling a few simple programs, and know what "variables" are. If not, come back later.
 
@@ -26,10 +26,7 @@ Or if you prefer GDB, install it using `pacman -S mingw-w64-clang-x86_64-gdb` an
 
 (⚠ Those installation commands assume you've been following the previous chapters of the tutorial as is. If you instead configured MSYS2 in some other manner, you might need to pick a different version of LLDB/GDB, since MSYS2 provides multiple. Consult [this page](./variations/determining_msys2_env.md) for more details, or follow the tutorial from the beginning, reinstalling everything exactly as recommended.)
 
-## Debugging in a terminal
-
-
-## Debugging in a terminal
+## Debugging in the terminal
 
 Go read [Terminal for Dummies](/tooling/articles/terminal_for_dummies.md) if you haven't already.
 

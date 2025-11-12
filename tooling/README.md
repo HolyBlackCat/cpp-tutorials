@@ -4,9 +4,9 @@
 
 * This tutorial explains how to install the *tools* needed to code in C/C++, but not *how* to code. You'll still need a generic book/tutorial on C/C++.
 
-* This tutorial is primarly for Windows. But if you know what you're doing, you can repeat the process on other OSes too (since all the tools we'll install are cross-platform, except MSYS2, which isn't necessary outside of Windows).
+* This tutorial is primarly for Windows. But all tools suggested here are cross-platform, so it's not terribly hard to follow the tutorial on other OSes too (all tools other than MSYS2, which is Windows-only, but isn't necessary on other platforms).
 
-* There are endless possible tooling choices. In this tutorial we'll install the **Clang** compiler (or **GCC** if you prefer) using **MSYS2**; and **Visual Studio Code**, **Clangd**, **LLDB** and **LLDB-DAP**, which I consider to be the best choice available.
+* There are endless possible tooling choices. In this tutorial we'll install the Clang compiler (or GCC if you prefer) using MSYS2; along with Visual Studio Code, Clangd, LLDB (or GDB) and LLDB-DAP. I consider those to be the best choices available.
 
   I do explain [why I prefer those specific tools](/tooling/articles/why_philosophy.md), and what are the alternatives.
 
@@ -26,7 +26,7 @@ If you're new to C/C++, don't binge-read everything at once. Practice writing sm
 
 ### Debugging:
 
-* ### [Debugging in a terminal](/tooling/articles/debugging_in_terminal.md)
+* ### [Debugging in the terminal](/tooling/articles/debugging_in_terminal.md)
 
 * ### [Debugging in VSC](/tooling/articles/configuring_vsc_debugger.md)
 
