@@ -188,7 +188,7 @@ The point is, this program compiles, but when you run it it fails with an error,
 
 Compile and run it (without the debugger yet), observe that the first number is printed but the second isn't. **Notably it doesn't tell you what line caused the error,** and in more complex cases it might not be immediately obvious from the output.
 
-Let's try to find the offending line with the debugger. Run this program in the debugger as explained above. Don't place any breakpoints yet, just type **`r`** to run. (Though pressing `n` a bunch of times is a valid debugging strategy.)
+Let's try to find the offending line with the debugger. Run this program in the debugger as explained above. Don't place any breakpoints yet, just type **`r`** to run. (Though pressing `n` a bunch of times is a valid debugging strategy as well.)
 
 [![lldb shows a cryptic error](/tooling/images/lldb_cryptic_error.png)](/tooling/images/lldb_cryptic_error.png)
 

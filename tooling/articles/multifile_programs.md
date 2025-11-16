@@ -4,7 +4,7 @@ Everything explained here works with both Clang and GCC compilers. The examples 
 
 ## Why multiple files?
 
-Larger programs are split to multiple source files, for better organization and for faster compilation times (to only recompile the files that have changed).
+Larger programs are split into multiple source files, for better organization and for faster compilation times (to only recompile the files that have changed).
 
 ## A simple test program
 
@@ -43,6 +43,8 @@ Note that we **do not** `#include` one `.cpp` file into another. This is almost 
 ## The simplest approach
 
 If you try to compile using `clang++ 1.cpp` or `clang++ 2.cpp`, you'll get errors about `foo()` or `main()` being missing respectively.
+
+(If you instead get errors about `2.h` not being found, it's probably not in the same directory as the `.cpp` files. Either move it there, or pass the directory where it's located to `-I` if you prefer to keep it separate.)
 
 The easiest fix is to pass **all** the `.cpp` files to the compiler command: `clang++ 1.cpp 2.cpp -o prog`. Try it, make sure it works.
 

@@ -4,7 +4,7 @@ If you have [determined the build system](/tooling/articles/using_libraries_comp
 
 ## Download a test library
 
-I'll be using [FreeType](https://freetype.org/download.html) for this demonstration, since OpenAL that I've used for the CMake demo doesn't support Autotools.
+I'll be using [FreeType](https://freetype.org/download.html) for this demonstration, since OpenAL that I've used for the CMake demo doesn't support Meson.
 
 Download the source code from the link above (click `Download`, then click on the latest version, e.g. `freetype-2.13.3.tar.gz` at the time of writing).
 
@@ -15,6 +15,8 @@ Download the source code from the link above (click `Download`, then click on th
 Install Meson in MSYS2 using **`pacman -S mingw-w64-clang-x86_64-meson`**.
 
 Even if you have already installed Meson outside of MSYS2, it's better to install and use MSYS2's version, to avoid any possible issues with compatibility.
+
+(⚠ This installation command assumes you've been following the previous chapters of the tutorial as is. If you instead configured MSYS2 in some other manner, you might need a different version of Meson, since MSYS2 provides multiple. Consult [this page](./variations/determining_msys2_env.md) for more details, or follow the tutorial from the beginning, reinstalling everything exactly as recommended.)
 
 ## Run the "configuration" step
 
@@ -27,9 +29,9 @@ Then run the following command:
 ```sh
 meson setup MyBuildDir MySourceDir --prefix=MyInstallDir
 ```
-Here `MySourceDir` is the library source directory containing `meson.build`, `MyBuildDir` is a temporary directory for the compilation, and `MyInstallDir` is the directory where you want to install the resulting library.
+Here `MySourceDir` is the library source directory containing `meson.build`, `MyBuildDir` is a temporary directory for the compilation (that will be created automatically), and `MyInstallDir` is the directory where you want to install the resulting library (which will also be created automatically).
 
-I also recommend adding `--buildtype=release`, and `--prefix=...` isn't strictly necessary, more on that below.
+I also recommend adding `--buildtype=release`; and `--prefix=...` isn't strictly necessary, more on that below.
 
 **NOTE:** If your library [depends on other libraries you've installed manually](/tooling/articles/using_libraries_compiling_manually.md#install-dependencies), you can specify the same installation directory for all of them, which should make Meson find them automatically. There are other solutions to this (to keep them separate), but this one is the easiest.
 
@@ -77,7 +79,7 @@ Use `meson compile -C MyBuildDir`, where `MyBuildDir` is the build directory tha
 
 The `-C ...` part isn't necessary if you `cd` to this directory first.
 
-[Like CMake](/tooling/articles/using_libraries_compiling_manually_cmake.md#build-the-library), this supports the `-j...` flag, but unlike CMake it has a reasonable default value, so I don't recommend setting this flag.
+[Like CMake](/tooling/articles/using_libraries_compiling_manually_cmake.md#build-the-library), this supports the `-j...` flag.
 
 Wait a few minutes for the compilation to finish.
 
@@ -110,7 +112,7 @@ For using the resulting library, proceed back to [this](/tooling/articles/using_
 
 Optionally, if you want to look at the library source code, this part explains how to do so.
 
-Try pressing `File`→`Open Folder`, and open the source directory (`C:\code\openal-soft-1.23.1` in this example).
+Try pressing `File`→`Open Folder`, and open the source directory (`C:\code\freetype-2.13.3` in this example).
 
 Now if you open some source file (e.g. `src/autofit/autofit.c`), you should immediately see some red squiggles, headers not being found, etc. You can read more about why this happens [here](TODO_link).
 

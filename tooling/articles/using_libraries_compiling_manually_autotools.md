@@ -43,13 +43,13 @@ Where `MyInstallDir` is the desired installation directory.
 
 E.g. I ran `../freetype-2.13.3/configure --prefix=/c/code/freetype_install`. (Here `..` refers to the parent directory, so this is equivalent to `/c/code/freetype-2.13.3/configure --prefix=/c/code/freetype_install`.)
 
-You'll often see people not create a separate build directory, and run `./configure` directly from the source directory. This works, but then you'll have the temporary build files all over the source code, which works, but probably isn't the best idea.
+You'll often see people not create a separate build directory, and run `./configure` directly from the source directory. This works, but then you'll have the temporary build files all over the source code, which can be then hard to clean up.
 
 ## Build the library
 
 To compile the library, run `` make -j`nproc` `` and wait.
 
-[`-j` has the same meaning as with CMake.](/tooling/articles/using_libraries_compiling_manually_cmake.md#build-the-library)
+[`-j...` has the same meaning as with CMake](/tooling/articles/using_libraries_compiling_manually_cmake.md#build-the-library), but in Make it defaults to `-j1`, so we need to manually pass a larger number. `` `nproc` `` expands to the number of CPU cores (it runs the program called `nproc` and pastes its output).
 
 ## Install the library
 

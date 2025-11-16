@@ -15,19 +15,19 @@ Note that `-R` leaves behind the *dependencies* (other libraries that this one n
 
 Find and download the source code for your library, normally for its latest release.
 
-I'll be using OpenAL-soft as an example again. On https://github.com/kcat/openal-soft, go to `Releases` and grab the `Source code (zip)` for the lastest releases.
+I'll be using OpenAL-soft as an example again. On https://github.com/kcat/openal-soft, go to `Releases` and grab the `Source code (zip)` for the lastest release.
 
 Some libraries don't do releases, then just grab the latest version of the code (on Github, the green `<> Code` button → `Download ZIP`).
 
 ## Unzip the source code
 
-Unzip the source code somewhere. The path to it shouldn't contain spaces or any special or non-latin characters, it shouldn't be on a network drive nor on a USB stick.
+Unzip the source code somewhere. The path to it shouldn't contain spaces or any special or non-latin characters, it shouldn't be on a network drive/Onedrive/USB stick/etc.
 
 ## Install dependencies
 
 Some libraries depend on other libraries to function (properly or at all). Read the documentation for your library to know what other libraries you need to install first.
 
-(A "dependency" refers to a library used by some other library or application.)
+A "dependency" refers to a library used by some other library or application.
 
 If you're can't find anything, or aren't sure, skip this step and see if it works out.
 

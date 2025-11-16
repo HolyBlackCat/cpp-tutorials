@@ -44,7 +44,7 @@ Instead, this makes `Monster` available as a type. You can then create variables
 
 Each variable of the struct type then stores multiple values: one `name` string and one `health` integer.
 
-`std::string name;` and `int health;` in this example are called the **data members** of the struct (or sometimes informally its "fields"). Structs can have other kinds of members, but this is for later.
+`std::string name;` and `int health;` in this example are called the **data members** of the struct (or sometimes informally its "fields" or "member variables"). Structs can have other kinds of members, but this is for later.
 
 Naturally, structures can serve as array/vector element types: `Monster monsters[4];`, `std::vector<Monster> monsters;`, etc. You can then use e.g. `monsters[0].name` to access a field of an element, and so on. Structures can also serve as field types in other structures.
 

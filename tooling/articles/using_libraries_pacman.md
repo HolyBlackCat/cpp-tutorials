@@ -4,7 +4,9 @@
 
 Use `pacman -Ss ...` to search through MSYS2 "packages" (things you can install). Try **`pacman -Ss openal`** to search for OpenAL. It'll print the list of matching packages.
 
-**⚠ NOTE:** As before, we're looking only for things named `mingw-w64-clang-x86_64-...` ([explanation](/tooling/articles/msys2_environments.md)). If you scroll through the list, you'll quickly find this:
+**⚠ NOTE:** As before, we're looking only for things named `mingw-w64-clang-x86_64-...`. But if you haven't haven't followed the rest of this tutorial when installing MSYS2, and are instead coming in with an existing MSYS2 installation, you might need to use a different name prefix. In that case, consult [this](./variations/determining_msys2_env.md) for more details.
+
+If you scroll through the list, you'll quickly find this:
 ```
 clang64/mingw-w64-clang-x86_64-openal 1.23.1-2
     OpenAL audio library for use with opengl (mingw-w64)
@@ -23,15 +25,15 @@ Again, make sure the libraries you install [are prefixed with `mingw-w64-clang-x
 
 ## Look at what you have installed
 
-If you installed from MSYS2, use `pacman -Ql ...` to list the installed files, e.g. **`pacman -Ql mingw-w64-clang-x86_64-openal`** in our case.
+After you installed the library using `pacman -S ...`, use `pacman -Ql ...` to list the installed files, e.g. **`pacman -Ql mingw-w64-clang-x86_64-openal`** in our case.
 
 You should see a list of files:
 
 [![openal package contents](/tooling/images/pacman_package_contents.png)](/tooling/images/pacman_package_contents.png)
 
-Here `/clang64/...` refers to the `C:\msys64\clang64\` directory, so you can examine it manually too.
+Here `/clang64/...` refers to the `C:\msys64\clang64\` directory. You could open that directory and look at the files yourself.
 
-As you can see, you get **headers** (`.h` files), the **compiled library** (`.dll`, `.a`, `.dll.a`), the **`.pc` file** (see below), and some other things.
+As you can see, you get **headers** (`.h` files), the **compiled library** (`.dll`, `.a`, `.dll.a` on Windows; or `.so`, .`a` on Linux), the **`.pc` file** (see below), and some other things.
 
 We're particularly interested in the `.pc` file. It describes the compiler flags needed to use this library. If it's missing, you have to guess the flags.
 
@@ -72,15 +74,15 @@ You should see output like this:
 -IC:/msys64/clang64/include/AL -lopenal
 ```
 
-Now try using those flags by compiling the test program above.
+Now try using those flags when compiling the test program above:
 ```sh
 clang++ prog.cpp -IC:/msys64/clang64/include/AL -lopenal
 ```
-If everything is done correctly, this it compile without any errors.
+If everything is done correctly, it should compile without any errors.
 
 **⚠ NOTE:** You might see red squiggles in VSCode, this isn't a problem. Configuring VSC to understand the library [is a separate issue](TODO_vsc_libs). For now just compile in the terminal, I'll explain this later.
 
-**NOTE:** While most compiler-flags are order-independent, in some cases it might be important to have `-l...` to the right of any `.c`/`.cpp` files. (If you're using [LD linker](/tooling/articles/msys2_environments.md#linker).)
+**NOTE:** While most compiler flags are order-independent, in some cases it might be important to have `-l...` to the right of any `.cpp`/`.c`/`.o` files. (If you're using the [LD linker as opposed to LLD](/tooling/articles/msys2_environments.md#linker).)
 
 If you're curious, here's a full program that plays a short beep using OpenAL. Try running it. For now, you don't have to understand it
 
@@ -155,7 +157,7 @@ prog.cpp:1:10: fatal error: 'alc.h' file not found
       |          ^~~~~~~
 1 error generated.
 ```
-In some libraries it will just out of the box, then you can immediately go to the next step.
+For some libraries it will just work out of the box, then you can immediately go to the next step.
 
 For OpenAL it doesn't work, because the compiler looks for headers in `C:\msys64\clang64\include`, while `alc.h` is installed into <code>C:\msys64\clang64\include\\<b>AL</b></code> ([as you can see above](#look-at-what-you-have-installed)).
 
@@ -179,6 +181,8 @@ int main() {}
 clang++ prog.cpp -IC:/msys64/clang64/include/AL
 ```
 
+The `-I` flag can also be replaced with `-isystem` (e.g. `-isystemC:/msys64/clang64/include/AL`). This additionally disables warnings coming from those headers, which is a good thing (they are useful only for the developers of those libraries, not for you).
+
 ### Step 2: Make sure calling functions works
 
 The previous step alone isn't enough. If you now try to call any function from this library, you'll see a different error:
@@ -201,19 +205,19 @@ clang++: error: linker command failed with exit code 1 (use -v to see invocation
 
 If you don't get any errors, the library is likely [header-only](/tooling/articles/using_libraries.md#what-is-a-library), and you can skip this step.
 
-This error happens because the function definitions are in `.a`/`.dll` files ([see above](#look-at-what-you-have-installed)), and you need to point your compiler to them (or [your linker](TODO_multifile_prorams), rather).
+This error happens because the function definitions are in `.a`/`.dll` files ([see above](#look-at-what-you-have-installed)), and you need to point your compiler to them (or [your linker](./multifile_programs.md#the-proper-procedure), rather).
 
-You need to use either the `.dll` (dynamic linking) **OR** `.a` (static linking). If you link dynamically, your executable will need a copy of the `.dll` to run (for more information, read [What is a DLL?](/tooling/articles/debugging_dll_issues.md#what-is-a-dll), [Why do DLLs exist?](/tooling/articles/debugging_dll_issues.md#why-do-dlls-exist), and [Static linking](/tooling/articles/debugging_dll_issues.md#static-linking)).
+You need to use either the `.dll` (dynamic linking; this would be `.so` on Linux) **OR** `.a` (static linking). If you link dynamically, your executable will need a copy of the `.dll` to run (for more information, read [What is a DLL?](/tooling/articles/debugging_dll_issues.md#what-is-a-dll), [Why do DLLs exist?](/tooling/articles/debugging_dll_issues.md#why-do-dlls-exist), and [Static linking](/tooling/articles/debugging_dll_issues.md#static-linking)).
 
 Use one of the two options:
 
 1. **Link dynamically**
 
-   This will use the `lib__.dll.a` file. If you only have `.a` and not `.dll.a`, use option (2) instead.
+   This will use the `lib__.dll.a` file (or directly `.so` on Linux). If you only have `.a` and not `.dll.a`, use option (2) instead.
 
    Given `lib__.dll.a`, pass the `__` part of its name to the `-l...` flag. (E.g. given `libopenal.dll.a`, use **`-lopenal`**.)
 
-   `.dll.a` is an "import library". It's a tiny file that doesn't contain the function definitions, but will silence the `undefined symbol` errors and cause your application to load `.dll` when started, which *does* contain the definitions.
+   `.dll.a` is an "import library". It's a tiny file that doesn't contain the function definitions, but will silence the `undefined symbol` errors and cause your application to load the respective `.dll` when started, which *does* contain the definitions. (Import libraries are not a thing on Linux, where you directly link against `.so`s. Modern MinGW can similarly link `.dll`s directly, but the import libraries are still commonly used.)
 
    Since all `.dll.a`/`.a` files are installed to the same directory (`C:\msys64\clang64\lib`), you normally don't need to manually specify their location. But `-L...` lets you do that if needed (like `-I...` for headers).
 
@@ -225,6 +229,10 @@ Use one of the two options:
 
    This embeds the library into the executable (so it can run without the `.dll`, but your users also can't update the library themselves).
 
-   In most libraries you'll notice that `.dll.a` and `.a` have the same name, so how does `-l` select which one to use? (How does `-lopenal` pick between `libopenal.dll.a` vs `libopenal.a`?) It prefers `.dll.a` by default if it exists. Passing [`-static`](/tooling/articles/debugging_dll_issues.md#static-linking) makes it prefer `.a` for all libraries. (It's possible to configure per library, but I'm not going to explain it here.)
+   In most libraries you'll notice that `.dll.a` and `.a` have the same name, so how does `-l` select which one to use? (How does `-lopenal` pick between `libopenal.dll.a` vs `libopenal.a`?) It prefers `.dll.a` by default if it exists. Passing [`-static`](/tooling/articles/debugging_dll_issues.md#static-linking) makes it prefer `.a` for all libraries, including the implicitly linked standard libraries. (It's also possible to configure it per library: use `-Bstatic` to link all subsequent libraries statically, and `-Bdynamic` to switch back to linking them dynamically.)
 
-Adding the `-l...` flag should fix the error. Run the resulting application to confirm everything works.
+Adding the `-l...` flag should fix the error. Run the resulting application to confirm that everything works.
+
+For any problems at runtime, consult [Debugging DLL issues](./debugging_dll_issues.md). You also need to read that if you're planning to distribute the application to other people.
+
+If you want to know how to compile libraries manually, proceed to [here](./using_libraries_compiling_manually.md).
