@@ -33,7 +33,7 @@ You should see a list of files:
 
 Here `/clang64/...` refers to the `C:\msys64\clang64\` directory. You could open that directory and look at the files yourself.
 
-As you can see, you get **headers** (`.h` files), the **compiled library** (`.dll`, `.a`, `.dll.a` on Windows; or `.so`, .`a` on Linux), the **`.pc` file** (see below), and some other things.
+As you can see, you get **headers** (`.h` files), the **compiled library** (`.dll`, `.a`, `.dll.a` on MinGW; or `.so`, `.a` on Linux; or `.dll`, `.lib` on MSVC), the **`.pc` file** (see below), and some other things.
 
 We're particularly interested in the `.pc` file. It describes the compiler flags needed to use this library. If it's missing, you have to guess the flags.
 
@@ -217,7 +217,7 @@ Use one of the two options:
 
    Given `lib__.dll.a`, pass the `__` part of its name to the `-l...` flag. (E.g. given `libopenal.dll.a`, use **`-lopenal`**.)
 
-   `.dll.a` is an "import library". It's a tiny file that doesn't contain the function definitions, but will silence the `undefined symbol` errors and cause your application to load the respective `.dll` when started, which *does* contain the definitions. (Import libraries are not a thing on Linux, where you directly link against `.so`s. Modern MinGW can similarly link `.dll`s directly, but the import libraries are still commonly used.)
+   `.dll.a` is an "import library". It's a tiny file that doesn't contain the function definitions, but will silence the `undefined symbol` errors and cause your application to load the respective `.dll` when started, which *does* contain the definitions. (Import libraries are not a thing on Linux, where you directly link against `.so`s. Modern MinGW can similarly link `.dll`s directly, but the import libraries are still commonly used. MSVC *requires* the use of import libraries, which are named `.lib` there, same as static libraries, so there can be some confusion between the two on MSVC.)
 
    Since all `.dll.a`/`.a` files are installed to the same directory (`C:\msys64\clang64\lib`), you normally don't need to manually specify their location. But `-L...` lets you do that if needed (like `-I...` for headers).
 

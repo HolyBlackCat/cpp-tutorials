@@ -13,7 +13,7 @@ A **"third-party library"** refers to any library than's not the standard librar
 Here's a rough outline:
 
 1. Download its source code.
-2. Compile it to produce a `.dll` and/or `.a`.
+2. Compile it to produce a `.dll` and/or `.a`. (This is on MinGW. On Linux: `.so` and/or `.a`. On MSVC: `.dll` and/or `.lib`.)
 3. `#include` the library header in your source code.
 4. When compiling your code, "link" the library (specify a compiler flag, telling it to use that `.dll` or `.a`).
 
