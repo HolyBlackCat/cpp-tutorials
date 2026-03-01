@@ -4,7 +4,7 @@ First, create the source code file.
 
 Open Notepad (or any other text editor such as Visual Studio Code; not Word though!).
 
-Create a new file and paste following C++ code into it: (or the one from your book)
+Create a new file and paste following C++ code into it: (or any example from your book)
 ```cpp
 #include <iostream>
 
@@ -18,7 +18,7 @@ This will `Hello!` when ran, but first you need to learn **how** to run it.
 
 For now, press `File` → `Save As` or <kbd>Ctrl</kbd><kbd>S</kbd> to save the file.
 
-**Note to VSC users:** Don't try to "run" the file using the VSC itself yet; for now we're just using it to create the file. Don't be alarmed by any red squiggles that VSC displays, we'll fix them later.
+**Note to VSC users:** Don't try to "run" the file using the VSC itself yet; for now we're just using it to create the file. Don't be alarmed by any red squiggles that VSC displays (if any), we'll fix them later.
 
 ## Saving the file
 
@@ -87,4 +87,4 @@ You can combine the two commands together: `clang++ prog.cpp && ./a`. This will 
 
 You can tell the compiler to use a different executable name using `-o`, for example: `clang++ prog.cpp -o prog` will name the program `prog.exe`. (The order doesn't matter, `clang++ -o prog prog.cpp` works as well. But the executable name must immediately follow `-o`, e.g. `clang++ prog.cpp prog -o` doesn't work. `-o prog` and `-o prog.exe` are equivalent.)
 
-You can run your executable by directly double-clicking `a.exe`. If you see any errors (you probably will at this point), you can consult [Debugging DLL issues](/tooling/articles/debugging_dll_issues.md). Even if you fix this, our test application will quickly close after you run it, before you can see the results. This is the correct behavior for programs that are supposed to be run in the terminal (but if you don't like it, Google for workarounds.)
+You can run your executable by directly double-clicking `a.exe`. If you see any errors (you probably will at this point), you can consult [Debugging DLL issues](/tooling/articles/debugging_dll_issues.md). Even if you fix this, our test application will quickly close after you run it, before you can see the results. This is the correct behavior for programs that are supposed to be run in the terminal (but if you don't like it, Google for workarounds).

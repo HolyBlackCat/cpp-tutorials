@@ -99,7 +99,7 @@ Oh well. I suggest uninstalling whatever you have to avoid interference, then co
 
 2. **Start MSYS2.**
 
-   The "Start" menu will have several different shortcuts, for now you want **`MSYS2 CLANG64`** (read about the difference [here](/tooling/articles/msys2_environments.md)).
+   The "Start" menu will have several different shortcuts, for now you want **`MSYS2 CLANG64`** (read about the differences [here](/tooling/articles/msys2_environments.md)).
 
    ![msys2 clang64 shortcut](/tooling/images/msys2_env_shortcuts.png)
 

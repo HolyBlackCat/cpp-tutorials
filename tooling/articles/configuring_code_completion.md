@@ -20,6 +20,8 @@ The two most popular extensions for C/C++ code completion are:
 
 We will be installing Clangd. *([Why Clangd?](why_clangd.md))*
 
+If you already have the stock (Microsoft's) C/C++ extension, I recommend uninstalling it first, but it's not *strictly* necessary.
+
 ## Installing Clangd
 
 Clangd needs two parts to work:
@@ -115,13 +117,15 @@ By default Clangd will suggest you certain common code patterns, or "snippets". 
 
 [![code completion snippets](/tooling/images/clangd_snippet_suggestions.png)](/tooling/images/clangd_snippet_suggestions.png)
 
-If you find them annoying like myself, go to the settings, search for *`snippet suggestions`* and disable them.
+If you find them annoying like myself, go to the settings, search for *`snippet suggestions`* and disable them (set them to `none`).
 
 ### Hiding the `.cache` directory
 
-If you use `File`→`Open Folder...` and look at the `Explorer` tab, you will see that Clangd has created a `.cache` directory to store its internal data next to your source code.
+You might eventually see a `.cache` directory in your project directory, created by Clangd. (It doesn't seem to do it for lone `.cpp` files though.)
 
-You can hide this directory from Explorer by going to the settings, searching for `files exclude`, pressing `Add Pattern` and adding `.cache/` to the list.
+It stores some of its internal files there.
+
+You can hide this directory in VSC by going to the settings, searching for `files exclude`, pressing `Add Pattern` and adding `.cache/` to the list.
 
 ### Fixing the broken sticky scroll
 
@@ -142,7 +146,7 @@ This is what the Sticky Scroll is supposed to do.
 
 But there is a bug ([1](https://github.com/clangd/clangd/issues/2221), [2](https://github.com/microsoft/vscode-cpptools/issues/13574)) that might cause a lone `{` to be displayed there instead (instead of `int main()`), which isn't useful. This happens if you have the Microsoft's C++ extension installed in addition to Clangd.
 
-To fix this, either uninstall the Microsoft's C++ extension (which isn't useful, as Clangd and other extensions I recommend do all the same things). Or if you want to keep it, press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`Preferences: Open User Settings (JSON)`, and add the following fragment into it: (as recommended by one of the links above)
+To fix this, either uninstall the Microsoft's C++ extension (you don't need it, as Clangd and other extensions I recommend do all the same things). Or if you want to keep it, press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`Preferences: Open User Settings (JSON)`, and add the following fragment into it: (as recommended by one of the links above)
 ```json
 "[cpp]": {
     "editor.stickyScroll.defaultModel": "outlineModel",

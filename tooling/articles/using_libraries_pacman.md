@@ -84,7 +84,9 @@ If everything is done correctly, it should compile without any errors.
 
 **NOTE:** While most compiler flags are order-independent, in some cases it might be important to have `-l...` to the right of any `.cpp`/`.c`/`.o` files. (If you're using the [LD linker as opposed to LLD](/tooling/articles/msys2_environments.md#linker).)
 
-If you're curious, here's a full program that plays a short beep using OpenAL. Try running it. For now, you don't have to understand it
+**NOTE:** To avoid having to paste the flags manually, you can run the compiler this way: `clang++ prog.cpp $(pkg-config --libs --cflags openal)` (if using [Powershell](/tooling/articles/terminal_for_dummies.md), use `$(...).Split()` instead of just `$(...)`).
+
+If you're curious, here's a full program that plays a short beep using OpenAL. Try running it. For now, you don't have to understand it.
 
 <details><summary>Code</summary>
 

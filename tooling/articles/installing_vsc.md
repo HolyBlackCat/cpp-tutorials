@@ -2,7 +2,7 @@
 
 ## What is an IDE?
 
-**"IDE"** stands for "integrated development environment". It is a text editor (like Notepad or Word) with additional features useful for programming. "Integrated" means it *combines* together various features.
+**"IDE"** stands for "integrated development environment". They are text editors (similar to Notepad or Word) with additional features useful for programming. "Integrated" means it *combines* together various programming-related features.
 
 Some of the popular IDEs are: Visual Studio Code, Visual Studio (don't confuse the two!), CLion, Xcode, etc.
 

@@ -8,7 +8,7 @@ Don't install any extensions VSC suggests you yet, we'll get to that later.
 
 Create a .cpp file in VSC and try to compile it in the VSC terminal, [like you did before in the MSYS2 terminal](/tooling/articles/compiling_in_terminal.md).
 
-Running the compiler (`clang++ prog.cpp -o prog`) should result in this error:
+Running the compiler (`clang++ prog.cpp -o prog`; or `g++ prog.cpp -o prog` if you're using GCC) should result in this error:
 ```powershell
 PS C:\code> clang++ prog.cpp -o prog
 clang++ : The term 'clang++' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is
