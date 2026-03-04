@@ -348,24 +348,263 @@ Searches for modules where?|In directory `./gcm.cache/` by default.<br/>Can over
 Proper two-phase compilation|❌|✅|❌
 
 
-## How the build system examines the module files
+## How the build systems scan the source files
 
-To ensure the correct build order, a build system naturally needs to know:
+To ensure the correct build order, a build system naturally needs to know, for each `.cpp`/`.cppm` file:
 
-* The full list of named modules.
+1. Whether it's a module unit, and if so, what kind, and its module name and partition name if any. We then need to create a reverse mapping from module name + partition name back to the filename.
 
-* For each named module, which file is the primary interface unit, and map the module partition names into the files defining them (both interface partitions and implementation partitions).
+2. What module units does it import (directly, not recursively).
 
-This information needs to be determined before any compilation can take place.
+This is in addition to the pre-modules requirement of knowing the list of headers that a file includes recrusively, but as usual this is only needed *after* the initial compilation, and is a byproduct of the compilation, unlike (1) and (2), which need to be collected for all files before the compilation.
 
-Each individual `.cpp`/`.cppm` file needs to be scanned to determine if it's a module unit and what kind of it, if any.
+(1) and (2) need to be determined before any compilation and BMI generation can take place.
 
-* GCC:
+### Scanning for module information
 
-  * You can get some information in Makefile style using `g++ -M -fmodules 1.cpp`, but the format is confusing and GCC-specific.
+The standard format for this information is JSON-based, it's called [`P1689R5`](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1689r5.html), named after the proposal that introduced it.
 
-  * To use the standard `P1689R5` format, use `g++ 1.cpp -M -fmodules -fdeps-format=p1689r5 -fdeps-file=1.txt -fdeps-target=a.o`. The `fdeps-target=a.o` is optional, and justs the output filename reported in the result.
+Both GCC, Clang, and MSVC support this format, but some of them also have other non-standard formats.
 
-    This sadly prints some garbage to stdout, which must be discarded.
+Notably this format doesn't contain a list of included headers. You need to obtain this as usual when compiling, in compiler-specific formats.
 
-* Clang:
+Notice that this scan has to be performed before any BMIs are built, so it doesn't consume any BMIs.
+
+#### GCC, non-standard
+
+```sh
+g++ a.cppm -std=c++20 -M -fmodules
+```
+
+This lists both the provided and imported modules, and also the included headers, in the classical Makefile-like format (that's used by GCC and Clang to report included headers).
+
+It seems the GCC people have came up with a way to amend this format to include module information.
+
+Since it's GCC-specific, I won't dig too deep into it.
+
+#### MSVC, non-standard
+
+MSVC uses `/c /sourceDependencies...` for this, where `...` is either a filename or `-` to print the information to stdout.
+
+This outputs both the provided and imported modules, and also included headers, in a non-standard MSVC-specific JSON format.
+
+Interestingly, this requires passing `/interface` or `/internalPartition` to interface untis and internal partition units respectively, but I'd hope to obtain this information for this very flag, which makes it useless for handling modules.
+
+#### GCC, standard P1689R5
+
+```sh
+g++ a.cppm -std=c++20 -M -fmodules -fdeps-format=p1689r5 -fdeps-file=a.json
+```
+This writes the description to `a.json`.
+
+You can also add `-fdeps-target=a.o` to adjust the output filename reported in the result, but said filename is not very useful.
+
+This sadly prints unwanted information to stdout, so it has to be silenced. The compiler errors if any go to stderr, so we don't lose anything. The stdout output can be redirected with `-o`, but since it's not useful, `>/dev/null` seems more promising.
+
+#### MSVC, standard P1689R5
+```sh
+cl a.cppm /EHsc /std:c++latest /scanDependenciesa.json /TP
+```
+This writes the description to `a.json`.
+
+MSVC seems to have no equivalent to `-fdeps-target=...`, so the output filename reported in the JSON can't be adjusted, but again it doesn't seem to be very useful.
+
+#### Clang, standard P1689R5
+
+Clang ships a separate utility called `clang-scan-deps` for this:
+```sh
+clang-scan-deps -format=p1689 -o a.json -- clang++ a.cppm -std=c++20
+```
+As is usual with Clang-based utilities, the part after `--` is the simulated compiler command.
+
+This writes the JSON to `a.json`. Omitting `-o ...` writes it to stdout instead.
+
+Adding `-o ...` after `--` changes the output filename reported in the JSON, but again that doesn't seem to be very useful.
+
+Omitting `-format=p1689` outputs the included headers instead, in Makefile-like style. Unlike GCC, this doesn't add module information.
+
+### Example scan results
+
+Let's look at the scan results of this simple module unit:
+```cpp
+export module A;
+import B1;
+import B2;
+import :P1;
+import :P2;
+```
+
+We get the following json:
+
+```json
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "a.out",
+      "provides": [
+        {
+          "is-interface": true,
+          "logical-name": "A",
+          "source-path": "a.cppm"
+        }
+      ],
+      "requires": [
+        {
+          "logical-name": "B1"
+        },
+        {
+          "logical-name": "B2"
+        },
+        {
+          "logical-name": "A:P1"
+        },
+        {
+          "logical-name": "A:P2"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}
+```
+
+Then with `export module A:P;`:
+
+```json
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "a.out",
+      "provides": [
+        {
+          "is-interface": true,
+          "logical-name": "A:P",
+          "source-path": "a.cppm"
+        }
+      ],
+      "requires": [
+        {
+          "logical-name": "B1"
+        },
+        {
+          "logical-name": "B2"
+        },
+        {
+          "logical-name": "A:P1"
+        },
+        {
+          "logical-name": "A:P2"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}
+```
+
+And with `module A:P;`:
+
+```json
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "a.out",
+      "provides": [
+        {
+          "is-interface": false,
+          "logical-name": "A:P",
+          "source-path": "a.cppm"
+        }
+      ],
+      "requires": [
+        {
+          "logical-name": "B1"
+        },
+        {
+          "logical-name": "B2"
+        },
+        {
+          "logical-name": "A:P1"
+        },
+        {
+          "logical-name": "A:P2"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}
+```
+
+And with `module A;`. Notice the lack of `"provides"`, and the implicit import of `A`.
+
+```json
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "a.out",
+      "requires": [
+        {
+          "logical-name": "B1"
+        },
+        {
+          "logical-name": "B2"
+        },
+        {
+          "logical-name": "A:P1"
+        },
+        {
+          "logical-name": "A:P2"
+        },
+        {
+          "logical-name": "A"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}
+```
+
+
+And lastly a non-module unit:
+```cpp
+import B1;
+import B2;
+```
+
+```json
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "a.out",
+      "requires": [
+        {
+          "logical-name": "B1"
+        },
+        {
+          "logical-name": "B2"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}
+```
+
+### Analyzing scan results
+
+What can we see from those results?
+
+1. Importable module units are indicated by the presence of `rules.provides: [...]`.
+
+   * Out of those, interface units are indicated by `rules.provides.is-interface: true/false`.
+
+2. Partitions are handled for us, they don't need to be special-cased. Similarly, the automatic `import` in the non-partition implementation unit is automatic.
+
+3. Non-partition implementation units are indistinguishable from non-module TUs.
