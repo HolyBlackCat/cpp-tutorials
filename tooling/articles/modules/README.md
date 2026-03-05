@@ -1,149 +1,375 @@
-# C++20 modules for build system enthusiasts
+# How C++20 modules are compiled
 
-I was curious about C++20 modules, but I don't just want to flip a magical switch in CMake and have them work. I want to actually understand how they work on the build system level, to be able to build them manually with a makefile if I want to, and so on.
+## Pre-C++20 compilation model
 
-So I did some research and documented the results here.
+Each `.cpp` file is compiled independently. As a byproduct of the compilation, you get a list of headers that were included directly or indirectly.
 
-## What are modules
+Then on a rebuild, you check the modification times of the headers from that list, and if any of the headers were modified, you recompile the respective the `.cpp` file.
 
-The TL;DR is that modules are a new mechanism that was added to C++20 that can replace headers, bringing faster compilation times and isolating components from each other (no cross-talk via macros like we had between headers).
+## What are C++20 modules
 
-Large C++ projects are often split into several source directories, similar to this one:
+Modules are an alternative to headers, but they need to be precompiled (into a compiler-specific format) before being imported, and importing those precompiled files is way faster than including headers.
 
-```cpp
-A/
-├── A.h
-│       #pragma once
-│       #include "foo.h"
-│       #include "bar.h"
-│
-├── foo.h
-│       #pragma once
-│       void foo();
-├── foo.cpp
-│       #include "foo.h"
-│       void foo() {}
-│
-├── bar.h
-│       #pragma once
-│       void bar();
-├── bar.cpp
-│       #include "bar.h"
-│       #include "internal.h"
-│       void bar() {internal();}
-│
-├── internal.h
-│       #pragma once
-│       void internal();
-├── internal.cpp
-│       #include "internal.h"
-│       void internal() {}
-│
-├── internal2.h
-│       #pragma once
-│       void internal2();
-└── internal2.cpp
-        #include "internal2.h"
-        void internal2() {}
-```
+Different compilers have different conventions for what to call those precompiled module files. I'm going to call them BMI, following Clang's convention.
 
-Here:
-
-* `A.h` is the main header that includes all other **public** headers in this directory. (So `foo.h` and `bar.h` in this example.)
-
-   Those are done for convenience, not everyone has those.
-
-* `foo.h|.cpp`, `bar.h|.cpp`, `internal.h|.cpp`, and `internal2.h|.cpp` are the usual header+source pairs, except that `internal.h` and `internal2.h` are considered to be an internal header that the users shouldn't include directly (those are often placed in a `detail` subdirectory).
-
-An entire such directory maps to a single C++20 module (more correctly called a **"named module"** — here and below bold `"..."` indicate official terms from the standard).
-
-The separation between the files doesn't change. You get the following file structure:
-
-```cpp
-A/
-├── A.cppm
-│       export module A;
-│       export import :foo;
-│       export import :bar;
-│
-├── foo.cppm
-│       export module A:foo;
-│       export void foo();
-├── foo.cpp
-│       module A;
-│       void foo() {}
-│
-├── bar.cppm
-│       export module A:bar;
-│       export void bar();
-├── bar.cpp
-│       module A;
-│       import :internal;
-│       void bar() {internal();}
-│
-├── internal.cppm
-│       module A:internal;
-│       void internal();
-├── internal.cpp
-│       module A;
-│       import :internal;
-│       void internal() {}
-│
-├── internal2.cppm
-│       module A:internal2;
-│       void internal2();
-└── internal2.cpp
-        module A;
-        import :internal2;
-        void internal2() {}
-```
-
-Here `A` is the module name. It's either a single identifier or a `.`-separated list of identifiers, so e.g.: `A` or `A.B` or `A.B.C`. The `.` doesn't have a special meaning, it's just a part of the name. It doesn't have to match the directory name, but it probably should (prefix it with your project's name).
-
-The first line of each of those files (either `module ...` or `export module ...`) is called the **"module declaration"**.
-
-All of the files with module declarations in them are collectively called the **"module units"** (since each of them needs to be compiled, unlike headers, each is also a TU — a translation unit).
-
-The `.cppm` files with `export module` in them are the **"module interface units"**. Again, unlike headers, those need to be compiled.
-
-The one `.cppm` file with `export module A;` is the **"primary module interface unit"**. This is the only required part of a module. This is the only part that's importable from outside of the module. It's supposed to `export import` all other interface units in a module (possibly indirectly, see below) (the program is IFNDR otherwise, but the worst this could do is cause build system issues, if your build system can't handle this). While not shown here, the primary module interface unit can also declare things directly, instead of just importing other files.
-
-The non-primary interface units are informally called the **partition interface units**. The part after `:` is the **"partition name"**, and has the same rules as module names (a `.`-separated list of identifiers). The partition names are internal to the module, and need to be unique only within this module. The partition name should probably match the filename, but it doesn't have to. Partition interface units can `export import` each other, as long as there's no circular dependencies between them (so the primary interface unit doesn't have to reexport all partitions directly, it can also do it indirectly through interface partitions).
-
-The `.cpp` files with `module A;` and `module A:blah;` in them are the **"module implementation units"**: the regular ones and (informally) the **partition implementation units** (or **internal partition units**) respectively.
-
-The regular implementation units implicitly `import A;` (import the entire module), while the partition implementation units don't.
-
-The partition implementation units are basically a replacement for internal headers, as their contents can't be used outside of the module (unlike interface partitions, they can't be `export import`ed, only `import`ed).
-
-So you have 4 new kinds of files now: (4 kinds of module units)
-
-&nbsp;|<code><b>export</b> module ...</code><br/>("module interface unit")|<code>module ...</code><br/>("module implementation unit")
+Compiler|Name|Default extension
 ---|---|---
-`[export] module A;`|"primary module interface unit"<br/>Must reexport all non-primary interface units.|Most implementations go here.<br/>Implicitly does `import A;`.
-<code>\[export\] module A<b>:blah</b>;</code><br/>("module partition unit")|Must be reexported by the primary module interface unit.<br/>Can be imported and export-imported only by other TUs in the same named module.|Can be imported only by other TUs in the same named module.
+Clang|BMI (built module interface)|`.gcm` (GNU compiled module?)
+GCC|CMI (compiled module interface)|`.pcm` (precompiled module)
+MSVC|IFC (stands for "interface"?)|`.icf` (stands for "interface"?)
 
-The 3 kinds other than the non-partition implementation units are called **importable module units**, you can `import` those (partitions — only in the same named module).
+Unlike headers, modules don't leak macros: importing a module doesn't give you its macros, and importing a module isn't affected by the macros you have defined.
 
-I'm using [the file extensions recommended by Clang](https://clang.llvm.org/docs/StandardCPlusPlusModules.html#file-name-requirements), which are `.cppm` for importable units and `.cpp` for non-importable ones (for non-partition implementation units), but this isn't mandatory, and I'm not sure if the C++ world has settled on a single convention yet.
+In addition to a BMI, compiling a module also produces an object file (`.o`), which should be linked into the final executable. (If the module doesn't contain function definitions and such, then forgetting to link the `.o` doesn't error.)
 
-The separation between declarations and definitions works the same way with modules as it did with headers and `.cpp` files: you should do it if you value your incremental build times, but if you want your small functions to be inline-able, they should be defined in the interface units.
+## A simple example
 
-Compilers and build systems **can** be clever and improve incremental build speed by not rebuilding the TUs that import the module units that haven't changed, but this needs both compiler support and build system support. Until you make sure your build system and all compilers you're using can do this, you should keep separating declarations into the interface units.
+```cpp
+// a.cppm
+export module A;
 
-## The build procedure
+export int sum(int a, int b) {return a + b;}
+```
+```cpp
+// 1.cpp
+#include <iostream>
+import A;
 
-All module TUs are compiled, even the interface units (unlike headers, which are not compiled individually, only as a part of `.cpp` files they're included into).
+int main()
+{
+    std::cout << sum(10, 20) << '\n';
+}
+```
 
-In addition to an `.o` file, you also need to produce a BMI (built module interface, this is how Clang calls it; GCC calls it CMI, a compiled module interface; MSVC calls it IFC, which apparently stands for "interface").
+Here are simple instructions how to compile this, a more detailed explanation is provided later.
 
-You need the BMI file to `import` a module unit, so those are only needed for importable units (i.e. excluding non-partition implementation units).
+* Clang
 
-The `.o` file can often end up basically empty, if the module unit just acts as a simple header and doesn't have any definitions in it; then not linking it doesn't cause issues (but it's easier to link them unconditionally).
+  ```sh
+  clang++ a.cppm -std=c++20 -c
+  clang++ 1.cpp -std=c++20 -fmodule-file=A=a.pcm -c
+  clang++ a.o 1.o
+  ```
 
-The BMIs need to be produced in a particular order: imported BMIs need to be produced before the BMIs of units importing them (and before compiling the units importing them).
+* GCC
 
-`.o` and BMI can be produced separately. There are three approaches to compiling modules:
+  ```sh
+  g++ a.cppm -fmodules -std=c++20 -c
+  g++ 1.cpp -fmodules -std=c++20 -c
+  g++ a.o 1.o
+  ```
+
+* MSVC
+
+  ```sh
+  cl /nologo /EHsc a.cppm /TP /std:c++20 /interface /c
+  cl /nologo /EHsc 1.cpp /std:c++20 /c
+  cl a.obj 1.obj
+  ```
+
+In each of those, the first command both produces a BMI and an object file for the module. The second command consumes (imports) that BMI and produces an object file for the file consuming the module. Then the third command links the two object files together. (Notice that with Clang, we need to tell it where to find the BMI for a specific module. More on the differences between compilers later.)
+
+Since a BMI is faster to produce than an object file, compilers can employ various tricks to inform the build system the BMI is ready, so that it can be consumed (by a parallel compilation command) without waiting for the object. More on that later too.
+
+There seems to be no single convention for what the file extension should be. I'm using the Clang's convention of `.cppm`. Since MSVC doesn't understand this extension, I'm using `/TP` to tell it that it's a C++ source file.
+
+`A` is the module name. Module names are `.`-separated lists of identifiers, so `A.B` or `A.B.C` would also be valid names. `.` has no special meaning and is just a part of the name.
+
+Notice that the **"module declaration"** (here and below bold quotes indicate the terms from the C++ standard) — the `export module A;` in this example — must be the first non-empty non-comment line in its source file. The module declaration is considered a preprocessor directive, despite not starting with `#` (but `import ...` isn't one).
+
+Source files (translation units) containing a module declaration are called the **"module units"**.
+
+If you need to include any headers, then you should do following:
+```cpp
+// a.cppm
+module;
+
+#include <iostream>
+
+export module A;
+
+export void SayHello()
+{
+    std::cout << "Hello!\n";
+}
+```
+
+First you announce that this is a module using `module;`, include any headers you need, and *then* add a module declaration followed by your own code.
+
+The optional part starting with `module;` and until the module declaration is called the **"global module fragment"**.
+
+The part starting from the module declaration (regardless of whether the global module fragment is present) is called the **"module unit purview"** of this module unit.
+
+All code in global module fragments and in non-module TUs is considered to be belong to a single imaginary global module.
+
+Another option for including headers seems to be to wrap them in `extern "C++" { ... }`. While this works, Clang and MSVC warn about includes after module declarations, and don't silence the warning even in the presence of `extern "C++"`.
+
+## Kinds of module units
+
+There are 4 kinds of module units, having different kinds of module declarations. They can share the same module name, and all module units sharing the name are called a single **"named module"** (or informally just a "module"). From outside of a named module, that named module is only importable in one piece.
+
+1. `export module A;` is the **"primary module interface unit"**. This is the only required module unit in a named module, and there can only be one per named module.
+
+   This is what is imported by `import A;`, and is the only thing that can be imported from outside of this named module.
+
+2. `module A;` is the **"module implementation unit"** (a non-"partition" one, more on those later). You can have **more than one** of those.
+
+   ```cpp
+   // a.cppm
+   export module A;
+
+   export void foo();
+   ```
+   ```cpp
+   // a_foo.cpp
+   module A;
+
+   void foo() {....}
+   ```
+   You can put implementations into those, like you did with `.h`/`.cpp` prior to modules.
+
+   Those are not importable, neither from outside nor from inside the module.
+
+   `module A;` implicitly does `import A;` (to import the primary interface unit), and it's an error to add your own redundant `import A;`.
+
+   Depending on how clever your build system is, it may or may not avoid rebuilding dependent TUs even if you define functions directly in the interface unit. Moving the definitions to an implementation unit should make this guaranteed, and possibly a bit faster for large module units.
+
+3. `export module A:P;` is a non-primary **"module interface unit"** and a **"partition unit"**, or informally a "partition interface unit". There can be multiple of those.
+
+   The purpose of those is to split large interfaces, to avoid having everything in the primary inteface unit.
+
+   ```cpp
+   // a.cppm
+   export module A;
+
+   export import :P1;
+   export import :P2;
+   ```
+   ```cpp
+   // a_p1.cppm
+   export module A:P1;
+
+   export void foo() {....} // Define here or in a separate implementation unit.
+   ```
+   ```cpp
+   // a_p2.cppm
+   export module A:P2;
+
+   export void bar() {....} // ^
+   ```
+
+   As you can see, those can be imported inside of the same named module. But not from outside (at least not directly, but you can import the primary interface unit from outside that reexports those).
+
+   `P` is a **"partition name"**. Like a module name, it's a `.`-separated list of identifiers, with `.` having no special name and just being a part of the name.
+
+   Partition names must be unique per named module.
+
+   The C++ standard requires that all partition interface units are reexported from the primary interface unit (IFNDR otherwise), but seemingly nothing bad could happen if you forget, it just makes them pointless if you do so. Notice that they can reexport each other, so the primary interface unit doesn't have to do it **directly**, it can also do so indirectly.
+
+4. `module A:P;` is a **"module implementation unit"** like 2, and a **"module partition"** like 3, informally an **internal partition unit**.
+
+   Those are a bit strange, they seem to be intended to be used for internal utilities (internal to this named module), to share code between 2's (between non-partition implementation units).
+
+   ```cpp
+   // a.cppm
+   module A;
+
+   export void foo();
+   ```
+   ```cpp
+   // a.cpp
+   module A;
+   import :Helpers;
+
+   void foo() {helper();}
+   ```
+   ```cpp
+   // a_helpers.cppm
+   module A:Helpers;
+
+   void helper();
+   ```
+   ```cpp
+   // a_helpers.cpp
+   module A;
+   import :Helpers; // Not strictly necessary in this example, but necessary in general.
+
+   void helper() {}
+   ```
+
+   Those are importable only inside of the same named module, like interface partitions. But unlike interface partitions those can't be exported from the primary interface unit.
+
+   The partition name `P` must be unique per named module across both interface and implementation partitions.
+
+To summarize summary:
+
+&nbsp;|`export` (interface)|no `export` (implementation)
+---|---|---
+no `:Partition`|(1) primary interface unit|(2) implementation unit
+`:Partition`|(3) partition interface unit|(4) internal partition unit
+
+* `1` and `3` are <b>"interface module unit"</b>s.
+
+* `3` and `4` are <b>"partition unit"</b>s.
+
+* `1`, `3`, `4` (but not `2`) are **importable units**, though only `1` can be imported outside of its named module.
+
+  Clang's convention is to use `.cppm` for importable units and `.cpp` for non-importable ones.
+
+## The build procedure for modules
+
+To correctly handle dependencies between modules, all `.cpp`/`.cppm` need to be scanned, to determine what importable units they import, and if they are themselves importable (and if so, under what name).
+
+The scan results for a file need to be updated when the file changes, or when any headers that it includes (maybe indirectly) are modified (because you could wrap an import in an `#ifdef` affected by an include). We **don't** need to rescan when the source files of the module units imported by this file are modified, though.
+
+Then the file needs to be rebuilt if it had to be rescanned, or if any of the source files of the module units it imports were modified, recursively.
+
+But if rebuilding a BMI produced a bitwise identical hash (a build system should compare hashes), then TUs importing it don't have to be rebuilt. This can happen e.g. if the imported module unit defines a function, and only its body has changed, assuming the compiler is sufficiently clever to not have the body affect the BMI.
+
+## Scanning dependencies
+
+### Clang
+```sh
+clang-scan-deps -format=p1689 -o a.json -- clang++ a.cppm -std=c++20 -M -MP -MF a.d -MQ a.tgt -o a.o
+```
+Writes P1689R5 module deps to `a.json`, based on `-o ...` before `--`. Omit or `-o -` to print to `stdout`.
+
+Writes header deps to `a.d`, based on `-MF ...`. Change to `-MF -` to print to `stdout` (omitting prints to `a.o` per `-o`).
+
+`-o ...` selects the target filename reported to P1689R5.
+
+`-MQ ...` selects the target filename reported to header deps.
+
+
+### GCC
+
+```cpp
+g++ a.cppm -std=c++20 -M -MP -fmodules -fdeps-format=p1689r5 -fdeps-file=a.json -fdeps-target=a.o -MQ a.tgt -MF a.d
+```
+Writes P1689R5 module deps to `a.json`, based on `-fdeps-file=...`, change to `-fdeps-file=-` to print to stdout (omitting automatically chooses the filename).
+
+Writes header deps to `a.d`, based on `-MF ...`. Omit or `-MF -` to print to stdout. (`-o` seems to be equivalent to `-MF`).
+
+`-fdeps-target=...` selects the target filename reported to P1689R5.
+
+`-MQ ...` selects the target filename reported to header deps.
+
+Don't strictly need `-std=c++20`, but it's weird to use modules before C++20.
+
+Omitting `-fdeps-format=p1689r5` will output module information in some curious GCC-specific Makefile-style format, to the same file as header deps.
+
+
+### MSVC
+
+```cpp
+cl a.cppm /nologo /EHsc /std:c++latest /scanDependencies a.json /sourceDependencies a.d /TP /Foa.tgt
+```
+
+Writes P1689R5 module deps to `a.json`, based on `/scanDependencies ...`. Pass `-` to print to stdout.
+
+Writes header deps to `a.d`, based on `/sourceDependencies ...`. Pass `-` to print to stdout.
+
+`/Fo...` selects the target filename reported to P1689R5.
+
+The header deps are in Microsoft's own JSON format. It doesn't include the target filename, so there's no flag to change it.
+
+Don't strictly need `/nologo /EHsc`.
+
+MSVC doesn't understand the `.cppm` extension by default, using `/TP` to force it to assume the input is C++ code. You can omit this for `.cpp` files if you want.
+
+## P1689R5 schema summary
+
+```jsonc
+{
+    "version": 1, // 0 on GCC
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "a.o", // As chosen by a flag, see above.
+            "outputs": [...], // MSVC only, not very useful.
+            "provides": [ // This module. Only exists if this is an importable module unit.
+                {
+                    "logical-name": "A", // Name of this module unit.
+                    "source-path": "a.cppm", // This source file. GCC doesn't report this.
+                    "is-interface": true // True if `export module`, false if `module ...`. The latter only appears for partitions, since for non-partitions the entire `provides` is skipped.
+                }
+            ],
+            "requires": [ // Imported modules. On Clang, this array is omitted if empty.
+                {"logical-name": "B1"},
+                {"logical-name": "B2"},
+                // ...
+            ]
+        }
+    ]
+}
+```
+When partitions are involed, `:...` is just appended to the name string, so they don't need to be speecial-cased.
+
+The implicit `import A;` in files starting with `export A;` is implicitly added to `requires`.
+
+Notice that `"requires": [...]` can't differentiate between `import`s and `export import`s, this doesn't matter for a build system.
+
+## Single-stage compilation
+
+All three compilers can do this, and this is the simplest approach.
+
+"Single stage" refers to the BMI and the `.o` being produced by the same compiler invocation.
+
+I'm told that GCC is able to report in real-time when the BMI is done (it can communicate so [over sockets or otherwise](https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Module-Mapper.html)), but implementing this into a build system sounds like too much effort, so I'm going to ignore this in this tutorial.
+
+### Clang
+
+Clang treats `.cppm` and `.cpp` differently, as importable module units and as non-importable/non-module units respectively. This can be overridden using `-xc++-module` or `-xc++` before the source filename respectively. Trying to compile an importable module unit as `.cpp`/`-xc++` doesn't error, but produces no BMI. Trying to compile a non-importable module unit or a non-module as a `.cppm`/`-xc++-module` errors.
+
+Example compilation command for an importable unit:
+```sh
+clang++ a.cppm -std=c++20 -fmodules-reduced-bmi -c -o a.o -fmodule-output=a.pcm
+```
+`-std=c++20` or newer is needed.
+
+`-fmodules-reduced-bmi` enables a more optimal module format, which is the default since Clang 22. This flag is ignored on non-importable module units and on non-modules.
+
+`-fmodule-output=...` controls where the BMI is placed. The default is to use the same location as `-o` with a modified extension.
+
+Any time you import a module unit (no matter if in `.cpp` or in `.cppm`), you must add `-fmodule-path=NAME=PATH` for that module unit, and for everything it imports **recursively**.
+
+### GCC
+
+GCC treats and `.cpp` and `.cppm` the same way.
+
+GCC needs `-fmodules` to export or import modules.
+
+GCC somehow allows modules in any language version, but passing `-std=c++20` just in case is still a good idea.
+
+You don't need any special flags when compiling a BMI, the following command just works.
+```sh
+g++ a.cppm -std=c++20 -fmodules -c a.o
+```
+GCC automatically decides where to place the BMIs and where to import them from, it puts them in the `./gcm.cache` directory. So no special flags are needed when importing the modules.
+
+To override where the BMIs are stored, you can provide a **module map** file, which is just a list of all module units, one per line: name and BMI path, separated by a space, e.g.:
+```
+A blah/a.gcm
+A:P bleh/a_p.gcm
+```
+And so on. You can also add `$root foo/bar` as the first line, to prepend that directory (`foo/bar`) to every other path in the file.
+
+This file can then be passed to `-fmodule-mapper=...` to any GCC command that may export or import a module.
+
+GCC can also [interact with programs over sockets or otherwise](https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Module-Mapper.html) instead of using a simple file, but this sounds like too much work for me.
+
+MSVC
+...
+
+
+
+
+
+
+---
+
+
+
 
 Approach|GCC|Clang|MSVC|Comment
 ---|---|---|---|---
@@ -338,7 +564,7 @@ I'm not sure if this makes sense over the previous model, or if this is slower d
 
 You can imitate this model on older Clangs by taking step 1 from the previous section, and then ignoring/deleting the resulting full BMI.
 
-## Compiler difference summary
+## Module compilation on different compilers
 
 &nbsp;|GCC|Clang|MSVC|Comment
 ---|---|---|---|---
@@ -348,263 +574,14 @@ Searches for modules where?|In directory `./gcm.cache/` by default.<br/>Can over
 Proper two-phase compilation|❌|✅|❌
 
 
-## How the build systems scan the source files
-
-To ensure the correct build order, a build system naturally needs to know, for each `.cpp`/`.cppm` file:
-
-1. Whether it's a module unit, and if so, what kind, and its module name and partition name if any. We then need to create a reverse mapping from module name + partition name back to the filename.
-
-2. What module units does it import (directly, not recursively).
-
-This is in addition to the pre-modules requirement of knowing the list of headers that a file includes recrusively, but as usual this is only needed *after* the initial compilation, and is a byproduct of the compilation, unlike (1) and (2), which need to be collected for all files before the compilation.
-
-(1) and (2) need to be determined before any compilation and BMI generation can take place.
-
-### Scanning for module information
-
-The standard format for this information is JSON-based, it's called [`P1689R5`](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1689r5.html), named after the proposal that introduced it.
-
-Both GCC, Clang, and MSVC support this format, but some of them also have other non-standard formats.
-
-Notably this format doesn't contain a list of included headers. You need to obtain this as usual when compiling, in compiler-specific formats.
-
-Notice that this scan has to be performed before any BMIs are built, so it doesn't consume any BMIs.
-
-#### GCC, non-standard
-
-```sh
-g++ a.cppm -std=c++20 -M -fmodules
-```
-
-This lists both the provided and imported modules, and also the included headers, in the classical Makefile-like format (that's used by GCC and Clang to report included headers).
-
-It seems the GCC people have came up with a way to amend this format to include module information.
-
-Since it's GCC-specific, I won't dig too deep into it.
-
-#### MSVC, non-standard
-
-MSVC uses `/c /sourceDependencies...` for this, where `...` is either a filename or `-` to print the information to stdout.
-
-This outputs both the provided and imported modules, and also included headers, in a non-standard MSVC-specific JSON format.
-
-Interestingly, this requires passing `/interface` or `/internalPartition` to interface untis and internal partition units respectively, but I'd hope to obtain this information for this very flag, which makes it useless for handling modules.
-
-#### GCC, standard P1689R5
-
-```sh
-g++ a.cppm -std=c++20 -M -fmodules -fdeps-format=p1689r5 -fdeps-file=a.json
-```
-This writes the description to `a.json`.
-
-You can also add `-fdeps-target=a.o` to adjust the output filename reported in the result, but said filename is not very useful.
-
-This sadly prints unwanted information to stdout, so it has to be silenced. The compiler errors if any go to stderr, so we don't lose anything. The stdout output can be redirected with `-o`, but since it's not useful, `>/dev/null` seems more promising.
-
-#### MSVC, standard P1689R5
-```sh
-cl a.cppm /EHsc /std:c++latest /scanDependenciesa.json /TP
-```
-This writes the description to `a.json`.
-
-MSVC seems to have no equivalent to `-fdeps-target=...`, so the output filename reported in the JSON can't be adjusted, but again it doesn't seem to be very useful.
-
-#### Clang, standard P1689R5
-
-Clang ships a separate utility called `clang-scan-deps` for this:
-```sh
-clang-scan-deps -format=p1689 -o a.json -- clang++ a.cppm -std=c++20
-```
-As is usual with Clang-based utilities, the part after `--` is the simulated compiler command.
-
-This writes the JSON to `a.json`. Omitting `-o ...` writes it to stdout instead.
-
-Adding `-o ...` after `--` changes the output filename reported in the JSON, but again that doesn't seem to be very useful.
-
-Omitting `-format=p1689` outputs the included headers instead, in Makefile-like style. Unlike GCC, this doesn't add module information.
-
-### Example scan results
-
-Let's look at the scan results of this simple module unit:
-```cpp
-export module A;
-import B1;
-import B2;
-import :P1;
-import :P2;
-```
-
-We get the following json:
-
-```json
-{
-  "revision": 0,
-  "rules": [
-    {
-      "primary-output": "a.out",
-      "provides": [
-        {
-          "is-interface": true,
-          "logical-name": "A",
-          "source-path": "a.cppm"
-        }
-      ],
-      "requires": [
-        {
-          "logical-name": "B1"
-        },
-        {
-          "logical-name": "B2"
-        },
-        {
-          "logical-name": "A:P1"
-        },
-        {
-          "logical-name": "A:P2"
-        }
-      ]
-    }
-  ],
-  "version": 1
-}
-```
-
-Then with `export module A:P;`:
-
-```json
-{
-  "revision": 0,
-  "rules": [
-    {
-      "primary-output": "a.out",
-      "provides": [
-        {
-          "is-interface": true,
-          "logical-name": "A:P",
-          "source-path": "a.cppm"
-        }
-      ],
-      "requires": [
-        {
-          "logical-name": "B1"
-        },
-        {
-          "logical-name": "B2"
-        },
-        {
-          "logical-name": "A:P1"
-        },
-        {
-          "logical-name": "A:P2"
-        }
-      ]
-    }
-  ],
-  "version": 1
-}
-```
-
-And with `module A:P;`:
-
-```json
-{
-  "revision": 0,
-  "rules": [
-    {
-      "primary-output": "a.out",
-      "provides": [
-        {
-          "is-interface": false,
-          "logical-name": "A:P",
-          "source-path": "a.cppm"
-        }
-      ],
-      "requires": [
-        {
-          "logical-name": "B1"
-        },
-        {
-          "logical-name": "B2"
-        },
-        {
-          "logical-name": "A:P1"
-        },
-        {
-          "logical-name": "A:P2"
-        }
-      ]
-    }
-  ],
-  "version": 1
-}
-```
-
-And with `module A;`. Notice the lack of `"provides"`, and the implicit import of `A`.
-
-```json
-{
-  "revision": 0,
-  "rules": [
-    {
-      "primary-output": "a.out",
-      "requires": [
-        {
-          "logical-name": "B1"
-        },
-        {
-          "logical-name": "B2"
-        },
-        {
-          "logical-name": "A:P1"
-        },
-        {
-          "logical-name": "A:P2"
-        },
-        {
-          "logical-name": "A"
-        }
-      ]
-    }
-  ],
-  "version": 1
-}
-```
-
-
-And lastly a non-module unit:
-```cpp
-import B1;
-import B2;
-```
-
-```json
-{
-  "revision": 0,
-  "rules": [
-    {
-      "primary-output": "a.out",
-      "requires": [
-        {
-          "logical-name": "B1"
-        },
-        {
-          "logical-name": "B2"
-        }
-      ]
-    }
-  ],
-  "version": 1
-}
-```
-
 ### Analyzing scan results
 
 What can we see from those results?
 
-1. Importable module units are indicated by the presence of `rules.provides: [...]`.
+1. Importable module units are indicated by the presence of `rules[0].provides: [...]`.
 
-   * Out of those, interface units are indicated by `rules.provides.is-interface: true/false`.
+   * Out of those, interface units are indicated by `rules[0].provides[0].is-interface: true/false`.
 
 2. Partitions are handled for us, they don't need to be special-cased. Similarly, the automatic `import` in the non-partition implementation unit is automatic.
 
-3. Non-partition implementation units are indistinguishable from non-module TUs.
+3. Non-partition implementation units are indistinguishable from non-module TUs (apart from the fact that they can't import partitions, but a module unit doesn't necessarily import those).
