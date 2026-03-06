@@ -238,11 +238,11 @@ The format itself seems to allow for scanning multiple source files by a single 
 
 ### Clang
 ```sh
-clang-scan-deps -format=p1689 -o a.json -- clang++ a.cppm -std=c++20 -M -MP -MF a.d -MQ a.tgt -o a.o
+clang-scan-deps -format=p1689 -o a.json -- clang++ a.cppm -std=c++20 -M -MP -MF a.d -MQ a.mtgt -o a.dtgt
 ```
 Writes P1689R5 module deps to `a.json`, based on `-o ...` before `--`. Omit or `-o -` to print to `stdout`.
 
-Writes header deps to `a.d`, based on `-MF ...`. Change to `-MF -` to print to `stdout` (omitting prints to `a.o` per `-o`).
+Writes header deps to `a.d`, based on `-MF ...`. Change to `-MF -` to print to `stdout` (omitting prints to `a.dtgt` per `-o`).
 
 `-o ...` selects the target filename reported to P1689R5.
 
@@ -252,7 +252,7 @@ Writes header deps to `a.d`, based on `-MF ...`. Change to `-MF -` to print to `
 ### GCC
 
 ```cpp
-g++ a.cppm -std=c++20 -M -MP -fmodules -fdeps-format=p1689r5 -fdeps-file=a.json -fdeps-target=a.o -MQ a.tgt -MF a.d
+g++ a.cppm -std=c++20 -M -MP -fmodules -fdeps-format=p1689r5 -fdeps-file=a.json -fdeps-target=a.dtgt -MQ a.mtgt -MF a.d
 ```
 Writes P1689R5 module deps to `a.json`, based on `-fdeps-file=...`, change to `-fdeps-file=-` to print to stdout (omitting automatically chooses the filename).
 
@@ -270,7 +270,7 @@ Omitting `-fdeps-format=p1689r5` will output module information in some curious 
 ### MSVC
 
 ```cpp
-cl a.cppm /nologo /EHsc /std:c++latest /scanDependencies a.json /sourceDependencies a.d /TP /Foa.tgt
+cl a.cppm /nologo /EHsc /std:c++latest /scanDependencies a.json /sourceDependencies a.d /TP /Foa.mtgt
 ```
 
 Writes P1689R5 module deps to `a.json`, based on `/scanDependencies ...`. Pass `-` to print to stdout.
@@ -284,6 +284,12 @@ The header deps are in Microsoft's own JSON format. It doesn't include the targe
 Don't strictly need `/nologo /EHsc`.
 
 MSVC doesn't understand the `.cppm` extension by default, using `/TP` to force it to assume the input is C++ code. You can omit this for `.cpp` files if you want.
+
+### Reported target filenames
+
+You can use the `a.mtgt` and `a.dtgt` to carry arbitrary information to the resulting module deps files and headers deps files respectively.
+
+Those are not strictly necessary for parsing those files. You can omit the corresponding parameters and get some default strings.
 
 ## P1689R5 schema summary
 
