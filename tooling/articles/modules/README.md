@@ -224,9 +224,17 @@ The scan results for a file need to be updated when the file changes, or when an
 
 Then the file needs to be rebuilt if it had to be rescanned, or if any of the source files of the module units it imports were modified, recursively.
 
-But if rebuilding a BMI produced a bitwise identical hash (a build system should compare hashes), then TUs importing it don't have to be rebuilt. This can happen e.g. if the imported module unit defines a function, and only its body has changed, assuming the compiler is sufficiently clever to not have the body affect the BMI.
+This means that we no longer need to emit the header dependencies as the byproduct of the compilation (unlike pre-modules), since it can be done during scanning, and is needed to correctly rescan anyway (in theory, the alternative to emitting them during scans is to emit them during compilation, but then if the subsequent compilation of this TU fails, you would have to remember to rescan it; this seems unnecessarily complicated).
+
+But if rebuilding a BMI produced a bitwise identical file (a build system should compare hashes), then TUs importing it don't have to be rebuilt. This can happen e.g. if the imported module unit defines a function, and only its body has changed, assuming the compiler is sufficiently clever to not have the body affect the BMI.
 
 ## Scanning dependencies
+
+The scan commands need the same flags as your compiler: include paths, macros, language standard, etc.
+
+The compilers have converged on the common JSON-based format for outputting module scan results, called [`P1689R5`](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1689r5.html) after the proposal that introduced it.
+
+The format itself seems to allow for scanning multiple source files by a single command (see the [`"rules": [...]` array](#p1689r5-schema-summary)), but none of the three compilers I tested can actually do this, from what I understand. The only compiler that attempts this is MSVC, but it outputs multiple braced groups in a row (`{...}{...}`) instead of filling the `"rules"` array, resulting in malformed JSON.
 
 ### Clang
 ```sh
@@ -333,6 +341,8 @@ clang++ a.cppm -std=c++20 -fmodules-reduced-bmi -c -o a.o -fmodule-output=a.pcm
 
 Any time you import a module unit (no matter if in `.cpp` or in `.cppm`), you must add `-fmodule-path=NAME=PATH` for that module unit, and for everything it imports **recursively**.
 
+There is also `-fprebuilt-module-path=...` to search BMIs in a directory, but then they need to be named in a particular way (matching the module name), and unlike other compilers, Clang never selects the BMI names automatically, so we'd have to ensure the right names ourselves. For this reason, I would prefer `-fmodule-path=...` (and because this is the only thing MSVC supports, so you need this logic anyway in your build system).
+
 ### GCC
 
 GCC treats and `.cpp` and `.cppm` the same way.
@@ -347,241 +357,88 @@ g++ a.cppm -std=c++20 -fmodules -c a.o
 ```
 GCC automatically decides where to place the BMIs and where to import them from, it puts them in the `./gcm.cache` directory. So no special flags are needed when importing the modules.
 
-To override where the BMIs are stored, you can provide a **module map** file, which is just a list of all module units, one per line: name and BMI path, separated by a space, e.g.:
+To override where the BMIs are stored and loaded from, you can provide a **module map** file, which is just a list of all module units, one per line: name and BMI path, separated by a space, e.g.:
 ```
 A blah/a.gcm
 A:P bleh/a_p.gcm
 ```
 And so on. You can also add `$root foo/bar` as the first line, to prepend that directory (`foo/bar`) to every other path in the file.
 
-This file can then be passed to `-fmodule-mapper=...` to any GCC command that may export or import a module.
+This file can then be passed to `-fmodule-mapper=...` to any GCC command that may export or import a module. If this file is specified, then it must list every module, since it disables the automatic name-to-path translation.
 
 GCC can also [interact with programs over sockets or otherwise](https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Module-Mapper.html) instead of using a simple file, but this sounds like too much work for me.
 
-MSVC
-...
+### MSVC
 
+MSVC doesn't care about file extensions for importable vs non-importable units.
 
+But MSVC doesn't understand the `.cppm` extension, so if you use that, you need `/TP` to force treat it as C++.
 
+The standard needs to be set to `/std:c++20` or newer.
 
+MSVC needs different flags for different kinds of importable units: interface units need `/interface`, and internal partitions need `/internalPartition`.
 
+Like Clang, MSVC needs `/reference NAME=PATH` for every imported module recursively. It seems that unlike with Clang, we can skip it for indirect non-exported dependencies (so e.g. `export module A;` does `import B;`, and then a TU does `import A;`, then that TU doesn't need `/reference B=...` because `B` is not `export import`ed). But since the scans don't provide this information (whether something is `import`ed or `export import`ed), this is not useful and we have to recurse into all dependencies anyway.
 
----
+MSVC *also* searches for BMIs in the current directory, and it seems this search can't be disabled, and custom directories can't be added.
 
+### Compiler flags summary
 
+This table is simplied to only explain what I consider the recommended build procedure. More details are explained per compiler above.
 
-
-Approach|GCC|Clang|MSVC|Comment
+Category|Clang|GCC|MSVC|Comment
 ---|---|---|---|---
-1\. Single phase|✅|✅|✅|A single compiler invocation produces both the `.o` and the BMI.
-2\. Two-phase parallel|❌*|✅ Since Clang 23.<br/>❌* Before that.|❌|`.o` and the BMI are produced by two separate compiler invocations, which can run in parallel.<br/>* In Clang 22 and older, you can only produce a reduced BMI (which is what you want for this step, see the next row) alongside a full BMI, which you can then throw away.<br/>* In GCC, best you can do is disable the object file generation using `-fmodule-only` (to generate only the BMI first), and then do a second pass to generate BMI+`.o`, and discard that second BMI.
-3\. Two-phase sequential|❌*|✅|❌|The first compiler invocation produces a reduced BMI (which is what you `import`) and a full BMI. The full BMI only serves as the input to the second invocation (instead of the source file), which produces the `.o`.<br/>* GCC can apparently report in real time when it's done generating the BMI, so it can be consumed without waiting for the `.o`, but this requires implementing a "module mapper server" in the build system, which adds difficulty.
+Language standard|`-std=c++20` or newer|Any standard + `-fmodules`|`/std:c++20` or newer
+Other flags|`-fmodules-reduced-bmi` to use a nicer BMI format (default since Clang 22)|No|`/nologo /EHsc` recommended out of general sanity
+Need a module map?|No|Yes, [`-fmodule-mapper=...`](#gcc-1)|No|The module map can be skipped if you don't mind the BMIs being in `./gcm.cache`. I think custom locations should be preferred.
+Need to list imported BMI paths? |`-fmodule-path=NAME=PATH`|No|`/reference NAME=PATH`|Must list indirect dependencies too.
+Flags for different kinds of module units|`-xc++-module` for importable units (optional for `.cppm`)<br/>`-xc++` otherwise (optional for `.cpp`)|No|`/interface` for interface units<br/>`/internalPartition` for implementation partitions
 
-(1) seems to be the default choice.
+## Clang's two-stage compilation
 
-(3) may or may not be faster than (1) due to increased parallelism.
+As an alternative to the single-stage compilation described above (that produces both the BMI and the `.o` in a single compiler invocation), Clang has several two-stage compilation models to choose from, where the compiler is called twice per importable module unit: first to produce the BMI, and then to produce the object file.
 
-It's unclear if (2) makes any sense or not compared to (2), since it causes duplicate work, especially if the compiler doesn't have the proper flags (to separately produce only the BMI and only the `.o`).
+Here they are:
 
+```
+1.
+    a.cppm  --1-->  full BMI  --2-->  a.o
+                      |
+                      '-->  consumers
 
+2.
+                 .-->  full BMI  --2-->  a.o
+    a.cppm  --1--|
+                 '-->  reduced BMI  -->  consumers
 
-## A toy modules example
-
-Let's try building a simple module manually. This is the smallest possible example:
-
-```cpp
-// a.cppm
-module;
-#include <iostream>
-
-export module A;
-
-export void foo() {std::cout << "Hello!\n";}
+3.
+       .-----1-->  a.o
+    a.cppm
+       '-----2-->  BMI  -->  consumers
 ```
 
-```cpp
-// 1.cpp
-import A;
+Clang has "full BMIs" vs "reduced BMIs". A full BMI is needed to be able to produce an `.o` from it, but otherwise a reduced BMI is better.
 
-int main()
-{
-    foo();
-}
-```
+Single-stage compilation (and `3` here) should use reduced BMIs, as those seem to be more optimal, but full BMIs should work for those too.
 
-Notice that:
+Reduced BMIs seem to be required if you want to avoid rebuilding importers of a module when its source file changes, but the interface doesn't change (since full BMIs have to include function bodies and such, making the file hash different when a function body changes).
 
-* The `a.cppm` starts with a `module;` `#include <...>`. You can do this to include old-style headers in your module. In this case, the first line is always just `module;` to announce that this is a module, then you include things, and immediately after that you do the normal module declaration.
+`-fmodule-file=...` must be passed to **both** stages, even in approach `2`.
 
-  A more modern way of doing this would be:
-  ```cpp
-  // a.cppm
-  export module A;
-  import std;
+* **`1-2` and `2-2`**: To produce an `.o` from a full BMI, just pass it instead of the source file, with `-c`. If the extension of the BMI is not `.pcm`, use `-xpcm` before the file.
 
-  export void foo() {std::cout << "Hello!\n";}
-  ```
-  But this is also more difficult to build, so this is for later.
+* **`1-1`**: To produce a full BMI instead of an `.o`, pass `--precompile` instead of `-c`. (This sets the default to `-fno-modules-reduced-bmi` even on newer Clang versions.) `-o` sets the BMI path then.
 
-  The part between `module;` and the module declaration is the **"global module fragment"** (it is optional). The part starting from the module declaration is the **"module unit purview"** of this module unit.
+* **`2-1`**: To produce both a full BMI and a reduced BMI, use `--precompile -fmodules-reduced-bmi -fmodule-output=a_reduced.pcm -o a_full.pcm`. Forgetting `-fmodules-reduced-bmi` on Clang 22 or newer does nothing, but on Clang 21 it silently doesn't emit the reduced BMI.
 
-* The module `A` consists of only one file, the primary interface unit. This is the only required part of a module.
+* **`3-1`**: Just do `-xc++` to produce an `.o` without a BMI.
 
-* A non-module-unit `1.cpp` is importing a module. This is allowed.
+* **`3-2`**: To produce a reduced BMI without also producing a full BMI or `.o`, use:
 
-### How to build it
+  * `--precompile-reduced-bmi` instead of `--precompile` — Needs Clang 23 or newer (which wasn't yet released at the time of writing this).
 
-I assume you're already familiar with basics of command-line compilation.
+  * This could be imitated using `2-1`, sending the full BMI to `/dev/null`, but that seems slow enough to make approach 3 useless in Clang 22 and older.
 
-#### GCC (single phase)
+It's unclear which of those strategies is the best, and if they are better than the single-stage approach. Benchmarks are needed.
 
-```sh
-g++ a.cppm -std=c++20 -fmodules -c
-g++ 1.cpp -std=c++20 -fmodules -c
-g++ a.o 1.o
-```
-Step 1 produces `a.o` and `gcm.cache/A.gcm` (the BMI).<br/>
-Step 2 consumes `gcm.cache/A.gcm`, and produces `1.o`.<br/>
-Step 3 is the linking.
-
-You can combine steps 2 and 3 in this simple example: `g++ 1.cpp a.o -std=c++20 -fmodules`.
-
-`-fmodules` is needed to enable modules support. Interestingly, it seems to work even without `-std=c++20`, but it's probably a good idea to explicitly request C++20 or newer.
-
-GCC decides by itself where it wants to write and read the BMIs from, and makes overriding this difficult.
-
-In theory there is `-fmodule-mapper="|@g++-mapper-server --root YourPathHere"` for specifying a custom directory, but it doesn't work on my Arch because they forgot to package `g++-mapper-server`, and it still selects all module names for you. You can also implement a [custom mapper server program](https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Module-Mapper.html) and do whatever you want with it, but that's probably an overkill.
-
-Another (saner) option is providing a file to `-fmodule-mapper=...` that lists the desired BMI location for each module name, one per line (and then pass this file both when creating the BMI and when importing it), e.g. in our case it would contain following:
-```
-A some/path.gcm
-```
-Optionally you can add `$root some/other/path` as the first line, this directory will be prepended to everything else in this list.
-
-If this file is specified, then it must list *all* modules. It disables the automatic selection of module file names.
-
-#### MSVC (single phase)
-
-```sh
-cl a.cppm /EHsc /std:c++latest /interface /TP /c
-cl 1.cpp /EHsc /std:c++latest /c
-cl a.obj 1.obj
-```
-
-Step 1 produces `a.obj` and `A.icf` (the BMI).
-
-Unlike with GCC, you can choose the BMI location using `/icfOutput...`, where `...` is either a filename or a directory name (then the filename is chosen for you). When passing a directory, end it with a slash (so you don't accidentally create a file with this name if this directory doesn't exist).
-
-Unlike GCC and Clang, MSVC wants to be told if it's an interface unit or an internal partition unit (using `/internalPartition` instead of `/interface`).
-
-MSVC doesn't understand the `.cppm` extension, so we use `/TP` to force treat it as C++.
-
-You must enable C++20 or newer, so one of: `/std:c++20`, `/std:c++23preview`, `/std:c++latest`.
-
-I'm enabling exceptions (`/EHsc`) just for general sanity, and because `<iostream>` uses them.
-
-Step 2 seems to automatically search for modules in the current directory. I didn't find a way to override the directory, but you can override it for individual modules using `/reference...=...`, where the first `...` is the module name and the second `...` is a path to the `.ifc`.
-
-#### Clang (single phase)
-
-```sh
-clang++ a.cppm -std=c++20 -fmodules-reduced-bmi -c
-clang++ 1.cpp -std=c++20 -fmodule-file=A=a.pcm -c
-clang++ a.o 1.o
-```
-
-Step 1 produces `a.o` and `a.pcm` (the BMI). Like MSVC and unlike GCC, Clang puts BMI in the current directory by default. You can change the BMI filename with `-fmodule-output=...` (unlike MSVC, this must be a filename and can't be a directory).
-
-`-fmodules-reduced-bmi` is purely an optimization (see the next section for more details), and is the default since Clang 22. You can specify it everywhere, even for non-modules, where it has no effect.
-
-Step 2 consumes `a.pcm`, and produces `1.o`. Unlike GCC and MSVC, there is no implicit module search path. You either must specify where to find each module via `-fmodule-file=Name=Path` (like MSVC's `/reference`), or specify a search directory with `-fprebuilt-module-path=Path` (`Path` = `.` in this example).
-
-Interestingly, unlike with GCC and MSVC, the BMI filename chosen by step 1 seems to be based on the source filename `a.cppm`, and if it doesn't match the module name, then `-fprebuilt-module-path=.` won't be able to find it. It can't find it in this example, unless we rename the BMI to `A.pcm`. For this reason (having to manually choose the correct filenames), `-fprebuilt-module-path=...` doesn't look very useful.
-
-Notice that unlike with GCC, we don't need `-fmodules`. Clang allows this flag, but it seems to have no effect.
-
-For Clang, like for MSVC, `-std=c++20` or newer is required. Unlike GCC, it refuses to handle modules in older standards.
-
-Unlike GCC, Clang is sensitive to the extensions here. If the extension is not `.cppm`, you must use `-xc++-module` before the filename to indicate that it's an importable unit that requires a BMI.
-
-#### Clang (two-phase sequential), with fat BMIs - not recommended
-
-```sh
-clang++ a.cppm -std=c++20 --precompile
-clang++ a.pcm -std=c++20 -c
-
-clang++ 1.cpp -std=c++20 -fmodule-file=A=a.pcm -c
-
-clang++ a.o 1.o
-```
-
-Step 1 produces the BMI only. You can change the output filename with `-o`.<br/>
-Step 2 produces the `.o` from the BMI, instead of from the source file.<br/>
-Step 3 comsumes the BMI and produces `1.o`.<br/>
-And finally, step 4 is the linking.
-
-Here, steps 2 and 3 can run in parallel, since the BMI needed by step 3 (and 2) is produced by step 1.
-
-If you compare the size of the BMI in this compilation model vs the single-phase above, you'll notice that this BMI is about 10 times larger. Those are fat vs reduced BMIs. The fat ones need to store more information, to be able to be compiled into `.o`.
-
-Clang seems to want to transition away from fat BMIs to reduced BMIs. Single-phase defaults to reduced BMIs on Clang 22 or newer, and you can use `-fmodules-reduced-bmi` on older Clang to force reduced BMIs (for single-phase compilation, not for this example).
-
-#### With Clang (two-phase sequential), with reduced BMIs
-
-```sh
-clang++ a.cppm -std=c++20 --precompile -fmodules-reduced-bmi -fmodule-output=a.reduced.pcm -o a.full.pcm
-clang++ a.full.pcm -std=c++20 -c
-
-clang++ 1.cpp -std=c++20 -fmodule-file=A=a.reduced.pcm -c
-
-clang++ a.o 1.o
-```
-
-Here step 1 produces both a full BMI and a reduced BMI.
-
-Then step 2 compiles the full BMI into an `.o`.
-
-Step 3 only needs the reduced BMI.
-
-There's some variance regarding the flags needed for step 1 between Clang versions: Clang 21 needs `-fmodules-reduced-bmi` or it won't generate the reduced BMI at all. `-o` is optional (defaults to `a.pcm` here), but Clang 22 warns if you skip `-o`. So the most sensible option is to specify both `-fmodules-reduced-bmi` and `-o` to be compatible with both versions.
-
-#### With Clang (two-phase parallel) - needs Clang 23+
-
-```sh
-clang++ a.cppm -std=c++20 --precompile-reduced-bmi
-clang++ -xc++ a.cppm -std=c++20 -c
-
-clang++ 1.cpp -std=c++20 -fmodule-file=A=a.pcm -c
-
-clang++ a.o 1.o
-```
-
-I'm unable to test this, as Clang 23 isn't out yet, and I don't want to compile it from source. `--precompile-reduced-bmi` should be added in Clang 23.
-
-In theory, this is same as the previous model, but here `a.o` is built from source, instead of from the full BMI, and step 1 doesn't generate the full BMI at all, only the reduced one.
-
-I'm not sure if this makes sense over the previous model, or if this is slower due to duplicating work.
-
-You can imitate this model on older Clangs by taking step 1 from the previous section, and then ignoring/deleting the resulting full BMI.
-
-## Module compilation on different compilers
-
-&nbsp;|GCC|Clang|MSVC|Comment
----|---|---|---|---
-Importable module extension|Any C++ extension works, including `.cpp` and `.cppm`.|`.cppm` (maybe others), otherwise must build with `-xc++-module`.<br/>`.cpp` doesn't work without `-xc++-module`.|Any C++ extension works, but `.cppm` doesn't work (unless forced with `/TP`)|I like the Clang's convention. It works on GCC and Clang, but needs `/TP` on MSVC.
-Chooses the BMI name?|✅From module name.|❌From input filename.|✅From module name.|On Clang, if you want it to automatically search directories for modules, you must manually ensure the correct BMI naming.
-Searches for modules where?|In directory `./gcm.cache/` by default.<br/>Can override locations for all modules in a file passed to `-fmodule-mapper=...`.<br/>Can override just the dir with <code>-fmodule-mapper="\|@g++-mapper-server --root Dir"</code> if your distro ships `g++-mapper-server`. Or you can implement a [custom mapper server](https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Module-Mapper.html).|Nowhere by default.<br/>Can pass individual modules to `-fmodule-file=NAME=PATH`.<br/>Can pass directories to `-fprebuilt-module-path=DIR` (but this requires manually selecting the right BMI filename when producing it).|Current directory by default (this can't be disabled).<br/>Can pass individual modules to `/referenceNAME=PATH`.|Recommendation: Pass individual modules on Clang and MSVC, and produce a module map file for GCC.
-Proper two-phase compilation|❌|✅|❌
-
-
-### Analyzing scan results
-
-What can we see from those results?
-
-1. Importable module units are indicated by the presence of `rules[0].provides: [...]`.
-
-   * Out of those, interface units are indicated by `rules[0].provides[0].is-interface: true/false`.
-
-2. Partitions are handled for us, they don't need to be special-cased. Similarly, the automatic `import` in the non-partition implementation unit is automatic.
-
-3. Non-partition implementation units are indistinguishable from non-module TUs (apart from the fact that they can't import partitions, but a module unit doesn't necessarily import those).
+Something tells me `1` is not a good strategy, and good strategy would involve reduced BMIs (so either `2`, `3`, or single-stage).
