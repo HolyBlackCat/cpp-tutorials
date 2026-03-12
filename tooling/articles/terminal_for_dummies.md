@@ -129,6 +129,8 @@ But keep in mind that this will bring a lot of Linux-y tools with it, which coul
 
 ### How to use MSYS2 Bash in VSC?
 
+Do this at your own risk, since the rest of the tutorial assumes Powershell. There shouldn't be any big differences though.
+
 In VSC settings, search for `terminal integrated profiles windows`, click `Edit in settings.json`, and you'll see those:
 
 [![VSC default integrated terminal profiles](/tooling/images/vsc_terminal_profiles_default.png)](/tooling/images/vsc_terminal_profiles_default.png)
@@ -180,4 +182,4 @@ This adds MSYS2 shells to this menu:
 
 [![VSC terminal profile selector button](/tooling/images/vsc_terminal_profile_selector.png)](/tooling/images/vsc_terminal_profile_selector.png)
 
-You can then make one of them the default, by changing the `Terminal Integrated Default Profile Windows`. Do this at your own risk, since the rest of the tutorial assumes Powershell. There shouldn't be any big differences though.
+You can then make one of them the default, by changing the `Terminal Integrated Default Profile Windows`.
