@@ -68,7 +68,9 @@ PATH is a list of directories that a shell searches for a program when it needs 
 
 To see it, run `echo $PATH` in the MSYS2 shell and `echo $env:PATH` in Powershell in VSCode (the commands are different because these are two different shells, Bash and Powershell). You should see something like this:
 
-[![default paths](/tooling/images/default_shell_paths.png)](/tooling/images/default_shell_paths.png)
+[![default paths](/tooling/images/shell_path_default_msys2.png)](/tooling/images/shell_path_default_msys2.png)
+
+[![default paths](/tooling/images/shell_path_default_vsc_powershell.png)](/tooling/images/shell_path_default_vsc_powershell.png)
 
 You get two different lists of directories.
 
@@ -94,11 +96,13 @@ Make sure to click `OK` in all the windows above instead of just closing them, o
 
 Now, in the VSC terminal try running your compiler again (e.g. `clang++ --version` or `g++ --version`), and it should work.
 
-If you print the PATH now, you should see your directory in there, at the very beginning:
+If you print the PATH now, you should see your directory in there, (almost) at the very beginning:
 
-[![updated path](/tooling/images/updated_path.png)](/tooling/images/updated_path.png)
+[![updated path](/tooling/images/shell_path_fixed_vsc_powershell.png)](/tooling/images/shell_path_fixed_vsc_powershell.png)
 
-If it's not at the beginning, or is missing entirely, you didn't do the above steps correctly. Make sure you've added your directory to `2` instead of `1`, and that it's at the very beginning of `2`, and not elsewhere. And make sure you clicked
+Notice that VSC prepends itself to the PATH, so you'll aww `C:\Users\user\AppData\Local\Programs\Microsoft VS Code` first, and your path second. This isn't a problem. If you open Powershell outside of VSC, then your path will be first.
+
+If you did all this, and your path is **not** at the beginning (ignoring the VSC path as mentioned above), or is missing entirely, you didn't do the above steps correctly. Make sure you've added your directory to `2` instead of `1`, and that it's at the very beginning of `2`, and not elsewhere. And make sure you clicked
 
 And if you run `gcm clang++` now (or `gcm g++` for GCC users), it should tell you that Clang (or GCC) is located at `C:\msys64\clang64\bin\clang++.exe` (or at whatever path you specified above).
 
