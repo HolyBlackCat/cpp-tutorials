@@ -100,9 +100,15 @@ If you print the PATH now, you should see your directory in there, (almost) at t
 
 [![updated path](/tooling/images/shell_path_fixed_vsc_powershell.png)](/tooling/images/shell_path_fixed_vsc_powershell.png)
 
-Notice that VSC prepends itself to the PATH, so you'll aww `C:\Users\user\AppData\Local\Programs\Microsoft VS Code` first, and your path second. This isn't a problem. If you open Powershell outside of VSC, then your path will be first.
+Notice that VSC prepends itself to the PATH, so you'll have `C:\Users\user\AppData\Local\Programs\Microsoft VS Code` first, and your path second. This isn't a problem. If you open Powershell outside of VSC, then your path will be first.
 
-If you did all this, and your path is **not** at the beginning (ignoring the VSC path as mentioned above), or is missing entirely, you didn't do the above steps correctly. Make sure you've added your directory to `2` instead of `1`, and that it's at the very beginning of `2`, and not elsewhere. And make sure you clicked
+If you did all this, and your path is **not** at the beginning (ignoring the VSC path as mentioned above), or is missing entirely, you likely didn't do the above steps correctly:
+
+* Make sure you've added your directory to `2` instead of `1`, and that it's at the very beginning of `2`, and not elsewhere.
+* Check the PATH setting again to make sure it was saved correctly. A common mistake is closing the settings windows instead of pressing "OK", which discards the changes.
+* Another possibility (that wasn't covered before) is that this is caused by the Microsoft's C++ extension, if you configured it in a certain way. Try pressing <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd>→`C/C++: Clear Visual Studio Developer Environment` and restarting VSC (or just its terminal), and see if it changes anything.
+
+Another rare issue that can interfere with the PATH
 
 And if you run `gcm clang++` now (or `gcm g++` for GCC users), it should tell you that Clang (or GCC) is located at `C:\msys64\clang64\bin\clang++.exe` (or at whatever path you specified above).
 
