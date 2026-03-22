@@ -96,7 +96,7 @@ Most of the things you see in the UI correspond to the [debugger commands](/tool
 
 Right now, you need to manually compile the program (in the terminal, or with <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>B</kbd>) after every change to the code, before starting the debugger (by pressing <kbd>F5</kbd> or the green arrow).
 
-This can be automated. After the `"cwd": ...` line in `tasks.json`, add `"preLaunchTask": "Compile"` (where `Compile` is the task name that you specified in `tasks.json` as described [here](/tooling/articles/configuring_vsc_tasks.md)).
+This can be automated. After the `"cwd": ...` line in `launch.json`, add `"preLaunchTask": "Compile"` (where `Compile` is the task name that you specified in `tasks.json` as described [here](/tooling/articles/configuring_vsc_tasks.md)).
 
 Now pressing <kbd>F5</kbd> or the green arrow will automatically recompile the program before starting the debugger.
 
