@@ -117,7 +117,7 @@ By default Clangd will suggest you certain common code patterns, or "snippets". 
 
 [![code completion snippets](/tooling/images/clangd_snippet_suggestions.png)](/tooling/images/clangd_snippet_suggestions.png)
 
-If you find them annoying like myself, go to the settings, search for *`snippet suggestions`* and disable them (set them to `none`).
+If you find them annoying like I do, go to the settings, search for *`snippet suggestions`* and disable them (set them to `none`).
 
 ### Hiding the `.cache` directory
 
