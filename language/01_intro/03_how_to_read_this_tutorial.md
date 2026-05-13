@@ -24,6 +24,6 @@ In particular, if this tutorial says that a certain program does something, don'
 
 ## 4. Getting help
 
-I recommend **not** asking AI to solve problems for you. Prefer googling and talking with real people.
+I recommend **not** asking AI to solve problems for you. Prefer googling and talking to real people.
 
 And even when talking to people, don't accept solutions to exercises without any explanations. It's better if you're given hints and gradually arrive at the solution yourself.

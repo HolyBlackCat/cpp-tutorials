@@ -4,7 +4,7 @@ I need to explain more about variables, but let's digress for a moment.
 
 So far all programs you've made weren't **interactive**, meaning they always did the same thing when ran, without letting you interact with them (do something to them to affect their behavior).
 
-Let's change that. Here's a small program that adds together two numbers:
+Let's change that. Here's a small program that adds two numbers together:
 
 ```cpp
 #include <iostream>
@@ -109,7 +109,7 @@ Try to type something other than a number, e.g. `blah`, and see what happens.
 
 When `std::cin` fails to read what you asked it to read, it should assign zero to that variable, and go into an "error state". Meaning the program is unpaused, and all future `std::cin >> ...;` statements are ignored.
 
-It's possible to recover from this state (to e.g. to ask the user for new input), but I'm not going to explain this now.
+It's possible to recover from this state (to e.g. to ask the user for new input), but I'm not going to explain this right now.
 
 > ## Exercise
 >

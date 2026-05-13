@@ -4,7 +4,7 @@ All C++ programs you've written so far were doing computations.
 
 Let's try something else. How would you write a program that, for example, given a person's age, determines if they are legally allowed to drive or not?
 
-No amount of `+` `-` `*` `/` would let you choose one of two strings to print (e.g. `"Allowed"` vs `"Not allowed"`). This needs a language feature that you haven't learned yet, **the `if` statement**:
+No amount of `+` `-` `*` `/` would let you choose one of two strings to print (e.g. `"Allowed"` vs `"Not allowed"`). This requires a language feature that you haven't learned yet, **the `if` statement**:
 
 ```cpp
 #include <iostream>
@@ -35,7 +35,7 @@ So above, the first condition is true if `age` is `17` or less, and the second c
 
 ## `else`
 
-In situations like the above, when the second condition is the opposite of the first one, you can and should use `else` instead of the second `if`:
+In situations like the above, when the second condition is the opposite of the first one, you can and should use `else` instead of a second `if`:
 ```cpp
 if (age < 18)
 {
@@ -46,7 +46,7 @@ else
     std::cout << "Allowed!\n";
 }
 ```
-This has the same effect, except it can be a bit faster in some cases, since there's one less condition to check.
+This has the same effect, except it can be a bit faster, since there's one less condition to check.
 
 A lone `else` causes a compilation error, of course:
 ```cpp
@@ -91,6 +91,8 @@ Can you tell for which values of `x` this is true? Experiment with this for a bi
 
 `&&` and `||` in C and C++ are said to be **"short-circuiting"**, meaning that the first operand is checked first, and then if that's enough to determine the final result (if the first operand is false for `&&`, or true for `||`), then the second operand is not computed. This probably isn't very useful to you right now, because you have no way of observing what is or isn't computed, but it will be useful later.
 
+Beware of the common newbie traps such as `x == 10 && x == 20`. This condition is always false (no number is both `10` and `20` at the same time), and the correct way to spell "x is 10 or 20" is `x == 10 || x == 20`. Similarly, `x != 10 || x != 20` *always* holds, while `x != 10 && x != 20` correctly checks that `x` is neither `10` nor `20`.
+
 
 ## Negating conditions
 
@@ -107,6 +109,9 @@ if (x > 0 && !(x == 10 || x == 20))
 ```
 Do you understand what this does? Experiment with it a bit.
 
+> ## Exercise 1
+>
+> Create a guessing game, that asks you for a number, and tells it if it's larger, smaller, or equal to some fixed number of your choosing.
 
 ## Conditions are expressions
 
@@ -120,7 +125,7 @@ In this example, notice the `(...)`, which is necessary to avoid a compilation e
 
 ### The `bool` type
 
-But the type of that `1` or `0` (the result of a comparison) isn't an `int`. It's a new type that you haven't learned yet, **`bool`** (a "boolean", named after a matematician [George Boole](https://en.wikipedia.org/wiki/George_Boole) and his "boolean algebra", which deals only with two values, 0 and 1).
+But the type of those `1` and `0` (the results of comparisons) isn't an `int`. It's a new type that you haven't learned yet, **`bool`** (a "boolean", named after matematician [George Boole](https://en.wikipedia.org/wiki/George_Boole) and his "boolean algebra", which deals only with two values, 0 and 1).
 
 A `bool` can only hold two values, 1 or 0. The correct way to spell them is `true` and `false` respectively. Just like `0` and `0.0` are different (`int` zero and `double` zero), `false` is also different (the `bool` zero). Same for `true`.
 
@@ -153,6 +158,30 @@ The reverse, converting a number to `bool`, results in `false` if the number is 
 So, given `int x = ...;`, `if (x)` means the same thing as `if (x != 0)`, because the condition of an `if` is converted to a `bool`.
 
 You can cast to/from `bool` too, `if (bool(x))` has the same effect as the above.
+
+Values that are true when converted to `bool`, such as `42` (and `true` itself) are often called **truthy**, and values that are false when converted to `bool`, such as `0` (and `false` itself) are called **falsy**.
+
+## Equality vs assignment
+
+Here is another common newbie trap: `if (x = 10)`. This **doesn't** check that `x` equals `10`, that would be `if (x == 10)`.
+
+Instead it performs an assignment (sets `x` to `10`), and then checks `if (x)` (which is now always true, since `10` is truthy).
+
+Modern compilers can tell you about this typo (print a "warning"). Some do by default (Clang does), some don't (GCC doens't, read [this](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors) for how to make it to).
+
+> ## Exercise 2
+>
+> Try to misuse `=` in this way and observe the behavior. Check whether your compiler warns about this or not.
+
+## Other newbie mistakes
+
+Newbies sometimes try to "translate" conditions from English to C++ literally. For example, to check if `x` is either `10` or `20`, some try to do this: `if (x == 10 || 20)`. Do you understand why this is wrong? It means `(x == 10) || 20`, and since `20` is truthy, the entire condition is always true. The correct way to write this is `x == 10 || y == 20`.
+
+Another common mistake is `if (10 < x < 20)`. This behaves as `(x < 10) < 20`, and since `x < 10` is either `0` or `1`, that is always less than `20`, so the condition is always true. The correct way to write this is `10 < x && x < 20`, or `x > 10 && x < 20`.
+
+> ## Exercise 3
+>
+> Write a program that intentionally contains those mistakes, and observe what behavior it causes.
 
 ## Variables in the `if` bodies
 
@@ -336,7 +365,7 @@ else
 }
 ```
 
-This (`else if`) isn't some special language feature, we're just omitting some braces here. After adding the braces back, you should see that it is entirely equivalent to:
+This (`else if`) isn't some special language feature, we're just omitting braces. If we add the braces back, it becomes:
 ```cpp
 if (age < 10)
 {
@@ -415,7 +444,7 @@ int x;
 std::cout << x << "\n";
 ```
 
-And lastly, this common typo (`;` after `if (...)`) can be caught by your compiler automatically, if you enable compiler warnings. If you're also following my tooling tutorial, that is explained [here](/tooling/articles/recommended_compiler_flags.md#flags-to-catch-errors) (use `-Wall -Wextra` if you're using Clang or GCC).
+This common typo (`;` after `if (...)`) can too be caught by your compiler automatically, [see above](#equality-vs-assignment).
 
 ## Terminology
 
@@ -425,19 +454,19 @@ As I said before, `int main() {...}` holds a list of statements. Therefore the e
 
 `{...}` braces with their contents are yet another kind of statements, called **compound statements**, or **block statements**. They are statements that contain other statements inside of them.
 
-Therefore, `if` in general looks like this:
+Therefore, an `if` in general looks like this:
 ```cpp
 if (expression)
     statement
 ```
-or:
+or like this:
 ```cpp
 if (expression)
     statement
 else
     statement
 ```
-And the ability to add `{...}` braces isn't some special feature of `if`, but a consequence of compound statements being a thing.
+The ability to add `{...}` braces isn't some special feature of `if`, but a consequence of compound statements being a thing.
 
 ## Indentation
 
@@ -453,8 +482,10 @@ Some people put `{` at the end of the previous line, and some don't (like myself
 
 Different people use different number of spaces for each indentation level, 4 spaces is a popular option.
 
-Indentation is usually performed by pressing the <kbd>Tab</kbd> key (instead of repeatedly hitting <kbd>Space</kbd>), but whether <kbd>Tab</kbd> inputs an actual Tab character or a bunch of spaces should be configurable in your IDE. It's matter of preference.
+Indentation is usually performed by pressing the <kbd>Tab ↹</kbd> key (instead of repeatedly hitting <kbd>Space</kbd>).
 
-> ## Exercise
+Depending on your IDE settings, <kbd>Tab ↹</kbd> can act as a shortcut for typing multiple spaces, or it can insert a single special "tab" character (the width of which should be configurable in your IDE). This is matter of preference.
+
+> ## Exercise 4
 >
-> Create a program that lets you input the current temperature, and describes how hot or cold it feels. Include 3 or 4 different responses.
+> Create a program that lets you input the current temperature, and describes how hot or cold it feels. Include 3 or 4 different responses. Make sure to indent the code.

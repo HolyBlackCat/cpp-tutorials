@@ -5,7 +5,7 @@ There's another variant of the `for` loop, called **range-based `for`** or just 
 ```cpp
 double arr[] = {1.5, 2.5, 3.5};
 
-for (int elem : arr)
+for (double elem : arr)
 {
     std::cout << elem << "\n";
 }
@@ -16,18 +16,20 @@ Here `double` in `double elem` should match the array element type.
 
 Ranged `for` doesn't keep track of the element indices. If you need to know the index, keep track of it manually using another variable, or just don't use a ranged `for`.
 
-Ranged `for` works with both arrays and vectors (and some other things). It is said to "iterate over" the array/vector/etc.
+Ranged `for` works with both arrays and vectors (and for some other things). It is said to "iterate over" the array/vector/etc.
 
 Braces are optional in ranged `for`, like in the normal `for`.
 
 The example above is mostly equivalent to:
 ```cpp
+double arr[] = {1.5, 2.5, 3.5};
+
 for (int i = 0; i < 5; i++)
 {
     std::cout << arr[i] << "\n";
 }
 ```
-Notice that we're using `int` instead of `double` here, because even though the array elements are `double`s here, the indices are still integers.
+Notice that we're using `int` instead of `double` here, because even though the array elements are `double`s in this case, the indices are still integers.
 
 > ## Exercise 1
 >

@@ -24,9 +24,9 @@ Like `if`, `while` checks the condition and then executes the body if the condit
 
 Each repetition a loop is called an **iteration**.
 
-Like in an `if`, in loops the `{...}` braces are optional if the body is a single statement. And like `if`, it has the same empty body pitfall (adding `;` after `while (...)` makes the body empty, which in the case of `while` typically makes the loop *infinite*, meaning the program gets stuck on it).
+Like in an `if`, in loops the `{...}` braces are optional if the body is a single statement. And like `if`, it has the same empty body newbie trap (adding `;` after `while (...)` makes the body empty, which in the case of `while` typically makes the loop *infinite*, meaning the program gets stuck on it).
 
-Any variables declared inside of the body are recreated on each iteration (meaning they lose their values). That's why we declared `x` outside of the loop.
+Any variables declared inside of the body are recreated on each iteration (meaning they lose their previous values). That's why we declared `x` outside of the loop.
 
 > ## Exercise 1
 >
@@ -58,7 +58,7 @@ After that, it proceeds exactly the same as the regular `while` loop.
 
 In this case, the `do`-`while` is more appropriate because we know the condition is always going to be true before the first iteration.
 
-Here braces can be omitted too, e.g.:
+Here braces can be omitted too, if the body is a single statement:
 ```cpp
 do
     x = x + 10;
@@ -78,7 +78,7 @@ for (int i = 0; i < 5; i++)
 ```
 This prints `0` `1` `2` `3` `4`.
 
-The `for` loop is just a glorified `while`. The above is equivalent to:
+The `for` loop is mostly just a glorified `while`. The above is equivalent to:
 
 ```cpp
 {
@@ -176,7 +176,7 @@ Now this loop stops not only when the sum becomes `100` or larger, but also imme
 
 It works exactly the same way in `do`-`while` and in `for`.
 
-You can of course use multiple `break;`s per loop.
+You can of course spell `break;` multiple times in a loop (e.g. in different `if`s).
 
 In nested loops, `break;` only breaks out of a single loop (the most nested one), not all of them.
 
@@ -204,7 +204,7 @@ while (x < 100)
 
 This version silently ignores any negative numbers. Try running it.
 
-You can achieve the same effect with an `if`, so the only thing `continue` does is improving clarity.
+You can achieve the same effect with an `if` (wrapping the rest of the loop in an `if`), so the only thing `continue` does is improving clarity.
 
 In a `for` loop, `continue;` **does** execute the step `C` before checking the condition. To illustrate:
 ```cpp

@@ -11,7 +11,7 @@ for (int i = 0; i < 5; i++)
     std::cout << arr[i] << "\n";
 ```
 
-Here we're repeating `5` three times. Which isn't great, because if we decide to change the array size, we now have to go over the entire program and update all the `5`s.
+Here we're repeating `5` three times. Which isn't great, because if we decide to change the array size, we now have to go over the entire program and change all the `5`s.
 
 You'd think creating a variable size to hold the array size would help...
 ```cpp
@@ -24,7 +24,7 @@ for (int i = 0; i < size; i++)
 for (int i = 0; i < size; i++)
     std::cout << arr[i] << "\n";
 ```
-But as explained before, the array size must be fixed at compile-time, so `int arr[size];` is a compilation error.
+But [as explained before](./11_arrays.md#array-size), the array size must be fixed at compile-time, so `int arr[size];` is a compilation error.
 
 Enter **constants**:
 
@@ -81,14 +81,14 @@ What do you think happens here?
 
 `const int size = x;` is in fact legal. But `int arr[size];` after that is illegal (a compilation error, again assuming the compiler is configured correctly).
 
-So this means there are two diffent kinds of constants, the compile-time ones (which work as array sizes), and the non-compile-time ones.
+So this means there are two diffent kinds of constants, the compile-time ones (which work as array sizes), and the non-compile-time ones (which don't).
 
-I hope to explain this in more detail in later chapters, if I have time.
+I hope to explain this in more detail in later chapters.
 
 
 ## Literals
 
-Unnamed constants in the source code are called **literals**.
+[As briefly mentioned before](./03_computations.md#literals), unnamed constants in the source code are called **literals**.
 
 For example, when you do `int x = 42;`, the `42` is an **integer literal**.
 

@@ -58,6 +58,8 @@ ASCII only covers the English letters and basic punctuation. The situation with 
 
 Operators like `<` and `>` do work on `char`s. And since, for example, digits (from `'0'` to `'9'`) have consecutive codes (check the ASCII chart), `x >= '0' && x <= '9'` is a valid way to test if `x` is a digit character. Similarly, `x >= 'a' && x <= 'z'` for lowercase letters, and similarly for the uppercase ones.
 
+(The C++ standard requires digits to always have consecutive codes, but doesn't require this for letters. But since everyone uses ASCII in practice, it doesn't matter in practice. People just like to nitpick about this.)
+
 Notice that `'3'` and `3` have different values (and similarly for other digits). `3` is literally the number 3, while `'3'` is the ASCII code of the symbol `'3'` (which happens to be `33`).
 
 ## Inputting strings
@@ -74,7 +76,7 @@ std::getline(std::cin, s);
 
 > ## Exercise 1
 >
-> Make a program that asks the user for their name, and then prints `Hello` and that name.
+> Make a program that asks the user for their name, and then prints `Hello` followed by that name.
 >
 > Try doing that using both `>>` and using `getline`. Try inputting a name with and without spaces into both programs and see what happens.
 
@@ -111,11 +113,11 @@ A simple solution to this is to do `getline` twice. Or perhaps after doing it th
 >
 > Make sure spaces in the name are handled correctly.
 >
-> Make sure inputting the name works both on a separate line and on the same name as the age.
+> Make sure inputting the name works both on a separate line and on the same line as the age.
 
 ## Operations on strings
 
-Here are some things you can do to strings:
+Here are some things you can do to strings: (that you can't do with `std::vector`s)
 
 ### Combining strings
 
@@ -181,7 +183,7 @@ This prints `lue is ` (trims the first 5 characters of the string). This of cour
 
 ### Coverting strings to numbers
 
-The opposite conversion, from a string to a number, can't be done directly too. There are many ways to do it, and `std::stoi`/`std::stod`/etc is the easiest: (for `int` and `double` respectively)
+The opposite conversion - from a string to a number - can't be done directly too. There are many ways to do it, and `std::stoi`/`std::stod`/etc is the easiest: (for `int` and `double` respectively)
 ```cpp
 std::string s = "42";
 int n = std::stoi(s);
@@ -202,7 +204,7 @@ Note that `std::stoi` and `std::stod` silently skip any whitespace at the beginn
 
 As was explained before, unnamed constants in the source code such as `42` or `"Hello"` are called literals (in this case, an integer literal and a string literal).
 
-Since `42` is an `int`, you'd naturally assume that `"Hello"` is a `std::string`, but that's not the case.
+Since `42` is an `int`, you would naturally assume that `"Hello"` is a `std::string`, but that's not the case.
 
 It is in fact a constant array of `char`, similar to `const char arr[] = {'H', 'e', 'l', ...};`. Using `char` arrays as strings is a leftover from C, which doesn't have the convenience of `std::string`.
 
@@ -275,7 +277,7 @@ Non-`char` arrays are not null-terminated unless you do that manually.
 
 `std::string`s **are** always null-terminated, but unlike `char` arrays, the size they report doesn't include the terminator.
 
-E.g. for `std::string s = "Hello";`, `s.size()` is `5` (and so is `std::size(s)`, which is the same thing as `s.size()` for everything other than arrays, which don't have the `.size()`). And `s[5]` is legal and produces `'\0'`. Compare to arrays and vectors, for which the valid indices go up to only `.size() - 1`.
+E.g. for `std::string s = "Hello";`, `s.size()` is `5` (and so is `std::size(s)`, which is the same thing as `s.size()` for everything other than arrays, which don't have `.size()`). And `s[5]` is legal and produces `'\0'`. Compare to arrays and vectors, for which the valid indices go up to only `.size() - 1`.
 
 So, for `char s[] = "Hello";`, `std::size(s)` is `6`, `s[5]` is `'\0'`, and `s[6]` is illegal (causes UB).
 
@@ -290,7 +292,7 @@ std::cout << str << '\n'; // Causes UB!
 ```
 First, notice that `std::cout` can print `char` arrays as a special case (it can't print whole arrays of most other types).
 
-This code causes undefined behavior, because `std::cout` wants `char` arrays to be null-terminated. If you have ASAN enabled, it will complain about this. If not, you'll likely see some garbage characters being printed after your string.
+This code causes undefined behavior, because `std::cout` wants `char` arrays to be null-terminated. If you have [ASAN enabled](./12_undefined_behavior.md#catching-ub), it will complain about this. If not, you'll likely see some garbage characters being printed after your string.
 
 > ## Exercise 4
 >
@@ -312,7 +314,7 @@ There are several different solutions to this, chosen by different operating sys
 
 2. You can continue using one `char` per character, and have several different encodings for different languages, choosing one based on the current language set in the OS settings.
 
-   This is clearly problematic, since it makes it difficult to work with several different languages at a time (typically those encodings fit at most English and one other language at a time, see e.g. [this](https://en.wikipedia.org/wiki/Windows_code_page#Windows-125x_series)).
+   This is clearly problematic, since it makes it difficult to work with several different languages at the same time (typically those encodings fit at most English and one other language at a time, see e.g. [this](https://en.wikipedia.org/wiki/Windows_code_page#Windows-125x_series)).
 
    This can also cause problems when running a program written for one language, on a system configured to use another, and so on.
 

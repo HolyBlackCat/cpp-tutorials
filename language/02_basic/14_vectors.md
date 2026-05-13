@@ -17,7 +17,7 @@ Array | Vector | Comment
 `int arr[10] = {};`|`std::vector<int> arr(10);`|Creating an array of `10` zeroes.
 `int arr[10];`|—|There's no (simple) way of creating a vector with uninitialized elements.
 `int arr[] = {1,2,3};`|`std::vector<int> arr = {1,2,3};`
-~~`int arr[0];`~~|`std::vector<int> arr;`| Arrays can't be empty but vectors can. This makes sense for them becase you can add elements to them later.<br/>Vectors are empty by default (can't be uninitialized).
+~~`int arr[0];`~~|`std::vector<int> arr;`| Arrays can't be empty but vectors can. This makes sense for vectors becase you can add elements to them later.<br/>Vectors are empty by default (can't be uninitialized).
 `arr[i]`|`arr[i]`|Accessing the elements works the same way.
 
 Notice that creating a vector of a specific size is done using `std::vector<int> arr(10);`, not `[10]`. Trying to use `[10]` would give you an array of empty vectors.
@@ -60,16 +60,16 @@ Now the unique features of vectors:
 
   Note that accessing a vector using `[]` out of bounds doesn't automatically insert the element. Like for arrays, this is UB.
 
-  Note that vectors always stores copies of the elements. Modifying a variable after inserting it doesn't change the vector contents.
+  Note that vectors always stores copie of the elements. Modifying a variable after inserting it doesn't change the vector contents, and vice versa.
 
 * **`arr.pop_back();`** removes the last element.
-
-  It is UB to call this on an empty vector.
 
   ```cpp
   std::vector<int> a = {10, 20, 30};
   a.pop_back(); // After this the vector holds `{10, 20}`.
   ```
+
+  It is UB to call this on an empty vector.
 
 * **`arr.clear();`** removes all elements. Does nothing if the vector is already empty.
   ```cpp
@@ -133,7 +133,7 @@ This lets you input any amount of numbers, until you input `0`. Then it prints b
 
 If you input `1 2 3 0`, this prints `1 2 3`.
 
-Also note that I'm doing `std::vector<int> v;` here, despite the earlier advice to not leave variables uninitialized. As I said above, vectors always default to empty, so there is no harm in doing this. Out of the types you already learned, only numbers (which includes `bool`) and arrays of those can be truly uninitialized and should be manually initialized.
+Also note that I'm doing `std::vector<int> v;` here, despite the earlier advice to not leave variables uninitialized. As I said above, vectors always default to empty (they can't actually be uninitialized), so there is no harm in doing this. Out of the types you already learned, only numbers (which includes `bool`) and arrays of those can be truly uninitialized and should be manually initialized.
 
 (Advanced readers might be yelling at their screens now for me not using `size_t` here. Yes, I know. This will be explained later.)
 
@@ -168,7 +168,7 @@ for (int y = 0; y < v.size(); y++)
 ```
 ```cpp
 std::vector<int> v = {
-    1, 2, 3, // Spelling the numbers on different lines doesn't change anything.
+    1, 2, 3, // Spelling the numbers on different lines for clarity, the compiler doesn't care.
     4, 5, 6,
 };
 
@@ -191,16 +191,16 @@ for (int y = 0; y < 2; y++)
 
 ```cpp
 std::vector<int> a = {1,2,3}, b = {1,2,3}, c = {4,5,6}, d = {7,8};
-std::cout << (a == a) << '\n'; // 1 (equal)
-std::cout << (a == b) << '\n'; // 1 (equal)
-std::cout << (a == c) << '\n'; // 0 (not equal)
-std::cout << (a == d) << '\n'; // 0 (not equal)
+std::cout << (a == a) << "\n"; // 1 (equal)
+std::cout << (a == b) << "\n"; // 1 (equal)
+std::cout << (a == c) << "\n"; // 0 (not equal)
+std::cout << (a == d) << "\n"; // 0 (not equal)
 ```
 If the elements (or the number of them) are differet, the vectors are considered to be not equal.
 
 `<`,`<=`,`>`,`>=` work too, but their behavior is less intuitive. They compare the vectors **lexicographically**, which literally means "in dictionary order", i.e. `a < b` on vectors means that `a` would come before `b` in a dictionary (but comparing vector elements instead of letters).
 
-First, `a[0]` is compared with `b[0]`. If not equal, this is the result of the comparison. Otherwise `a[1]` is compared with `b[1]`, and so on. If one vector runs out of elements before the other, the shorter vector is considered less than the longer (but this only happens )
+`<`,`<=`,`>`,`>=` first compare `a[0]` with `b[0]`. If not equal, this is the result of the comparison. Otherwise `a[1]` is compared with `b[1]`, and so on. If one vector runs out of elements before the other, the shorter vector is considered less than the longer (but it can only run out if all elements up to this point are equal, of course).
 
 `a`|&nbsp;|`b`|Comment
 ---|---|---|---

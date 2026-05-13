@@ -2,7 +2,7 @@
 
 Consider this expression: `(10 + 20 + 40) * (10 + 20 + 40)`.
 
-Spelling the repeating part twice manually isn't very convenient. You can make your job easier by using **variables**:
+Spelling the repeating part twice manually isn't convenient. You can make your job easier by using **variables**:
 
 ```cpp
 #include <iostream>
@@ -52,12 +52,17 @@ This prints `10` `20`.
 
 Compare this to math, where `x = 5` `x = 6` would be a contradiction, as there each variable can only have one value.
 
-Notice that modifying an existing variable is spelled differently (without `int`, which is the type) compared to declaring it. `x = ...` is called an **assignment**, and what happens during declaration is **not** an assignment, despite both being spelled with the `=` (it's called "initialization" and is explained in more detail the next chapters).
+Notice that modifying an existing variable is spelled differently (without `int`, which is the type) compared to declaring it. `x = ...` is called an **assignment**, and what happens during declaration is **not** an assignment, despite both being spelled with the `=`. Setting the value in a declaration is called "initialization" and is explained in more detail the next chapters.
+
+```cpp
+int x = 10; // `x` is declared, and initialized to 10.
+x = 20; // `x` is assigned 20.
+```
 
 You can only assign to a variable that's already declared. The following is a compilation error:
 ```cpp
 x = 20; // Error, `x` isn't declared (yet)!
-int x = 20;
+int x = 10;
 ```
 In some other languages (such as Python) assigning to a variable automatically creates it, and there are no declarations. This isn't the case in C++.
 
@@ -67,7 +72,7 @@ This is another thing that's different about variables in math and in most progr
 
 While in math `x = 20` and `20 = x` are equivalent, in C++ `20 = x` is a compilation error. And so is `20 = int x;`.
 
-In other words, the lhs of `=` (lhs meaning "left hand side", the left operand) must be a variable (some other things are allowed too, but more on that later).
+In other words, the  [lhs](./03_computations.md) of `=` ("lhs" meaning "left hand side", the left/first operand) must be a variable (some other things are allowed too, but more on that later).
 
 Something like `x * 2` isn't a valid lhs of `=` too, which means that the compiler will not solve equations for you. You can't write `x * 2 = 100;` and expect it to figure out that `x` is `50`. Since `x * 2` is not a variable, this a compilation error.
 
@@ -83,7 +88,9 @@ std::cout << b << "\n";
 ```
 What does this print? Go test it.
 
-It prints `10` because the value of `b` gets computed when it's initialized (or assigned), and then doesn't change after that even if `a` changes.
+It prints `10`, because the value of `b` gets computed when it's initialized (or assigned), and then doesn't change after that even if `a` changes.
+
+In other words, when you do `int b = a;`, `b` holds `10` ("the value of `b` is `10`"), not `a`.
 
 ## Referring to the variable itself in the assignment
 
@@ -97,6 +104,14 @@ The second line increases the value of `x` by `100`, resulting in `110`.
 This is another case where variables in C++ are unlike those in math, as in math `x = x + 100` is an unsolvable equation.
 
 `x = x + 100`; can also be written as `x += 100;`. Similarly there are `-=`, `*=`, `/=`, etc.
+
+Increasing or decreasing a variable by one can be spelled as `x++;` or `x--;` (meaning `x += 1;` and `x -= 1;` respectively; there are some minor differences that are explained later).
+
+You should not refer to a variable in its own *initialization* (as opposed to assignment), e.g.:
+```cpp
+int x = x + 10; // Do not do this!
+```
+While this should compile, it will produce an unpredictable value, since `x` doesn't yet have a value when it's being used here. (More on the implications of this later.)
 
 > ## Exercise 1
 >
@@ -116,9 +131,9 @@ C++ is case-sensitive, meaning you can have `x` and `X` as two unrelated variabl
 
 Spaces are not allowed in identifiers, so to separate words people usually spell them as `hello_world` or `helloWorld`. While `HelloWorld` is also an option, it's usually not used for variables. And hopefully nobody names their variables in `ALL_CAPS`.
 
-Additionally, you can't use words like `int` as variable names (`int int = 42;` is illegal), hopefully for obvious reasons. (As `int` has a special meaning, allowing it as a variable name would be too confusing.) Those words with special meaning are called **keywords**, and there's [almost a hundred](https://en.cppreference.com/w/cpp/keyword) of them. You of course don't need to remember all of them (at least not yet), but you should know where to look. And your IDE should highlight them in a different color than other text, so they should be easy to notice.
+Additionally, you can't use words like `int` as variable names (`int int = 42;` is illegal), hopefully for obvious reasons. (As `int` has a special meaning, allowing it as a variable name would be too confusing.) Those words with special meaning are called **keywords**, and there is [almost a hundred](https://en.cppreference.com/w/cpp/keyword) of them. You of course don't need to remember all of them (at least not yet), but you should know where to look. And your IDE should highlight them in a different color than other text, so they should be easy to notice.
 
-Additionally, modern compilers accept identifiers in languages other than English too (`int μεταβλητός = 42;`) but you should avoid this to not confuse non-english-speaking readers of your code.
+Additionally, modern compilers accept identifiers in languages other than English too (`int μεταβλητός = 42;`) but you should avoid this to not confuse non-english-speaking readers of your code. Also some programming tools might have trouble displaying those names.
 
 ### Reserved identifiers
 

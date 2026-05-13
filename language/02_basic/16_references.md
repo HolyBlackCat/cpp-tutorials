@@ -16,6 +16,8 @@ for (int elem : arr)
 for (int elem : arr)
     std::cout << elem << "\n"; // 10 20 30, somehow!
 ```
+Why is this?
+
 `int elem` is a copy of the array element, that exists until the end of the current iteration. So this is the same issue as:
 ```cpp
 int a = 10;
@@ -49,7 +51,7 @@ b = 20;
 std::cout << a << "\n"; // 20
 ```
 
-Roughly speaking, a reference is a special kind of variable that act as an "alternative name" or "alias" for another thing.
+Roughly speaking, a reference is a special kind of variable that act as an "another name" or "alias" for another thing.
 
 It has to be initialized (when declared), and then can't be modified to refer to something else (because assigning to it modifies the thing it refers too, instead of making it refer to something else):
 ```cpp
@@ -78,7 +80,7 @@ Similarly, `&` creates a reference only when used in declarations. Elsewhere it 
 
 > ## Exercise 1
 >
-> Experiment with references. Write a program that modifies the array elements in ranged-for, observe that it doesn't work correctly without references, and does work correctly with them.
+> Experiment with references. Write a program that modifies the array elements using a ranged-for, observe that it doesn't work correctly without references, and does work correctly with them.
 
 ## Declaring several references in one declaration
 
@@ -94,6 +96,8 @@ int& a = x, b = x; // only `a` is a reference
 ```
 Notice how the whitespace around `&` doesn't affect to what it applies, since [C++ in general isn't sensitive to whitespace](./01_your_first_program.md#whitespace-and-line-breaks).
 
+Some people prefer to spell references as `int &a = x;`, and some prefer `int& a = x;`. The latter only makes sense if you limit yourself to one variable per declaration.
+
 ## References to other references
 
 ```cpp
@@ -103,7 +107,7 @@ int &z = y;
 ```
 Here `int &z = y;` is entirely equivalent to `int &z = x;`.
 
-In other words, a reference can't actually refer to another reference. Instead, trying to do so makes it refer directly to whatever that reference refers to.
+In other words, a reference can't actually refer to another reference. Instead, trying to do so makes it refer directly to whatever that other reference refers to.
 
 ## Const references
 
@@ -113,13 +117,13 @@ Perhaps unintuitively, `const` references do exist:
 for (const int &elem : arr)
     std::cout << elem << "\n";
 ```
-Here `elem` is a const reference. Or more correctly, a "reference to `const` `int`" (references can never be actually const themselves, but the phrase "const reference" is commonly used to mean a reference to something const; this tutorial uses the phrase "const reference" a lot, and I don't see a point in being pedantic with this).
+Here `elem` is a const reference. Or more correctly it is called a "reference to `const` `int`"; references themselves are never considered to be `const` (even though they can't be pointed to a different target after initialization), but they can refer to something else that is `const`. The phrase "const reference" is often used informally to mean a reference to something const, including in this tutorial; I don't see a point in being overly pedantic about this.
 
 Here `elem` can't be modified (because the reference is const), so you might ask what's the point, why not simply `int elem`?
 
 In this case it's indeed pointless, because `int` is so cheap to copy, but imagine that you have a `std::vector<std::vector<int>>`, where each inner vector has a few million elements.
 
-Trying to iterate over it using `for (std::vector<int> a : b)` would temporarily copy each inner vector, which is unnecessarily slow, and is a waste of memory. It would be much better to use `for (const std::vector<int> &a : b)` to avoid the copying.
+Trying to iterate over it using `for (std::vector<int> a : b)` would copy each inner vector into `a`, which is unnecessarily slow, and is a waste of memory. It would be much better to use `for (const std::vector<int> &a : b)` to avoid the copying.
 
 ### Why not always use non-const references?
 
@@ -186,7 +190,7 @@ This is legal, and accessing the reference after that will correctly give the up
 
 ## What else can references refer to?
 
-In case it's not clear, you can manually create references to array/vector elements.
+In case it's not clear, you can create references to array/vector elements.
 
 You'll often see things like this, if for some reason the ranged-for can't be used:
 ```cpp
@@ -207,7 +211,7 @@ std::vector<int> vec = {1, 2, 3};
 int &ref = vec[0];
 vec.clear(); // Remove all elements from the vector.
 ref = 42; // UB!
-std::cout << ref << '\n'; // Also UB!
+std::cout << ref << "\n"; // Also UB!
 ```
 A reference that points to an object that no longer exists is called a **dangling reference**.
 
@@ -217,7 +221,7 @@ std::vector<int> vec = {1, 2, 3};
 int &ref = vec[0];
 vec.push_back(4);
 ref = 42; // This is UB too!
-std::cout << ref << '\n'; // Also UB!
+std::cout << ref << "\n"; // Also UB!
 ```
 Growing a vector can invalidate (make dangling) the references to its elements. The reasons for this will be explained later.
 
@@ -240,11 +244,11 @@ But references to entire arrays/vectors can exist:
 ```cpp
 int arr[3] = {10,20,30};
 int (&r1)[3] = arr; // Reference to array.
-std::cout << r1[1] << '\n'; // 20
+std::cout << r1[1] << "\n"; // 20
 
 std::vector<int> vec = {10,20,30};
 std::vector<int> &r2 = vec; // reference to vector.
-std::cout << r2[1] << '\n'; // 20
+std::cout << r2[1] << "\n"; // 20
 ```
 Notice `int &arr[3]` vs `int (&arr)[3]` - an array of references vs a reference to an array. This will be explained in more details in later chapters.
 

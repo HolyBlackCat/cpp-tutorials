@@ -39,7 +39,7 @@ If you initialize the array, you can omit the size:
 ```cpp
 int arr[] = {10, 20, 30};
 ```
-This is exactly the same as the above.
+This is exactly the same as the above. (The compiler determines the size from the number of initializers.)
 
 But if you do specify the size and provide **more** initializers (elements) than the size, this is a compilation error.
 
@@ -50,6 +50,8 @@ int arr[5] = {10, 20, 30};
 This is exactly the same as `= {10, 20, 30, 0, 0}`.
 
 Therefore `= {}` is a common way to initialize an array to all zeroes.
+
+`=` can be omitted in array initialization, this doesn't affect anything (specifically for arrays; I hope to discuss this in more detail in later chapters).
 
 ## Assignment
 
@@ -67,11 +69,11 @@ You can't assign the entire array at once.
 int arr[3];
 arr = {10, 20, 30}; // Compilation error.
 ```
-You also can't print the entire array at once, and can't input the entire array with a single use of `std::cin >>`. Only the individual elements. There is no technical reason for this, this is simply how `std::cout` and std::cin` are designed.
+You also can't print the entire array at once, and can't input the entire array with a single use of `std::cin >>`. Only the individual elements. There is no technical reason for this, this is simply how `std::cout` and `std::cin` are designed.
 
 ## Loops
 
-While the size must be a compile-time constant, the indices don't. In fact, you'll often see loop counters (counter variables) as indices:
+While the size must be a compile-time constant, the indices don't. In fact, you'll often see loop counters (variables) as indices:
 
 ```cpp
 int arr[5];
@@ -106,7 +108,7 @@ int arr[size]; // Compilation error.
 ```
 Try it.
 
-It is possible that this will actually compile for you, but this is a sign of an improperly configured compiler. Compilers tend to accept some invalid things by default (that are disallowed by the C++ standard, the document that describes how C++ is supposed to work), and need to be configured not to. If you're also following my tooling tutorial, it [explains this in more detail](/tooling/articles/recommended_compiler_flags.md). If you're using GCC or Clang, use `-std=c++26 -pedantic-errors` (or some other `-std=c++??`) to make the compiler error on this. MSVC rejects this by default (but you should still use `/std:c++latest` to make it reject other non-standard things).
+It is possible that this will actually compile for you, but this is a sign of an inproperly configured compiler. Compilers tend to accept some invalid things by default (that are disallowed by the C++ standard, the document that describes how C++ is supposed to work), and need to be configured not to. If you're also following my tooling tutorial, it [explains this in more detail](/tooling/articles/recommended_compiler_flags.md). If you're using GCC or Clang, use `-std=c++26 -pedantic-errors` (or some other `-std=c++??`) to make the compiler error on this. MSVC rejects this by default (but you should still use `/std:c++latest` to make it reject other non-standard things).
 
 You might be wondering, if this happens to work for you, why do anything? Isn't this a useful feature to have?
 
@@ -120,11 +122,11 @@ But arrays can also be multi-dimensional:
 ```cpp
 int arr[3][5];
 ```
-This is a 2D array, a rectangular table of numbers of size 10×20. Larger dimensions are possible too: `int arr[3][5][7];` and so on.
+This is a 2D array, a rectangular table of numbers of size 3×5. Larger dimensions are possible too: `int arr[3][5][7];` and so on.
 
-You can think of `int arr[3][5];` as an array of arrays. It's an array of size `3`, the elements of which are themselves arrays (of 5 `int`s each).
+Multidimensional arrays are not a special kinds of arrays. They are just arrays of arrays. For example, `int arr[3][5];` is an array of size `3`, the elements of which are themselves arrays (of 5 `int`s each).
 
-They can be initialized like so:
+Multidimensional arrays can be initialized like this:
 ```cpp
 int arr[3][5] = {
     {1, 2, 3, 4, 5},
@@ -135,11 +137,11 @@ int arr[3][5] = {
 
 And to access the elements, you do `arr[1][2] = 42;`, as you would expect.
 
-Notice the comma after the last element. It does nothing, it's allowed but not required. It's always allowed, even in `int arr[] = {1, 2, 3,};`. It's a good idea to include the comma when you spell the initializers on multiple lines, as it makes it easier to add/remove them and move them around.
+Notice the comma after the last element. It does nothing, it's allowed but not required. It's always allowed, even in `int arr[] = {1, 2, 3,};`. It's a good idea to include the comma when you spell the initializers on multiple lines, as it makes it easier to add/remove the lines and move them around.
 
 ### Rows vs columns
 
-People naturally tend to ask which index is which, is it `arr[row][column]` or `arr[column][row]`.
+People naturally tend to ask which index is which: is it `arr[row][column]` or `arr[column][row]`?
 
 The answer is: whatever you decide. The language itself doesn't give an inherent meaning to the indices.
 
@@ -173,6 +175,6 @@ int[3] a; // compilation error, `[...]` must be after the variable name
 The proper terminology for this is relatively little-known:
 
 * The part of a declaration shared between all variables is called the **decl-specifier-seq**.
-* The individual variable names with `[...]` if any are the **declarators**.
+* The individual variable names (with `[...]` if any) are the **declarators**.
 
 E.g. in `int a[3], b;`, `int` is the decl-specifier seq, and `a[3]` and `b` are the declarators.

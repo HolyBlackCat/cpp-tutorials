@@ -33,13 +33,17 @@ Some languages zero all variables by default, but C++ doesn't.
 
 In C++, if you try to read an uninitialized variable, one of several bad things can happen. You could get some arbitrary value, that's what happens most often.
 
-You could get a runtime error (an error when the program is running, as opposed to during compilation) if you enabled the optional checks that check for this (if you chose to follow my [tooling tutorial](https://github.com/holyBlackCat/cpp-tutorials) and are using the Clang compiler, you can enable those checks and observe the errors by enabling the [`-fsanitize=memory` compiler setting](https://github.com/HolyBlackCat/cpp-tutorials/blob/master/tooling/articles/recommended_compiler_flags.md)).
+You could get a runtime error (an error when the program is running, as opposed to during compilation) if you enabled the optional checks that check for this (if you chose to follow my [tooling tutorial](https://github.com/holyBlackCat/cpp-tutorials) and are using the Clang compiler, you can enable those checks and observe the errors by enabling the [`-fsanitize=memory` compiler setting](https://github.com/HolyBlackCat/cpp-tutorials/blob/master/tooling/articles/recommended_compiler_flags.md); some other compilers can do this too).
 
 This can have some other adverse effects too, which will be explained in more detail in later chapters. For now just know that you shouldn't do this.
 
 It's not a bad idea to always initialize your variables, to avoid subtle bugs. If you don't have a meaningful value to set them to, zero them.
 
 Uninitialized variables can cause hard-to-debug bugs (due to the randomness of their values), so it's best to avoid them.
+
+## Initializing multiple variables
+
+In case it's not obvious, `int x, y = 10;` only initializes `y`, not `x`. To initialize both, do `int x = 10, y = 10;`.
 
 ## Nuances of the word "initialization"
 

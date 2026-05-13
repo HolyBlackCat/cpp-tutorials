@@ -1,12 +1,12 @@
 # C vs C++
 
-You might've heard of the C language. C and C++ are two different languages.
+You might've heard of the C programming language. C and C++ are two different languages.
 
-C++ includes most of C in it. You can think of it as C with way more features. (Only a few small C features were removed from C++.)
+C++ includes most of C in it. You can think of it as of C with way more features. Only a few unimportant C features are missing C++.
 
 C is a predecessor of C++. While C still exists today, there's little reason to use it, because C++ exists and provides more features.
 
-You also might've heard of C#. While similar in name, it has nothing to do with C or C++, and is more similar to Java.
+You might've also heard of C#. While similar in name, it has nothing to do with C or C++.
 
 ### Should I learn C before C++?
 

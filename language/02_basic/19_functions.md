@@ -22,7 +22,7 @@ This prints `Hello, world!` three times.
 
 First, notice that functions can only be declared outside of other functions. `void SayHello() {...}` is a **function declaration** (and simulaneously a **function definition**, like all other declarations you've seen so far, more on that later).
 
-And so is `int main() {...}`, if you remember from earlier chapters. `main` is the special function that's called when the program starts, while all other functions have to be called manually.
+`int main() {...}` is also a function declaration/definition, if you remember from earlier chapters. `main` is the special function that's called when the program starts, while all other functions have to be called manually.
 
 Functions can call other functions, which themselves can call more functions, and so on. This is how large programs are composed.
 
@@ -30,11 +30,13 @@ Functions can call other functions, which themselves can call more functions, an
 
 Typically, functions are named as `SayHello` or `sayHello`. `say_hello` is rarely used, primarily only in the standard library. And hopefully no one names their functions in all caps.
 
-Function names have the same restrictions on them as the variable names (revisit the chapter on variables if needed).
+Function names have the [same restrictions on them as the variable names](./04_variables_1.md#valid-variable-names) (revisit the chapter on variables if needed).
 
-The only addition is that function names starting with `_` underscore are reserved and shouldn't be used. That is in addition to the names containing `__` (two underscores in a row) anywhere, or starting with `_` followed by an uppercase letter (which doesn't really matter now, since the lone starting `_` is already banned for functions).
+The only addition is that function names starting with `_` underscore are reserved and shouldn't be used. That is in addition to the names containing `__` (two underscores in a row) anywhere, or starting with `_` followed by an uppercase letter (which doesn't really matter for functions, since the lone starting `_` is already banned for functions).
 
 Again, revisit the chapter on variables if you forgot what it means for a name to be reserved.
+
+(Advanced readers might argue that global variables have the same restrictions. I know, see below.)
 
 > ## Exercise 1
 >
@@ -76,7 +78,7 @@ int main()
 
 And this isn't just because `x` is declared lower in the source code. If you reorder those two functions, you'll get the same error (in addition to the error about `foo()` not being declared yet, how to work around this is explained later).
 
-In general, what variable is visible where is fixed at compile-time, it doesn't depend on what happens at runtime (what functions do or don't get called).
+In general, what variable is visible where is fixed at compile-time, it doesn't depend on what happens at runtime (what functions do or don't get called, and from where).
 
 ## Global variables
 
@@ -109,7 +111,7 @@ Global variables are initialized before the `main` runs, and are destroyed after
 
 Global variables can't be uninitialized, they are zeroed by default (unlike local variables).
 
-They have the same name requirements as functions (regarding reseved names, see above). In general, anything declared outside of a function follows those.
+They have the same naming requirements as functions (regarding reseved names, [see above](#function-names)). In general, anything declared outside of a function follows those. (So e.g. `_foo` is a valid name for a local variable but not for a global variable or function.)
 
 Global non-constant variables may seem convenient, but they should be avoided in most cases, because they make it hard to track what function modifies what variables.
 
@@ -160,11 +162,11 @@ void IncreaseX()
 ```
 Except that you can and must specify its value when calling the function. Notice `IncreaseX(100);` and `IncreaseX(2000);` in the example above.
 
-Here `100` and `2000` are called **arguments** of the function. They are said to be **"passed"** to the function, or to that parameter.
+Here `100` and `2000` are called **arguments** of the function. They are said to be **"passed"** to the function, or passed to that parameter.
 
 Some people call parameters **"formal parameters"**, and arguments **"actual parameters"**. This is relatively rare though.
 
-People often use the words "parameter" and "argument" loosely, saying one and meaning another. Do not be surprised by this, but try to use those words correctly.
+People often use the words "parameter" and "argument" interchangeably, saying one and meaning another. Do not be surprised by this, but try to use those words correctly.
 
 ### Multiple parameters
 
@@ -229,10 +231,11 @@ int main()
 
 > ## Exercise 2
 >
-> Write two functions that print the area and the perimeter of a rectangle respectively.
+> Write two functions that print the area and the perimeter of a rectangle respectively. They should have two parameters, for width and height.
 >
 > Write the `main` function so that you can input the width and height, then call those two functions.
-
+>
+> Then make a struct for rectangles, storing width and height, and pass that to those functions, instead of two separate parameters.
 
 ## Modifying the parameters
 
@@ -254,7 +257,7 @@ int main()
     std::cout << "x = " << x << '\n'; // x = 5 ?!
 }
 ```
-Sounds good in theory, but this doesn't work. `x` in `main` remains equal to `5`. But if you try to print `target` in `Increase` after changing it, you'll see that it's indeed `105`. What's going on?
+Sounds good in theory, but it doesn't work. `x` in `main` remains equal to `5`. But if you try to print `target` in `Increase` after changing it, you'll see that it's indeed `105`. What's going on?
 
 You might have guessed already. `target` is a copy of `x`, so any changes to it don't affect the original. References to the rescue:
 ```cpp
@@ -271,7 +274,7 @@ When a parameter is not a reference, it's said to be **passed by value**. When i
 
 > ## Exercise 3
 >
-> Modify the functions from the previous exercise (that compute the area and perimeter) to write it to a reference parameter, instead of printing the result. Then print that in the `main` function after calling them.
+> Modify the functions from the previous exercise (that compute the area and perimeter) to write the result to a reference parameter, instead of printing the result. Then print it in the `main` function after calling them.
 >
 > Typically functions that just perform computations shouldn't print anything, and shouldn't ask for input themselves. It's the job of the calling code.
 
@@ -329,7 +332,7 @@ The `int` returned from `main` is used to indicate if the program has ran succes
 
 `main` defaults to `return 0;` if you don't `return` something else manually. Only `main` does this. **Forgetting to return from any non-void function (other than `main`) causes undefined behavior.** Typically it crashes the program (terminates it with an error at runtime).
 
-#### Accessing the `main` exit code
+### Accessing the `main` exit code
 
 Ok, so the return value of `main` indicates success vs failure. But how do you access this value when running the program?
 
@@ -337,11 +340,11 @@ This code is primarily used when you run your program from another program, not 
 
 If you run it manually, accessing the code isn't always simple. If you started the program just by double-clicking its executable, the exit code will typically be lost.
 
-If you started the program in the [terminal](/tooling/articles/terminal_for_dummies.md#what-is-a-terminal-or-a-console), then the exit code can be accessed in a way that depends on your [shell](/tooling/articles/terminal_for_dummies.md#different-shells): if you're using Powershell, as is typical on Windows, then running `$lastexitcode` will print the exit code from the program you just ran. If you're using Bash (e.g. either in MSYS2 on Windows, or by default on most Linuxes) or something compatible, then `echo $?` will do the same thing.
+If you started the program in the [terminal](/tooling/articles/terminal_for_dummies.md#terminal), then the exit code can be accessed in a way that depends on your [shell](/tooling/articles/terminal_for_dummies.md#shells): if you're using Powershell, as is typical on Windows, then running `$lastexitcode` will print the exit code from the program you just ran. If you're using Bash (e.g. either in MSYS2 on Windows, or by default on most Linuxes) or something compatible, then `echo $?` will do the same thing.
 
 ## Returning conditionally
 
-`return` doesn't have to be spelled at the end of the function. It can be anywhere, e.g. in an `if`. Reaching `return` immediately exits out of the current function. If this function is `main`, it exits the program.
+`return` doesn't always have to be at the end of the function. It can be anywhere, e.g. in an `if`. Reaching `return` immediately exits out of the current function. If this function is `main`, it exits the program.
 
 You can have multiple `return`s per function too, but of course at most one can be reached at a time.
 
@@ -546,16 +549,7 @@ int main()
     std::cout << foo() << '\n'; // UB again!
 }
 ```
-This has the exact same problem, but with one exception: this example no longer compiles in C++23 and newer. The compilers are now requires to provide basic protections against those mistakes. They are only *required* to in those basic cases, but still compilers typically try to warn about even the more complex cases.
-
-Note that this specific example has stopped compiling in C++23 and newer, but you can fool the compiler and get the same UB using something like this:
-```cpp
-int &foo()
-{
-    std::vector<int> v = {1,2,3};
-    return v[0];
-}
-```
+This has the exact same problem, but with one exception: this second example no longer compiles in C++23 and newer. The compilers are now requires to provide basic protections against those mistakes. They are only *required* to in those basic cases, but still compilers typically try to warn about even the more complex cases.
 
 Note that only **using** a dangling reference is UB. It merely existing doesn't cause UB by itself.
 
@@ -572,9 +566,11 @@ int main()
 ```
 ...since the returned reference ends up referencing `y` in `main` directly, not the parameter `x`. (As was explained before, references never refer to other references, trying to do so makes them refer to the target object of that reference.)
 
+But returning a reference to a by-value parameter (i.e. a non-reference parameter) would always dangle (assuming it compiles at all, see above).
+
 ## Const references
 
-If you [remember](./16_references_part_1.md#const-references), references can be const. Const references can serve as parameter types and return types types too.
+If you [remember](./16_references.md#const-references), references can be const. Const references can serve as parameter types and return types types too.
 
 ### Const references as parameters
 

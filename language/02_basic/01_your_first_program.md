@@ -13,15 +13,15 @@ int main()
 
 It should display `Hello, world!` on the screen when ran. Such "hello world" programs are traditionally used as the first examples in most programming books and tutorials.
 
-First, make sure you can actually run it, and after you do, we'll discuss how it works and what it means.
+Make sure you can actually run this, and after you do, we'll discuss how it works and what it means.
 
-To run C++ programs you'll need to install some tools...
+To run C++ programs you'll need to install some tools first...
 
 ## The necessary tools
 
 ### The compiler
 
-The compiler is a program that converts (or "compiles") the source you write into a program that you can run (an "executable"). You can send the resulting executable to other people too, and they can run it without installing the compiler (like you've been doing so far with various programs you've been using).
+The compiler is a program that converts (or "compiles") the source code you write (the program text, such as the example above) into a program that you can run (an "executable"). The resulting executables is what you can send to to other people, and they can run them without installing the compiler (like you've been doing so far with the programs you've been using, such as games and so on).
 
 Not all languages require compilation. This, and the process of compilation will be explained in more details in later chapters.
 
@@ -29,7 +29,7 @@ The popular C++ compilers are: Clang, GCC, and MSVC (in my order of preference, 
 
 ### The IDE
 
-Not strictly necessary, especially for a beginner. IDEs are text editors for programmers. "IDE" stands for "integrated development environment", where "integrated" means it *combines* together various useful programming tools.
+Not strictly necessary, especially for a beginner. IDEs are text editors for programmers. "IDE" stands for "integrated development environment", where "integrated" (meaning "brought together") means it *combines* together various programming tools.
 
 Some popular IDEs are: Visual Studio Code, Visual Studio (two unrelated programs despite the similar names), CLion, XCode, QtCreator.
 
@@ -37,7 +37,7 @@ Some popular IDEs are: Visual Studio Code, Visual Studio (two unrelated programs
 
 I have [**a separate tutorial**](/tooling/README.md) to guide you through the process. That tutorial explains how to install and configure Visual Studio Code with the Clang compiler (or GCC if you prefer). If you want to use something else, install it on your own and come back here.
 
-If you've already installed Visual Studio Code, I still recommend reading that tutorial. Some people use VSC without really understand what's going on, and the tutorial aims to fix that.
+If you've already installed Visual Studio Code, I still recommend reading that tutorial. Some people use VSC without really understanding what they are doing, and that tutorial aims to fix it.
 
 If you decide to use that tutorial, **read the first few chapters only**. As soon as you're able to compile the simple program above, stop reading that tutorial and leave it for later. Continue learning C++ from here, and read that tutorial in parallel.
 
@@ -64,7 +64,7 @@ If you're typing it manually instead of copy-pasting, use the <kbd>Tab</kbd> key
 
 ### Statements
 
-The main part of the program is between those `{` and `}`. It contains zero or more **statements** that are executed in order, starting from the first one.
+The main part of the program is between those `{` and `}`. It contains zero or more **statements** that are executed in order, from top to bottom.
 
 `std::cout << "Hello, world!\n";` is a statement, it prints `Hello, world!` when executed.
 
@@ -88,7 +88,7 @@ It prints different things...
 
 Try running this program and experiment with adding more statements.
 
-Statements can only appear inside of those `{...}`. For example, the following is illegal:
+Statements can only appear inside of those `{...}`. For example, the following is illegal: (causes a compilation error)
 ```cpp
 #include <iostream>
 
@@ -114,11 +114,11 @@ As already shown above, statements can only appear inside of functions, not outs
 
 The last unexplained part of the program is `#include <iostream>`. `#include` is often called "the include directive" (where "directive" is a word that means "an order" or "a command").
 
-Using certain features in a program requires using certain `#include` directives at the top. For example, using `std::cout` to print requires using `#include <iostream>`.
+Using certain features in a program requires using certain `#include` directives at the top. For example, using `std::cout` requires `#include <iostream>`.
 
-`iostream` is the name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the file you give it in place of itself during compilation. The contents of `iostream` describe to the compiler what `std::cout` is and allow you to use it.
+`iostream` is the name of a file that comes with your compiler. What `#include` does is pasting the entire contents of the file in place of itself during compilation. The contents of `iostream` describe to the compiler what `std::cout` is and allow you to use it.
 
-There are many different files that you can include (those files are called **headers**), and the collection of them that comes with your compiler is called **the standard library**. Things that come from the standard library normally have `std::` in their names to indicate that.
+There are many different files that you can include (those files are called **headers**), and the collection of them (and of some other things) that comes with your compiler is called **the standard library**. Things that come from the standard library normally have `std::` in their names to indicate that fact.
 
 People can make their own libraries (non-standard ones, called "third-party libraries") to add features to C++ that it otherwise doesn't have (such as the ability to work with graphics, which you'll need if you want to make games).
 
@@ -154,13 +154,13 @@ Can be shortened to:
 #include<iostream>
 int main(){std::cout<<"Hello, world!\n";}
 ```
-`#include` directives are an exception from this rule, they always must be on separate lines. (As well as any other directives starting with `#` which you will learn later.)
+`#include` directives are an exception from this rule, they must always be on separate lines. (As well as any other directives starting with `#` which you will learn later.)
 
-The space between `int` and `main` can't be removed, because then they would be treated as one long word. But space between `cout` and `<<` can. In general, you have to keep at least one space if you have letters on both sides of it.
+The space between `int` and `main` can't be removed, because then they would be treated as one long word. But the space between `cout` and `<<` can. In general, you have to keep at least one space if you have letters or numbers on both sides of it (as opposed to punctuation, such as `<<` and `;`).
 
 The space between `Hello,` and `world` can be removed, but that would change the text that is printed.
 
-You can freely insert additional whitespace too, e.g.:
+You can freely insert additional whitespace too, for example:
 ```cpp
   #  include  <iostream>
 
@@ -180,22 +180,22 @@ You can freely insert additional whitespace too, e.g.:
 
    }
 ```
-But of course you shouldn't do this, as it makes the code ugly and difficult to read.
+But of course you shouldn't do this, as it makes the code difficult to read.
 
 Here we can't insert spaces between `::` and between `<<`, and of course we can't split `cout` into `co ut`, and so on.
 
 ### `\n` escape sequence
 
-You've probably already guessed that `std::cout << ...` means "print `...`", but what does the `\n` mean?
+You've probably already guessed that `std::cout << "..."` means "print `...`", but what does the `\n` mean?
 
-It inserts the "new line" symbol. For example, if print `"Hello,\nworld!\n"`, you will see
+It inserts the "new line" symbol. For example, if you print `"Hello,\nworld!\n"`, you'll get:
 ```
 Hello,
 world!
 ```
-It's customary to add `\n` after the last line printed by your program. You might run into some minor issues otherwise.
+It's customary to add `\n` after the last line printed by your program, you might run into some minor issues otherwise (try it and see what happens).
 
-`\` followed by some characters is called an **escape sequence**. Escape sequences are used to insert various special characters into strings.
+`\` followed by some characters is called an **escape sequence**. Escape sequences are used to insert various special characters into quoted strings.
 
 One of the escape sequences is `\\`, it's used to insert the `\` character itself. E.g. printing `"Hello\\world"` would give you `Hello\world`, whereas printing `"Hello\world"` is a compilation error because the compiler tries to interpret `\w` as an escape sequence, and there's no such escape sequence.
 

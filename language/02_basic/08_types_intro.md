@@ -15,7 +15,7 @@ std::cout << b << "\n"; // 5.7
 
 `double` stands for "double precision" (compared to a less precise kind of fractional numbers, this will be explained in more detail later).
 
-There are many more other types, which will also be explained later.
+There are many more other types (and you can even create your own), which will also be explained later.
 
 ## Static typing
 
@@ -32,7 +32,7 @@ C++ has workarounds for when you need to choose the type at runtime, which will 
 
 ## Types of expressions
 
-Not only variables have types, expressions do to. A lone `5` is an `int`. A lone `5.7` is a `double`. Notably `5.0` is also a `double`, because of the `.`.
+Not only variables have types, expressions do to. A lone `5` is an `int`. A lone `5.7` is a `double`. Notably `5.0` is also a `double`, because of the `.`. Also notably `5.` means `5.0` and `.5` means `0.5`.
 
 `5 + 10` is an `int`, as expected, and `5.7 + 100.1` is a `double`. And `5.0 + 10.0` is also a `double`.
 

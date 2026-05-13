@@ -1,4 +1,4 @@
-# Welcome to my C++ tutorial!
+Welcome to my C++ tutorial!
 
 Navigate between the pages using the panel on the left.
 

@@ -1,6 +1,6 @@
 # Comments
 
-Large and complex programs can be hard to read, so programmers tend to add explanations to them to help other programmers and future selves. Those explanations are called **comments**.
+Large and complex programs can be difficult to read, so programmers tend to add explanations to them to help other programmers and their future selves. Those explanations are called **comments**.
 
 Comments are ignored by the compiler and can contain any text. For example:
 
@@ -20,9 +20,9 @@ Anything from `//` to the end of the line is a comment.
 Note that this example is a bit excessive. Don't explain the things that are obvious. Only explain things that might otherwise confuse your future self or others.
 
 
-It's customary to put a comment on the line *before* the thing it's explaining (or on the same line after it).
+It's customary to put a comment on the line *before* the thing that it's explaining (or on the same line after it), not on the line *after* it.
 
-There's also another style of comments: `/* ... */`. Those end not at the end of the line, but at the matching `*/`, and may or may not span multiple lines. For example:
+There is also another style of comments: `/* ... */`. Those end not at the end of the line, but at the matching `*/`, and may or may not span multiple lines. For example:
 ```cpp
 #include <iostream>
 
@@ -31,6 +31,11 @@ int main()
     /* This code prints
     some text. */
     std::cout << /*we print this string -> */ "Hello, world!\n";
+
+    /*
+    This is
+    an another comment!
+    */
 }
 ```
 This is once again an excessive example, you probably shouldn't write comments like this.

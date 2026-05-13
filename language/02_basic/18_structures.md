@@ -50,17 +50,17 @@ Naturally, structures can serve as array/vector element types: `Monster monsters
 
 > ## Exercise 1
 >
-> Create a program that utilizes a vector of structs. For example, lets the user input as many elements as they like, and then prints them all.
+> Create a program that utilizes a vector of structs. For example, let the user input as many elements as they like, and then print them all.
 
 ## Struct names
 
 Struct names are typically capitalized as `HelloWorld`. Some prefer `helloWorld` or `hello_world`, but this is rare (but notably the standard library uses the latter). Avoid naming structs in `ALL_CAPS`, though some old libraries do this (including some parts of the standard library inherited from C). All-caps names are typically used for something else, which will be explained in later chapters.
 
-Struct names have same requirements as variable names. Revisit the chapter on variables if necessary.
+Struct names have [same requirements as variable names](./04_variables_1.md#valid-variable-names). Revisit the chapter on variables if necessary.
 
 ## Differences with other languages
 
-In some other programming languages (like Python), struct variables always act similar to references, where copying a struct and modifying the copy changes the original. C++ doesn't have such inconsistencies:
+In some other programming languages (like Python and C#), struct variables always act similar to references, where copying a struct and modifying the copy changes the original. C++ doesn't have such inconsistencies:
 ```cpp
 Monster a;
 a.name = "A";
@@ -182,11 +182,11 @@ Monster d = {"Dragon"};      // .name = "Dragon", .health = 5
 Monster e = {.health = 50};  // .name = "Enemy",  .health = 50
 ```
 
-It is a good idea to always specify the default values for the field types that can be uninitialized (e.g. for `int`s, but it wouldn't change anything for `std::string`s).
+It is a good idea to always specify the default values for the field types that can be uninitialized (e.g. for `int`s, but it wouldn't change anything for `std::string`s). Not doing this is a constant source of bugs.
 
 ## Nested structs
 
-Struct variables can be used as members of other structs:
+Structs can be used as field types in other structs:
 
 ```cpp
 struct Health
@@ -207,7 +207,7 @@ boss.health.shield = 100;
 ```
 The initialization works for those as you would expect (nested braces), try it.
 
-Notice that the two structs are side by side, you are not required to put the entire struct declaration in another:
+Notice that the two structs are side by side, you are **not** required to put the entire struct declaration in another:
 ```cpp
 struct Monster
 {
@@ -280,7 +280,7 @@ While this looks useful at face value, this is in fact highly annoying, because 
 const Monster boss = {"Dragon", 100};
 boss = {"Wyrm", 200}; // Error, `boss` isn't assignable because `name` isn't.
 ```
-...because in C++, unlike in some other languages, assigning to a struct is normally the same thing as assigning every field separately.
+...because in C++, unlike in some other languages, assigning to a struct is normally the same thing as assigning to every field separately.
 
 I recommend never using `const` members. We have more civilized ways of preventing individual members from being modifier, which will be discussed later.
 
@@ -310,10 +310,10 @@ std::cout << boss.health << '\n'; // 50
 ```cpp
 Monster boss = {"Dragon", 100}
 
-int &hp = boss.health; // Or `ref.health`.
+int &hp = boss.health;.
 hp = 42;
 ```
-Not much to say here
+Not much to say here.
 
 ### References as members
 
