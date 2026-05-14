@@ -87,8 +87,6 @@ Now the unique features of vectors:
   a.resize(2); // `a` becomes `{10, 20}`.
   ```
 
-
-
 * Also, you can assign to an entire vector at once, including from another vector. You can also initialize one vector with another.
 
   ```cpp
@@ -104,6 +102,7 @@ Now the unique features of vectors:
   a = b;       // Compilation error.
   b = {1,2,3}; // Compilation error.
   ```
+  But! While `std::vector<int> vec(10);` [works](#stdvector), `std::vector<int> vec; vec(10);` is still not allowed. Use `vec.resize(10);` for this.
 
 ### A practical example
 

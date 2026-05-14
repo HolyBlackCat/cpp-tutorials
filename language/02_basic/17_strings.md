@@ -212,6 +212,8 @@ Since it's an array rather than a `std::string`, `"Hello".size()` is illegal. Bu
 
 Since the array is constant, `"Hello"[0] = 'A';` is a compilation error.
 
+String literals exist for the entire duration of the program, so if you were to create a reference to its element, it would never [dangle](./16_references.md#dangling-references): `const char &elem = "blah"[0];`.
+
 ### Initializing arrays with string literals
 
 Normally you can't initialize one array with another, but string literals and `char` arrays are a special case:

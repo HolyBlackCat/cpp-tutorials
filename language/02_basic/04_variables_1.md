@@ -72,7 +72,7 @@ This is another thing that's different about variables in math and in most progr
 
 While in math `x = 20` and `20 = x` are equivalent, in C++ `20 = x` is a compilation error. And so is `20 = int x;`.
 
-In other words, the  [lhs](./03_computations.md) of `=` ("lhs" meaning "left hand side", the left/first operand) must be a variable (some other things are allowed too, but more on that later).
+In other words, the  [lhs](./03_expressions.md) of `=` ("lhs" meaning "left hand side", the left/first operand) must be a variable (some other things are allowed too, but more on that later).
 
 Something like `x * 2` isn't a valid lhs of `=` too, which means that the compiler will not solve equations for you. You can't write `x * 2 = 100;` and expect it to figure out that `x` is `50`. Since `x * 2` is not a variable, this a compilation error.
 

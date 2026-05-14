@@ -259,7 +259,7 @@ int main()
 ```
 Sounds good in theory, but it doesn't work. `x` in `main` remains equal to `5`. But if you try to print `target` in `Increase` after changing it, you'll see that it's indeed `105`. What's going on?
 
-You might have guessed already. `target` is a copy of `x`, so any changes to it don't affect the original. References to the rescue:
+You might have guessed already. `target` is a **copy** of `x`, so any changes to it don't affect the original. References to the rescue:
 ```cpp
 void Increase(int &target, int value)
 {
@@ -531,7 +531,7 @@ int main()
 
 This may appear to work, but this is in fact undefined behavior. One of the more treacherous kinds of UB, because it tends to not crash and to silently appear to work, until it no longer does.
 
-Do you understand why this is UB? `int arr[3];` only lives until the end of this function call, but the returned reference to `arr[0]` outlives `arr`. This reference becomes **dangling**, meaning it no longer refers to a valid object.
+Do you understand why this is UB? `int arr[3];` only lives until the end of this function call, but the returned reference to `arr[0]` outlives `arr`. This reference becomes **dangling**, meaning it no longer has a target to refer to.
 
 This example can be further simplified:
 ```cpp
@@ -564,7 +564,7 @@ int main()
     std::cout << y << '\n'; // 42
 }
 ```
-...since the returned reference ends up referencing `y` in `main` directly, not the parameter `x`. (As was explained before, references never refer to other references, trying to do so makes them refer to the target object of that reference.)
+...since the returned reference ends up referencing `y` in `main` directly, not the parameter `x`. (As was explained before, references never refer to other references, trying to do so makes them refer to the target of that reference.)
 
 But returning a reference to a by-value parameter (i.e. a non-reference parameter) would always dangle (assuming it compiles at all, see above).
 
@@ -578,17 +578,17 @@ Those have a different purpose compared to non-const references parameters. They
 
 
 ```cpp
-void PrintVector(const std::vector<int> &v)
+void PrintVector(const std::vector<int> &vec)
 {
-    for (int x : v)
+    for (int x : vec)
         std::cout << x << '\n';
 }
 
 int main()
 {
-    std::vector<int> v(1000000); // Some large vector.
-    // v[i] = ...
-    PrintVector(v);
+    std::vector<int> vec(1000000); // Some large vector.
+    // vec[i] = ...
+    PrintVector(vec);
 }
 ```
 
@@ -597,6 +597,18 @@ Here, `PrintVector()` takes the vector by a const reference, which means it's no
 Passing by a const reference only makes sense for types that are expensive to copy. Something like `void PrintInt(const int &x)` doesn't usually make sense, something as small as an `int` should be passed by value.
 
 Single numbers in general should be passed by value, and so are structs with just a few numbers in them. Vectors, strings, and structs of those should be passed by const references. (There are better ways to pass some of those, but those will be explained later. For now, a simple const reference is at least better that passing by value.)
+
+#### Why not always use non-const reference parameters?
+
+Why shouldn't we make `vec` a non-const reference?
+
+Firstly, this allows passing a `const` vector to this function: (same reasoning [as with for loops](./16_references.md#why-not-always-use-non-const-references))
+```cpp
+const std::vector<int> vec = {1, 2, 3};
+foo(vec); // Wouldn't compile if the parameter was a non-const reference.
+```
+
+Secondly, this allows passing an unnamed vector: `PrintVector({1, 2, 3});`. This is only allowed with const reference parameters, because with non-const ones the expectation is that the function will modify the parameter, so the caller will want to see the new value of the argument after the call, which it can't do if it's unnamed.
 
 ### Const references as return types
 

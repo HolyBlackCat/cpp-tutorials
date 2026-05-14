@@ -19,7 +19,7 @@ int main()
 
 Those are two different kinds of statements.
 
-`std::cout << x * 2 << "\n";` is an **expression statement** ([that you're already familiar with](./03_computations.md#expressions-are-composable)), meaning all it is is an expression (operators and operands) followed by a `;`.
+`std::cout << x * 2 << "\n";` is an **expression statement** ([that you're already familiar with](./03_expressions.md#expressions-are-composable)), meaning all it is is an expression (operators and operands) followed by a `;`.
 
 `int x = 10 + 20;` is a different kind of statement, a **declaration statement**. In it, `10 + 20` is an expression and the rest is not.
 

@@ -1,4 +1,4 @@
-# Computations
+# Expressions
 
 You can use C++ to perform simple (or more complex) computations.
 
@@ -52,9 +52,9 @@ Notice that individual numbers (literals) are also expressions.
 
 The entire `std::cout << "The value is " << (10 + 20) / 2 << "\n"` (not counting the `;`) is also an expression. `<<`s are operators. Quoted strings are expressions.
 
-Expressions that are parts of other expressions are called **subexpressions**.
+Expressions that are operands in other expressions are called **subexpressions**.
 
-Expressions that are not parts of other expressions are called **full expressions**.
+Expressions that are not operands in other expressions are called **full expressions**.
 
 `std::cout << "The value is " << (10 + 20) / 2 << "\n"` is a full expression, and every other expression in it is a subexpression.
 

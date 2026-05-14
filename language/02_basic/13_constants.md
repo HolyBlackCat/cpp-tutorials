@@ -88,7 +88,7 @@ I hope to explain this in more detail in later chapters.
 
 ## Literals
 
-[As briefly mentioned before](./03_computations.md#literals), unnamed constants in the source code are called **literals**.
+[As briefly mentioned before](./03_expressions.md#literals), unnamed constants in the source code are called **literals**.
 
 For example, when you do `int x = 42;`, the `42` is an **integer literal**.
 

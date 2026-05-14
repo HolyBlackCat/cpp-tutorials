@@ -204,14 +204,36 @@ for (int i = 0; i < vec.size(); i++)
 
 ## Dangling references
 
-If the object that a reference points to is destroyed, using the reference after that causes undefined behavior:
+If the thing that a reference refers to is destroyed, using the reference after that causes undefined behavior.
+
+This can happen e.g. if a variable goes out of scope:
+
+```cpp
+struct A
+{
+    int &ref;
+};
+
+std::vector<A> vec;
+
+if (true)
+{
+    int x = 42;
+    vec.push_back({x}); // Same as: `A a = {x}; vec.push_back(a);`
+} // `x` is destroyed here!
+
+std::cout << vec[0].ref << '\n'; // UB!
+vec[0].ref = 42; // Also UB!
+```
+
+Or if a vector element is erased:
 
 ```cpp
 std::vector<int> vec = {1, 2, 3};
 int &ref = vec[0];
 vec.clear(); // Remove all elements from the vector.
-ref = 42; // UB!
-std::cout << ref << "\n"; // Also UB!
+std::cout << ref << "\n"; // UB!
+ref = 42; // Also UB!
 ```
 A reference that points to an object that no longer exists is called a **dangling reference**.
 
@@ -220,14 +242,16 @@ Perhaps unintuitively, the same can happen when *growing* the vector too.
 std::vector<int> vec = {1, 2, 3};
 int &ref = vec[0];
 vec.push_back(4);
-ref = 42; // This is UB too!
-std::cout << ref << "\n"; // Also UB!
+std::cout << ref << "\n"; // This is UB too!
+ref = 42; // Also UB!
 ```
 Growing a vector can invalidate (make dangling) the references to its elements. The reasons for this will be explained later.
 
 > ## Exercise 3
 >
 > Try to observe breakage due to dangling references in those two cases.
+>
+> Try catching it with [ASAN](./12_undefined_behavior.md#catching-ub) if ASAN is available to you.
 
 ## References and arrays
 
