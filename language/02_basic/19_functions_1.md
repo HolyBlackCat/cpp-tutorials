@@ -641,9 +641,11 @@ Also notice that here you can make `a` and `b` `const`. But if `GetVector` retur
 
 Functions have a special relationship with arrays, for no particular reason other than C legacy. This only applies to arrays, and not to e.g. `std::vector`.
 
-Arrays can't be returned from functions at all (specifying one as a return type is a compilation error).
+Arrays can't be returned from functions at all (specifying one as a return type is a compilation error). Instead, you can return a `std::vector`, or a struct with an array in it.
 
-When used as function parameters, arrays lose the size information:
+When used as function parameters, arrays get custom behavior that will be explained in more detail in later chapters.
+
+For one, they lose the size information:
 ```cpp
 void foo(int arr[3]) // This `3` is ignored.
 {
@@ -658,8 +660,12 @@ int main()
     foo(blah); // Ok, despite the size mismatch in the function declaration.
 }
 ```
-For this reason, the array parameters are often spelled as `int arr[]` without the size, since it's ignored anyway. The only reason to specify the size there is as a hint to the programmer (if the function expects an array of a specific size).
+For this reason, array parameters are often spelled as `int arr[]` without the size, since it's ignored anyway. The only reason to specify the size there is as a hint to the programmer (if the function expects an array of at least this size).
 
 There is no way for the function to know the true array size (if you remember `std::size(arr)` from earlier, it doesn't work on array parameters). But you can pass it manually in a separate parameter, e.g. `void foo(int arr[], int size)`.
+
+If you instead use a `std::vector` parameter, you don't need to pass the size separately. You can use `vec.size()` to get the size from the vector.
+
+If you use a struct parameter with an array as a member, *that* array doesn't get any special treatment (it will have a fixed size as it normally does).
 
 You'll learn more about this in later chapters.

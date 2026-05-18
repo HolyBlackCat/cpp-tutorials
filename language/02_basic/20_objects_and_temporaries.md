@@ -145,10 +145,10 @@ If you [remember from earlier](./16_references.md#more-corner-cases), while `int
 
 This is related to functions and their parameters.
 
-As explained in [the chapter about functions](./19_functions.md), references can be function parameters. Const and non-const parameters, despite looking similar, are used for different purposes:
+As explained in [the chapter about functions](./19_functions_1.md), references can be function parameters. Const and non-const parameters, despite looking similar, are used for different purposes:
 
-1. Non-const reference parameters allow the caller to [see the updated value](./19_functions.md#modifying-the-parameters) after the function has modified the parameter.
-2. Const reference parameters (which the function can't change) are instead used to [avoid expensive copies](./19_functions.md#const-references-as-parameters).
+1. Non-const reference parameters allow the caller to [see the updated value](./19_functions_1.md#modifying-the-parameters) after the function has modified the parameter.
+2. Const reference parameters (which the function can't change) are instead used to [avoid expensive copies](./19_functions_1.md#const-references-as-parameters).
 
 So let's say we have:
 ```cpp
@@ -182,7 +182,7 @@ Notice that if `foo(10);` compiled, it wouldn't dangle, because the temporary `1
 
 ### Const references
 
-Now what about const references? As explained in the [chapter about functions](./19_functions.md#const-references-as-parameters), const references serve a different purpose as function parameters, compared to non-const ones. Let's say you have this function that prints a vector: (I'm reusing the example from that chapter)
+Now what about const references? As explained in the [chapter about functions](./19_functions_1.md#const-references-as-parameters), const references serve a different purpose as function parameters, compared to non-const ones. Let's say you have this function that prints a vector: (I'm reusing the example from that chapter)
 ```cpp
 void PrintVector(const std::vector<int> &vec)
 {
@@ -301,4 +301,4 @@ Probably. The slight advantage of lifetime extension is that it allows changing 
 
 > ## Exercise
 >
-> Try to catch dangling references with [ASAN and UBSAN](./12_undefined_behavior.md#catching-ub). Observe how lifetime extension prevents dangling.
+> Try to catch dangling references with [ASAN and UBSAN](./12_undefined_behavior.md#catching-ub). Observe how the lifetime extension prevents dangling.
