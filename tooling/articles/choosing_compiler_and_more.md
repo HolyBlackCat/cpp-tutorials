@@ -1,36 +1,40 @@
 # Choosing a compiler and more
 
-This is a complicated topic prone to holy wars. Here I try to explain all the choices you can make, so you can make an educated decision.
+All tooling listed here is viable and should work more or less fine.
 
-But ultimately, any remotely popular compiler is going to work fine, and the differences will be minor, especially for a newbie.
-
-Advanced readers can check out [Why MinGW?](./why_mingw.md) for a short explanation of my viewpoint.
+Advanced readers can check out [Why MinGW?](./why_mingw.md) for a short explanation of why I recommend it.
 
 ## What choices you can make?
 
-### Available compilers
+### Compilers
 
-The three most popular compilers are: (in no particular order)
+There are three mainstream C/C++ compilers: (in no particular order)
 
-* **MSVC** (stands for "**M**icro**s**oft **V**isual **C**++"), the compiler bundled with Visual Studio.
+* **MSVC** (stands for "**M**icro**S**oft **V**isual **C**++"), the compiler bundled with Visual Studio. Works on Windows only, closed source. The "official" compiler on Windows.
+
+
 * **GCC**, the compiler commonly used on Linux.
 
   On Windows it's usually bundled with something called [**MinGW**](https://www.mingw-w64.org/) (a collection of tools and libraries used to compile Windows applications without Visual Studio). So people tend to say "MinGW" to mean "GCC on Windows", and in general don't understand the [difference between the two](./why_msys2.md).
 
 * **Clang**, the most recent addition to the list ("recent" as in "first release was in this millenium").
 
-  On Windows can use MinGW, but doesn't have to.
+  The default compiler on Mac, Android, Emscripten.
 
-The pros and cons of each one are explained below.
+  On Windows, Clang can use MinGW, but doesn't have to.
 
-But wait, there's more. Yeach compiler has its own implementation of the **C++ standard library**:
+Even though each OS has its own "default" compiler, there's nothing wrong with using a different one, and that can often be beneficial.
+
+### Standard libraries
+
+Each compiler has its own implementation of the **C++ standard library**:
 * **MSVC STL** from MSVC.
 * **libstdc++** from GCC.
 * **libc++** from Clang.
 
 Some compilers can be used with standard libraries from **other** compilers. This is a fairly common practice, and is in no way worse than using their native libraries. (Which combinations are valid is shown below.)
 
-So not only do you have to choose the compiler, but also separately the C++ standard library. The pros and cons of each one are explained below as well.
+So not only do you have to choose the compiler, but also separately the C++ standard library. The pros and cons of each are explained below.
 
 And lastly, when using Clang+libc++ on Windows, it can be used in two modes, MinGW-compatible and MSVC-compatible.
 
@@ -38,7 +42,7 @@ In the end, there seems to be 7 valid combinations:
 
 [![tool combinations](../images/tool_combinations.svg)](../images/tool_combinations.svg)
 
-Each colored line is one combination. Red ones are operating in MSVC-compatible mode, blue ones are operating in MinGW-compatible mode. (That is on Windows. Elsewhere there's no MSVC nor MSVC STL, so only the blue ones are avaialble.)
+Each colored line is one combination. Red ones are operating in MSVC-compatible mode, blue ones are operating in MinGW-compatible mode. (That is on Windows. On other platforms there is no MSVC nor MSVC STL, so only the blue ones are avaialble.)
 
 Now the same thing in the form of a table:
 
@@ -46,7 +50,7 @@ Now the same thing in the form of a table:
 ---|---|---|---|---|---
 1|MSVC|MSVC|MSVC STL|ASAN|Comes with [Visual Studio](https://visualstudio.microsoft.com), or use the standalone ["build tools"](https://visualstudio.microsoft.com/downloads).
 2|Clang|MSVC|MSVC STL|ASAN|[Official Clang installer](https://github.com/llvm/llvm-project/releases) (look for `LLVM-...-win64.exe`), also must install MSVC.<br/><sup>(Or you could make MSYS2 Clang operate in MSVC-compatible mode with some command-line flags, but that's extra work.)</sup>
-3|Clang|MSVC|Clang's libc++|ASAN, UBSAN|Same, but also [must compile libc++ manually.](https://libcxx.llvm.org/BuildingLibcxx.html)
+3|Clang|MSVC|Clang's libc++|ASAN, UBSAN|Same, but also [must compile libc++ manually.](https://libcxx.llvm.org/BuildingLibcxx.html) This is a rare combination.
 4|Clang|MinGW|Clang's libc++|ASAN, UBSAN|[MSYS2 CLANG64](/tooling/articles/msys2_environments.md) (other [MSYS2 environments](/tooling/articles/msys2_environments.md) have libc++ too, but without sanitizers).<br/><sup>(Also there are [alternative distributions](/tooling/articles/why_msys2.md).)</sup>
 5|Clang|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](/tooling/articles/msys2_environments.md).<br/><sup>(Could also use official Clang installer with any MinGW, but that requires some custom command-line flags. Also there are [alternative distributions](/tooling/articles/why_msys2.md).)</sup>
 6|GCC|MinGW|GCC's libstdc++|None*|With [MSYS2 UCRT64 or MINGW64](/tooling/articles/msys2_environments.md).<br/><sup>(Also there are [alternative distributions](/tooling/articles/why_msys2.md).)</sup>
@@ -54,15 +58,15 @@ Now the same thing in the form of a table:
 
 You can use any IDE with any of those combinations, with more or less effort (e.g. using Visual Studio while compiling for MinGW might cause [intellisense](https://learn.microsoft.com/en-us/visualstudio/ide/using-intellisense?view=vs-2022) to misbehave).
 
-**"ABI"** stands for ["application binary interface"](https://en.wikipedia.org/wiki/Application_binary_interface). Loosely speaking, if two compilers use the same ABI, you can use any library compiled with one compiler with another. Some C (not C++) libraries might be compatible regardless. (In the explanation above I called those "MinGW-compatible mode" vs "MSVC-compatible mode".)
+**"ABI"** stands for ["application binary interface"](https://en.wikipedia.org/wiki/Application_binary_interface). Loosely speaking, if two compilers use the same ABI, you can use any library compiled with one compiler with another. Some C (not C++) libraries might be compatible regardless. (In the explanation above, "MinGW-compatible mode" vs "MSVC-compatible mode" refers to the ABI.)
 
-**"Sanitizers"** are automatic tools that you can enable to help you catch bugs: ASAN ("Address Sanitizer") for pointer errors, UBSAN for some other undefined behavior. (Note that on Linux, both GCC and Clang support both ASAN and UBSAN, plus some sanitizers not available on Windows.)
+**"Sanitizers"** are tools that add extra checks to your programs to help catch bugs: ASAN ("Address Sanitizer") for pointer errors, UBSAN for some other undefined behavior. (Note that on Linux, both GCC and Clang support both ASAN and UBSAN, plus some sanitizers not available on Windows.)
 
 <sup>* - You can use UBSAN, but [in a weird mode](https://stackoverflow.com/a/59083808/2752075) that doesn't display errors and just crashes when a violation is detected.</sup><br/>
 
 ## Choosing a compiler
 
-All three are viable, but here's my personal order or preference:
+All three are viable, but my personal order or preference is: (best to worst)
 
 1. Clang - It's nice to have support for different C++ standard libraries and ABIs. For some platforms it's the only compiler (e.g. Emscripten, Android NDK).
 
@@ -83,7 +87,7 @@ There's no single "C++ standard library". Rather, there are several implementati
 
 * Clang's **libc++**
 
-  Some minor features are missing as of libc++-18, such as parallel standard algorithms and iterator validation (the latter is [partially implemented](https://libcxx.llvm.org/Hardening.html#hardened-containers-status), and the address sanitizer partially makes up for it).
+  Some minor features are missing as of libc++-23, such as some parallel standard algorithms, and [iterator validation](https://libcxx.llvm.org/Hardening.html#hardened-containers-status for some containers (the address sanitizer partially makes up for the latter).
 
   They seem to have made some clever design choices, such as a very memory-efficient SSO for `std::string`s.
 

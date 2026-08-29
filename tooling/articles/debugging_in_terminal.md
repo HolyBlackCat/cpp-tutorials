@@ -168,7 +168,7 @@ To return back to `main`, you either press `s` or `n` enough times, or type **`f
 
 
 
-## Debugging real life errors
+## Debugging nested errors
 
 Consider this nonsensical program:
 ```cpp
@@ -182,7 +182,7 @@ int main()
     std::cout << x << '\n';
 }
 ```
-It's recommended if you understand what `delete` is. (If not, perhaps read your C++ book more and come back later.) But it's not strictly necessary.
+It's recommended that you understand what `delete` is. (If not, perhaps read your C++ book more and come back later.) But it's not strictly necessary.
 
 The point is, this program compiles, but when you run it it fails with an error, because of the incorrect use of `delete`.
 
