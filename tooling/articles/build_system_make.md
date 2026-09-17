@@ -169,7 +169,7 @@ prog.exe: 1.o 2.o
 clean:
 	rm -f *.o *.exe
 ```
-Since all `.o` files are created using the same procedure anyway, we can combine their recipes into one `%.o: %.cpp` "pattern" recipte.
+Since all `.o` files are created using the same procedure anyway, we can combine their recipes into one `%.o: %.cpp` "pattern" recipe.
 
 ### Variables
 
