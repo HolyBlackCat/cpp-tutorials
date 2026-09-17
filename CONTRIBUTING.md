@@ -2,7 +2,7 @@ Thanks for your interest in contributing to those tutorials!
 
 **How you can contribute:**
 
-* Fixing my English grammar and usage, as I'm not a native speaker. If this something non-trivial, links/explanations of why your way is better are welcome.
+* Fixing my English grammar and usage, as I'm not a native speaker. If it's something non-trivial, links/explanations of why your way is better are welcome.
 
 * Fixing factual errors. If this is something non-trivial, prefer opening an issue over sending a PR.
 
