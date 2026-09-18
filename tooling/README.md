@@ -4,7 +4,7 @@
 
 * This tutorial explains how to install the *tools* needed to code in C/C++, but not *how* to code. You'll still need a generic book/tutorial on C/C++.
 
-* This tutorial is primarly for Windows. But all tools suggested here are cross-platform, so it's not terribly hard to follow the tutorial on other OSes too (all tools other than MSYS2, which is Windows-only, but isn't necessary on other platforms).
+* This tutorial is primarily for Windows. But all tools suggested here are cross-platform, so it's not terribly hard to follow the tutorial on other OSes too (all tools other than MSYS2, which is Windows-only, but isn't necessary on other platforms).
 
 * There are endless possible tooling choices. In this tutorial we'll install the Clang compiler (or GCC if you prefer) using MSYS2; along with Visual Studio Code, Clangd, LLDB (or GDB) and LLDB-DAP. I consider those to be the best choices available.
 
