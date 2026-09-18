@@ -4,7 +4,7 @@
 
 Use `pacman -Ss ...` to search through MSYS2 "packages" (things you can install). Try **`pacman -Ss openal`** to search for OpenAL. It'll print the list of matching packages.
 
-**⚠ NOTE:** As before, we're looking only for things named `mingw-w64-clang-x86_64-...`. But if you haven't haven't followed the rest of this tutorial when installing MSYS2, and are instead coming in with an existing MSYS2 installation, you might need to use a different name prefix. In that case, consult [this](./variations/determining_msys2_env.md) for more details.
+**⚠ NOTE:** As mentioned before, we're looking only for things named `mingw-w64-clang-x86_64-...`. But if you haven't followed the rest of this tutorial when installing MSYS2, and are instead coming in with an existing MSYS2 installation, you might need to use a different name prefix. In that case, consult [this](./variations/determining_msys2_env.md) for more details.
 
 If you scroll through the list, you'll quickly find this:
 ```
