@@ -115,7 +115,7 @@ Monster boss = {"Dragon", 100};
 ```
 You might also see this being spelled without `=`, which is legal, and works for arrays and vectors too. I do think omitting `=` looks better for structs, but it can lead to subtle bugs when done with vectors, so always omitting it isn't the brightest idea, despite what some people say. I hope to discuss this in later chapters. For now I'll use `=` everywhere for simplicity.
 
-Like with arrays, if you skip some members, they will be zeroed: `Monster boss = {"Dragon"};` sets the `health` to zero, whereas in `Monster boss;` it would be initialized.
+Like with arrays, if you skip some members, they will be zeroed: `Monster boss = {"Dragon"};` sets the `health` to zero, whereas in `Monster boss;` it would be uninitialized.
 
 `Monster boss = {};` zeroes all the fields. Notice that for strings and vectors, "zeroing" doesn't do anything, as they are never uninitialized and are always empty by default.
 
