@@ -1,12 +1,61 @@
+
+## What is a byte?
+
+While a "byte" typically means 8 bits, C++ can work on hardware with "bytes" of other sizes (the proper definition of "byte" is provided later). You can check the number of bits in a byte using `CHAR_BIT` from `<climits>`:
+```cpp
+#include <climits>
+
+int main()
+{
+    std::cout << CHAR_BIT << '\n'; // Typically 8.
+    std::cout << sizeof(int) * CHAR_BIT << '\n'; // Typically 32.
+}
+```
+
+So to measure type size in bits (as opposed to bytes), multiply the result of `sizeof` by `CHAR_BIT`.
+
+In practice, you don't need to worry about this. Hardware with `CHAR_BIT > 8` is quite rare (`CHAR_BIT < 8` is not allowed), and software for it will likely be purpose-built. Unless you actually have such hardware on your hands, your code will likely never run on one.
+
+
+
+
+
 # Integral types
 
-You've already learned a few integral types (those that hold integers): `int`, `char`, and even `bool`.
+You already learned about a few integral types (those that hold integers): `int`, `char`, and even `bool`.
 
-This chapter provides a full list of those types, and explains how they work.
+C++ provides a lot of different integral types to choose from. They occupy different amount of memory, and can hold different ranges of values, so choosing a type is a tradeoff between range and memory usage.
+
+## `unsigned int`
+
+`int` can typically hold values between `-2147483648` and `2147483647`.
+
+If you need to store slightly larger positive values *and* don't need to store negative values, you can trade the negative range for higher positive range: `unsigned int` can typically hold values between `0` and `4294967295` (the positive range is about twice as large).
+
+In both
+
+
+
+
+
+
+
+Type|Typical size|Typical range|Possible size|Possible range
+---|---|---|---|---
+`signed char`|`1`|`-128`...`127`|Always `1`|At least `-128`...`127`
+`short`|`2`|`-32768`...`32767`|At least `2`|At least `-32768`...`32767`
+`int`|`4`|`-2147483648`...`2147483647`|At least `2`|At least `-32768`...`32767`
+`long`|&nbsp;|Same as `int` on Windows or<br/>same as `long long` elsewhere|At least `4`|At least `-2147483648`...`2147483647`|
+`long long`|`8`|`-9223372036854775808`...`9223372036854775807`|At least `8`|At least `-9223372036854775808`...<br/>`9223372036854775807`
+
+Several things to note here:
+1. `signed char`
+
+   The
 
 ## Introduction to binary numbers
 
-"Binary" is a numeral system (a system of writing numbers) that uses only 2 symbols (digits) instead of 10: `0` and `1`. Those are called **bits** (**bi**nary digi**t**s).
+"Binary" is a numeral system (a system of spelling numbers) that uses only 2 symbols (digits) instead of 10: `0` and `1`. Those are called **bits** (**bi**nary digi**t**s).
 
 Binary is used often in programming because the computer memory is also made up of bits; of little cells that can be in one of the two states each (such as "has electrical charge" and "no charge"), which are typically used to represent `0` and `1`.
 

@@ -1,0 +1,2 @@
+null-terminated strings
+non-english strings

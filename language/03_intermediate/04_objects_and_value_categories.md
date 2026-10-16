@@ -62,7 +62,7 @@ And lastly, there are *some* expressions don't refer to any objects, for example
 
 But literals like `42` are expressions too, they too represent objects. Same for expressions like `10 + 20` or `double(42)`, they also represent objects. (Again, I'm omitting some nuances here, that's for later.)
 
-Those are called **temporary objects**, or **temporaries**. Unlike (the objects associated with) variables which are created manually (via a declaration), temporaries are created automatically as needed to hold the results of computations (or values of numeric literals, etc), and then die off quickly. **Temporaries are normally destroyed at the end of the *full-expression* they were created in.** (Revisit the ["computations"](./03_computations.md) chapter if you forgot what a full-expression is. This is roughly equivalent to them being destroyed at the end of the line of code they were created in.)
+Those are called **temporary objects**, or **temporaries**. Unlike (the objects associated with) variables which are created manually (via a declaration), temporaries are created automatically as needed to hold the results of computations (or values of numeric literals, etc), and then die off quickly. **Temporaries are normally destroyed at the end of the *full-expression* they were created in.** (Revisit the ["computations"](./03_expressions.md) chapter if you forgot what a full-expression is. This is roughly equivalent to them being destroyed at the end of the line of code they were created in.)
 
 ## Lvalues and rvalues
 

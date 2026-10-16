@@ -17,3 +17,5 @@ Things we intentionally simplify at first:
 * Avoiding the phrase "ill-formed" in the beginner chapters, for the same reason.
 
 * So instead of saying "ill-formed" or even "syntax error", I'm saying "compilation error" in the beginner chapters. Yes, I know that compilers are not required to emit errors, and any diagnostic is allowed. I know that by default compilers will happily accept some ill-formed code, that is explained too.
+
+* We present a simplified definition of "temporaries" that doesn't take into account the mandatory copy elision.

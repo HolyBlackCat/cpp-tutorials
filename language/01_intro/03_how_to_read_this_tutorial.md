@@ -24,6 +24,8 @@ In particular, if this tutorial says that a certain program does something, don'
 
 ## 4. Getting help
 
-I recommend **not** asking AI to solve problems for you. Prefer googling and talking to real people.
+I recommend **not** asking AI for help or to solve problems for you. Prefer googling (with AI summaries disabled) and talking to real people.
 
-And even when talking to people, don't accept solutions to exercises without any explanations. It's better if you're given hints and gradually arrive at the solution yourself.
+AI tries to do for you the things you're trying to learn to do yourself: thinking and writing code. Any information it gives you is a retelling of something a real person wrote, and not always an accurate retelling. As you become more experienced, you may or may not find AI helpful, but it's widely agreed that using it is harmful during learning.
+
+And when getting help from people (or from AI if you insist), don't accept solutions to exercises without any explanations. It's better if you're given hints and gradually arrive at the solution yourself.

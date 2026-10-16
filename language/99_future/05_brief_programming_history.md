@@ -44,6 +44,6 @@ The assembly is *still* hard to read and write, so programmers came up with...
 
 Those are the languages where you don't have to directly think about the resulting machine code or assembly. Basically, any other language than the assembly.
 
-Programs in those languages need **compiled**, that is converted to machine code using a program called **a compiler**.
+Since the processor doesn't understand those languages directly, they need to be **compiled** first, that is converted to machine code using a program called **a compiler**. (TODO scripting languages)
 
-C++ is one of them. I [previously called](./03_what_should_i_learn.md#how-does-c-compare-to-other-languages) C++ a "low-level" language, but there's no contradiction. It's higher level than assembly (which is the traditional meaning of "high-level"), but lower level than most other languages that exist today.
+C++ is one of them. I [previously called](../01_intro/05_what_should_i_learn.md#how-does-c-compare-to-other-languages) C++ a "low-level" language, but there's no contradiction. It's higher level than assembly (which is the traditional meaning of "high-level"), but lower level than most other languages that exist today.

@@ -2,7 +2,7 @@
 
 All C++ programs you've written so far were doing computations.
 
-Let's try something else. How would you write a program that, for example, given a person's age, determines if they are legally allowed to drive or not?
+Let's try something else. How would you write a program that, for example, given the person's age, determines if they are legally allowed to drive or not?
 
 No amount of `+` `-` `*` `/` would let you choose one of two strings to print (e.g. `"Allowed"` vs `"Not allowed"`). This requires a language feature that you haven't learned yet, **the `if` statement**:
 
