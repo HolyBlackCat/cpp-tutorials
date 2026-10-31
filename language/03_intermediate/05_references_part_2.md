@@ -6,7 +6,7 @@ As you might have guessed by now, non-const references can only bind to (be init
 int x;
 const int y = 42;
 int &a = x; // ok
-int &b = 43; // error, because 42 is an rvalue
+int &b = 43; // error, because 43 is an rvalue
 int &c = y; // error, because 42 is const
 ```
 
